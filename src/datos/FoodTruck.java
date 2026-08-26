@@ -1,7 +1,7 @@
 package datos;
 
 public class FoodTruck extends UnidadVenta {
-	
+	private long idFoodTruck;
 	private String patente;
 	private boolean conexion;
 	
@@ -29,10 +29,20 @@ public class FoodTruck extends UnidadVenta {
 		this.conexion = conexion;
 	}
 
+
+	public long getIdFoodTruck() {
+		return idFoodTruck;
+	}
+
+	public void setIdFoodTruck(long idFoodTruck) {
+		this.idFoodTruck = idFoodTruck;
+	}
+
 	@Override
 	public String toString() {
-		return "FoodTruck [patente=" + patente + ", conexion=" + conexion + "]";
+		return "FoodTruck [idFoodTruck=" + idFoodTruck + ", patente=" + patente + ", conexion=" + conexion + "]";
 	}
+	
 	
 	
 

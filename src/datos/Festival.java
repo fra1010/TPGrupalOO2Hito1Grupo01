@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class Festival {
+	private long idFestival;
 	private String nombre;
 	private String temporada;
 	private LocalDate fechaInicio;
@@ -62,10 +63,20 @@ public class Festival {
 		this.unidadesventa = unidadesventa;
 	}
 
+	
+
+	public long getIdFestival() {
+		return idFestival;
+	}
+
+	public void setIdFestival(long idFestival) {
+		this.idFestival = idFestival;
+	}
+
 	@Override
 	public String toString() {
-		return "Festival [nombre=" + nombre + ", temporada=" + temporada + ", fechaInicio=" + fechaInicio
-				+ ", fechaFin=" + fechaFin + ", unidadesventa=" + unidadesventa + "]";
+		return "Festival [idFestival=" + idFestival + ", nombre=" + nombre + ", temporada=" + temporada
+				+ ", fechaInicio=" + fechaInicio + ", fechaFin=" + fechaFin + ", unidadesventa=" + unidadesventa + "]";
 	}
 	
 	

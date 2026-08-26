@@ -1,6 +1,7 @@
 package datos;
 
 public class ItemPedido {
+	private long idItemPedido;
 	private Plato plato;
 	private int cantidad;
 	
@@ -28,9 +29,18 @@ public class ItemPedido {
 		this.cantidad = cantidad;
 	}
 
+
+	public long getIdItemPedido() {
+		return idItemPedido;
+	}
+
+	public void setIdItemPedido(long idItemPedido) {
+		this.idItemPedido = idItemPedido;
+	}
+
 	@Override
 	public String toString() {
-		return "ItemPedido [plato=" + plato + ", cantidad=" + cantidad + "]";
+		return "ItemPedido [idItemPedido=" + idItemPedido + ", plato=" + plato + ", cantidad=" + cantidad + "]";
 	}
 	
 	

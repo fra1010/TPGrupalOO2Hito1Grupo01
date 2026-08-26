@@ -1,7 +1,7 @@
 package datos;
 
 public class Cajero extends Empleado {
-
+	private long idCajero;
 	private String turno;
 	
 	public Cajero() {}
@@ -11,9 +11,26 @@ public class Cajero extends Empleado {
 		this.turno = turno;
 	}
 
+	
+	public long getIdCajero() {
+		return idCajero;
+	}
+
+	public void setIdCajero(long idCajero) {
+		this.idCajero = idCajero;
+	}
+
+	public String getTurno() {
+		return turno;
+	}
+
+	public void setTurno(String turno) {
+		this.turno = turno;
+	}
+
 	@Override
 	public String toString() {
-		return "Cajero [turno=" + turno + "]";
+		return "Cajero [idCajero=" + idCajero + ", turno=" + turno + "]";
 	}
 	
 	
