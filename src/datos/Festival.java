@@ -9,7 +9,7 @@ public class Festival {
 	private String temporada;
 	private LocalDate fechaInicio;
 	private LocalDate fechaFin;
-	private List<UnidadVenta>unidadesventa;
+	private List<UnidadVenta>unidadesVenta;
 	
 	public Festival() {}
 
@@ -20,7 +20,7 @@ public class Festival {
 		this.temporada = temporada;
 		this.fechaInicio = fechaInicio;
 		this.fechaFin = fechaFin;
-		this.unidadesventa = unidadesventa;
+		this.unidadesVenta = unidadesventa;
 	}
 
 	public String getNombre() {
@@ -56,11 +56,11 @@ public class Festival {
 	}
 
 	public List<UnidadVenta> getUnidadesventa() {
-		return unidadesventa;
+		return unidadesVenta;
 	}
 
 	public void setUnidadesventa(List<UnidadVenta> unidadesventa) {
-		this.unidadesventa = unidadesventa;
+		this.unidadesVenta = unidadesventa;
 	}
 
 	
@@ -76,7 +76,7 @@ public class Festival {
 	@Override
 	public String toString() {
 		return "Festival [idFestival=" + idFestival + ", nombre=" + nombre + ", temporada=" + temporada
-				+ ", fechaInicio=" + fechaInicio + ", fechaFin=" + fechaFin + ", unidadesventa=" + unidadesventa + "]";
+				+ ", fechaInicio=" + fechaInicio + ", fechaFin=" + fechaFin + ", unidadesventa=" + unidadesVenta + "]";
 	}
 	
 	
