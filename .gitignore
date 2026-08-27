@@ -1,1 +1,12 @@
-/.metadata/
+.metadata/
+.settings/
+.recommenders/
+
+*.class
+bin/
+target/
+
+*.log
+
+.DS_Store
+Thumbs.db
