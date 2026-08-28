@@ -8,7 +8,7 @@
 	
 	<class name="datos.Empleado" table="empleado">
 		
-		<id column="id" name="id">
+		<id column="idEmpleado" name="idEmpleado">
 			<generator class="identity" />
 		</id>
 		
@@ -19,12 +19,12 @@
 		<property name="ingreso" column="ingreso" type="java.time.LocalDate" />
 	
        <joined-subclass name="datos.Cocinero" table="cocinero">
-			<key column="id" />
+			<key column="idEmpleado" />
 			<property column="especialidad" name="especialidad" type="string" />
 		</joined-subclass>
 
 		<joined-subclass name="datos.Cajero" table="cajero">
-			<key column="id" />
+			<key column="idEmpleado" />
 			<property column="turno" name="turno" type="string" />
 		</joined-subclass>
 

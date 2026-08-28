@@ -66,7 +66,7 @@ public class EmpleadoDao
 		try 
 		{
 			iniciaOperacion();
-			objeto = (Empleado) session.createQuery("from Cliente c where c.idCliente=:idCliente")
+			objeto = (Empleado) session.createQuery("from Empleado e where e.idEmpleado=:idEmpleado")
 						.setParameter("idEmpleado", idEmpleado).uniqueResult();
 		} 
 		finally 
@@ -84,7 +84,7 @@ public class EmpleadoDao
 		try 
 		{
 			iniciaOperacion();
-			lista = session.createQuery("from Cliente",Empleado.class).list();
+			lista = session.createQuery("from Empleado",Empleado.class).list();
 		} 
 		finally 
 		{
@@ -94,3 +94,5 @@ public class EmpleadoDao
 		return lista;
 	}
 }
+
+
