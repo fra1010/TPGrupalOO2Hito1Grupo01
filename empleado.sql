@@ -20,11 +20,8 @@ USE `empleado` ;
 CREATE TABLE IF NOT EXISTS `empleado`.`cocinero` (
   `idCocinero` INT NOT NULL,
   `especialidad` VARCHAR(45) NOT NULL,
-  `categoria` VARCHAR(45) NOT NULL,
-  `plus` DOUBLE NOT NULL,
   PRIMARY KEY (`idCocinero`))
 ENGINE = InnoDB;
-
 
 -- -----------------------------------------------------
 -- Table `empleado`.`cajero`
@@ -40,13 +37,12 @@ ENGINE = InnoDB;
 -- Table `empleado`.`empleado`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `empleado`.`empleado` (
-  `idEmpleado` INT NOT NULL,
+  `id` INT NOT NULL,
   `nombre` VARCHAR(45) NOT NULL,
   `apellido` VARCHAR(45) NOT NULL,
-  `dni` INT NOT NULL,
+  `dni` long not NULL,
   `fechaDeNacimiento` DATETIME NOT NULL,
   `ingreso` DATETIME NOT NULL,
-  `sueldo` FLOAT NULL,
   `cocinero_idCocinero` INT NOT NULL,
   `cajero_idCajero` INT NOT NULL,
   PRIMARY KEY (`idEmpleado`),

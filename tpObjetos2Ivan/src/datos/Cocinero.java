@@ -1,20 +1,21 @@
 package datos;
 
+import java.time.LocalDate;
+
 public class Cocinero extends Empleado{
 
 	private String especialidad;
-	private String categoria;
-	private double plus;
 	
-	public Cocinero(){
+	public Cocinero()
+	{
 		
 	}
 	
-	public Cocinero(String especialidad, String categoria, double plus) {
-		super();
+	public Cocinero(String nombre, String apellido,long dni, LocalDate fechaNacimiento, LocalDate ingreso, String especialidad) 
+	{
+		super(nombre, apellido, dni, fechaNacimiento,ingreso);
+		
 		this.especialidad = especialidad;
-		this.categoria = categoria;
-		this.plus = plus;
 	}
 
 	public String getEspecialidad() {
@@ -25,24 +26,11 @@ public class Cocinero extends Empleado{
 		this.especialidad = especialidad;
 	}
 
-	public String getCategoria() {
-		return categoria;
-	}
-
-	public void setCategoria(String categoria) {
-		this.categoria = categoria;
-	}
-
-	public double getPlus() {
-		return plus;
-	}
-
-	public void setPlus(double plus) {
-		this.plus = plus;
-	}
-
 	@Override
 	public String toString() {
-		return super.toString() + "Cocinero [especialidad=" + especialidad + ", categoria=" + categoria + ", plus=" + plus + "]\n";
+		return super.toString() + "Cocinero [especialidad=" + especialidad + "]\n";
 	}
 }
+
+
+

@@ -1,39 +1,37 @@
 package datos;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public abstract class Empleado {
 
 	protected int idEmpleado;
 	protected String nombre;
 	protected String apellido;
-	protected int dni;
-	protected LocalDate fechaDeNacimiento;
+	protected long dni;
+	protected LocalDate fechaNacimiento;
 	protected LocalDate ingreso;
-	protected double sueldo;
 	
-	public Empleado() {
+	public Empleado() 
+	{
 		
 	}
 
-	public Empleado(int idEmpleado, String nombre, String apellido, int dni, LocalDate fechaDeNacimiento,
-			LocalDate ingreso, double sueldo) {
-		super();
-		this.idEmpleado = idEmpleado;
+	public Empleado(String nombre, String apellido,long dni, LocalDate fechaNacimiento, LocalDate ingreso) 
+	{
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.dni = dni;
-		this.fechaDeNacimiento = fechaDeNacimiento;
+		this.fechaNacimiento = fechaNacimiento;
 		this.ingreso = ingreso;
-		this.sueldo = sueldo;
 	}
 
 	public int getIdEmpleado() {
 		return idEmpleado;
 	}
 
-	public void setIdEmpleado(int idEmpleado) {
-		this.idEmpleado = idEmpleado;
+	protected void setIdEmpleado(int id) {
+		this.idEmpleado = id;
 	}
 
 	public String getNombre() {
@@ -52,20 +50,20 @@ public abstract class Empleado {
 		this.apellido = apellido;
 	}
 
-	public int getDni() {
+	public long getDni() {
 		return dni;
 	}
 
-	protected void setDni(int dni) {
+	protected void setDni(long dni) {
 		this.dni = dni;
 	}
 
-	public LocalDate getFechaDeNacimiento() {
-		return fechaDeNacimiento;
+	public LocalDate getFechaNacimiento() {
+		return fechaNacimiento;
 	}
 
-	protected void setFechaDeNacimiento(LocalDate fechaDeNacimiento) {
-		this.fechaDeNacimiento = fechaDeNacimiento;
+	protected void setFechaNacimiento(LocalDate fechaNacimiento) {
+		this.fechaNacimiento = fechaNacimiento;
 	}
 
 	public LocalDate getIngreso() {
@@ -75,19 +73,28 @@ public abstract class Empleado {
 	protected void setIngreso(LocalDate ingreso) {
 		this.ingreso = ingreso;
 	}
-
-	public double getSueldo() {
-		return sueldo;
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(dni);
 	}
 
-	protected void setSueldo(double sueldo) {
-		this.sueldo = sueldo;
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Empleado other = (Empleado) obj;
+		return dni == other.dni;
 	}
 
 	@Override
 	public String toString() {
 		return "Empleado [idEmpleado=" + idEmpleado + ", nombre=" + nombre + ", apellido=" + apellido + ", dni=" + dni
-				+ ", fechaDeNacimiento=" + fechaDeNacimiento + ", ingreso=" + ingreso + ", sueldo=" + sueldo + "]\n";
+				+ ", fechaDeNacimiento=" + fechaNacimiento + ", ingreso=" + ingreso + "]\n";
 	}
 	
 }
