@@ -8,7 +8,7 @@ public class PuestoDesarmable extends UnidadVenta{
 		// TODO Auto-generated constructor stub
 	}
 	public PuestoDesarmable(String nombre, Empleado responsable, double superficie, String codigo, int cantidadCarpas,
-			int tiempo) {
+			int tiempo)throws Exception {
 		super(nombre, responsable, superficie, codigo);
 		this.cantidadCarpas = cantidadCarpas;
 		this.tiempo = tiempo;

@@ -11,12 +11,24 @@ public class TestAgregarUnidadVenta {
 		// TODO Auto-generated method stub
 		UnidadVentaABM abm = new UnidadVentaABM();
 		
-		abm.agregarUnidadVenta("Taco Movil", null, 25.5, "FT-2026-001", "ABC-123", true);
-		abm.agregarUnidadVenta("Burger Express",null, 18.0, "FT-2026-002", "XYZ-789", false);
-		System.out.println(abm.traer(2).toString());
-		UnidadVenta u= abm.traerUnidadVentaYEmpleados(2);
+		try {
+			abm.agregarUnidadVenta("Taco Movil", null, 25.5, "ABCDEFGHIJ", "ABC-123", true);
+  		    abm.agregarUnidadVenta("Burger Express",null, 18.0, "HJKLMWXYZQ", "XYZ-789", false);
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		String codigo="ABCDEFGHIJ";
+		String codigo2="HJKLMWXYZQ";
+		System.out.println(abm.traerUnidadVentaYEmpleados(codigo));
+		UnidadVenta u= abm.traerUnidadVentaYEmpleados(codigo2);
 		System.out.println(u.toString());
 		System.out.println(u.getEmpleados());
+		
+		
+		
+		
 	}
 
 }

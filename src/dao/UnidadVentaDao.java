@@ -36,12 +36,12 @@ public class UnidadVentaDao {
 
 		return id;
 	}
-	public UnidadVenta traer(int idUnidadVenta) {
+	public UnidadVenta traer(String codigo) {
 		UnidadVenta unidadVenta = null;
 		try {
 			iniciaOperacion();
-			unidadVenta = (UnidadVenta) session.createQuery(" from UnidadVenta u where u.idUnidadVenta = :idUnidadVenta")
-					.setParameter("idUnidadVenta", idUnidadVenta)
+			unidadVenta = (UnidadVenta) session.createQuery(" from UnidadVenta u where u.codigo = :codigo")
+					.setParameter("codigo", codigo)
 					.uniqueResult();
 			Hibernate.initialize(unidadVenta.getResponsable());
 		} finally {
@@ -51,12 +51,12 @@ public class UnidadVentaDao {
 		return unidadVenta;
 	}
 	
-	public UnidadVenta traerUnidadYEmpleados(int idUnidadVenta) {
+	public UnidadVenta traerUnidadYEmpleados(String codigo) {
 		UnidadVenta unidadVenta = null;
 		try {
 			iniciaOperacion();
-			unidadVenta = (UnidadVenta) session.createQuery(" from UnidadVenta u where u.idUnidadVenta = :idUnidadVenta")
-					.setParameter("idUnidadVenta", idUnidadVenta)
+			unidadVenta = (UnidadVenta) session.createQuery(" from UnidadVenta u where u.codigo = :codigo")
+					.setParameter("codigo", codigo)
 					.uniqueResult();
 			Hibernate.initialize(unidadVenta.getResponsable());
 			Hibernate.initialize(unidadVenta.getEmpleados());

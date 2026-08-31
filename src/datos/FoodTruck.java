@@ -11,7 +11,7 @@ public class FoodTruck extends UnidadVenta{
 
 
 	public FoodTruck(String nombre, Empleado responsable, double superficie, String codigo, String patente,
-			boolean conexion) {
+			boolean conexion)throws Exception {
 		super(nombre, responsable, superficie, codigo);
 		this.patente = patente;
 		this.conexion = conexion;
