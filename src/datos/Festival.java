@@ -1,26 +1,48 @@
 package datos;
 
 import java.time.LocalDate;
-import java.util.List;
+
+
+
 
 public class Festival {
-	private long idFestival;
+	private int idFestival;
 	private String nombre;
 	private String temporada;
 	private LocalDate fechaInicio;
 	private LocalDate fechaFin;
-	private List<UnidadVenta>unidadesVenta;
-	
+	//private Set<UnidadVenta> unidadesVenta;
+	private Costo costo;
+
 	public Festival() {}
 
-	public Festival(String nombre, String temporada, LocalDate fechaInicio, LocalDate fechaFin,
-			List<UnidadVenta> unidadesventa) {
-		super();
-		this.nombre = nombre;
-		this.temporada = temporada;
-		this.fechaInicio = fechaInicio;
-		this.fechaFin = fechaFin;
-		this.unidadesVenta = unidadesventa;
+	public Festival(String nombre, String temporada, LocalDate fechaInicio, LocalDate fechaFin, Costo costo) {
+	    this.nombre = nombre;
+	    this.temporada = temporada;
+	    this.fechaInicio = fechaInicio;
+	    this.fechaFin = fechaFin;
+	    this.costo = costo;
+
+	    if (costo != null) {
+	        costo.setFestival(this);
+	    }
+	}
+
+	public Festival(String nombre, String temporada, LocalDate fechaInicio, LocalDate fechaFin) {
+	    this.nombre = nombre;
+	    this.temporada = temporada;
+	    this.fechaInicio = fechaInicio;
+	    this.fechaFin = fechaFin;
+
+	}
+	
+	
+	public int getIdFestival() {
+		return idFestival;
+	}
+
+	protected void setIdFestival(int idFestival) {
+		this.idFestival = idFestival;
 	}
 
 	public String getNombre() {
@@ -55,33 +77,24 @@ public class Festival {
 		this.fechaFin = fechaFin;
 	}
 
-	public List<UnidadVenta> getUnidadesventa() {
-		return unidadesVenta;
-	}
-
-	public void setUnidadesventa(List<UnidadVenta> unidadesventa) {
-		this.unidadesVenta = unidadesventa;
-	}
-
 	
-
-	public long getIdFestival() {
-		return idFestival;
+	public Costo getCosto() {
+		return costo;
 	}
 
-	public void setIdFestival(long idFestival) {
-		this.idFestival = idFestival;
+	public void setCosto(Costo costo) {
+		this.costo = costo;
 	}
+
+
 
 	@Override
 	public String toString() {
-		return "Festival [idFestival=" + idFestival + ", nombre=" + nombre + ", temporada=" + temporada
-				+ ", fechaInicio=" + fechaInicio + ", fechaFin=" + fechaFin + ", unidadesventa=" + unidadesVenta + "]";
-	}
+		return "Festival [id=" + idFestival + ", nombre=" + nombre + ", temporada=" + temporada + ", fechaInicio=" + fechaInicio
+				+ ", fechaFin=" + fechaFin + ", costo=" + costo + "]";
+	};
 	
 	
 	
-	
-}
 
-	
+}

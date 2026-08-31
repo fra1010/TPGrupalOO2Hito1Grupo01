@@ -4,22 +4,15 @@
         "https://hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
     <class name="datos.Festival" table="festival">
-    	<!-- ID -->
-        <id name="idFestival" column="idFestival">
+        <id name="idFestival" column="id_festival">
             <generator class="identity"/>
         </id>
-		<!-- Atributos - Columnas -->
- 
-        <property name="nombre" column="nombre" type="string" not-null="true"/>
-        <property name="temporada" column="temporada" type="string" not-null="true"/>
-        <property name="fechaInicio" column="fechaInicio" type="java.time.LocalDate" not-null="true"/>
-        <property name="fechaFin" column="fechaFin" type="java.time.LocalDate" not-null="true"/>
-        <property name="unidadesVenta" column="fechaFin" type="boolean" not-null="true"/>
-        <!-- Relacion  -->
-        <list name="unidadesVenta" table="unidadVenta" inverse="true" lazy="true" fetch="select">
-  	 		 <key column="idFestival" not-null="true" />
-    	<list-index column="indice" />
-   	 <one-to-many class="datos.UnidadVenta" />
-</list>
-  </class>    
+
+        <property name="nombre" column="nombre" type="string" />
+        <property name="temporada" column="temporada" type="string" />
+        <property name="fechaInicio" column="fecha_inicio" type="java.time.LocalDate"/>
+        <property name="fechaFin" column="fecha_fin" type="java.time.LocalDate" />
+        <one-to-one name="costo" class="datos.Costo" cascade="all"/>
+
+ 	 </class>    
 </hibernate-mapping>
