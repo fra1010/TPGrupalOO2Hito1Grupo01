@@ -1,28 +1,50 @@
 package negocio;
 
+import java.util.List;
+
 import dao.UnidadVentaDao;
 import datos.Empleado;
 import datos.FoodTruck;
+import datos.PuestoDesarmable;
 import datos.UnidadVenta;
 
 public class UnidadVentaABM {
 
 	UnidadVentaDao dao = new UnidadVentaDao();
-	
-	public int agregarUnidadVenta(String nombre, Empleado responsable, double superficie, 
-            String codigo, String patente, boolean conexion)throws Exception {
-		UnidadVenta u= new FoodTruck(nombre, responsable, superficie, codigo, patente, conexion);
-		
-		return dao.agregarCliente(u);
+
+	public int agregarUnidadVenta(String nombre, Empleado responsable, double superficie, String codigo, String patente,
+			boolean conexion) throws Exception {
+		if( dao.traer(codigo) != null) {
+			throw new Exception("Ya existe una unidad de venta con ese codigo : "+ codigo);
+		}
+		UnidadVenta foodTruck = new FoodTruck(nombre, responsable, superficie, codigo, patente, conexion);
+
+		return dao.agregarUnidadVenta(foodTruck);
 	}
-	
-	public UnidadVenta traer(String codigo){
+
+	public int agregarUnidadVenta(String nombre, Empleado responsable, double superficie, String codigo,
+			int cantidadCarpas, int tiempo) throws Exception {
+		if( dao.traer(codigo) != null) {
+			throw new Exception("Ya existe una unidad de venta con ese codigo : "+ codigo);
+		}
+		UnidadVenta puestoDesarmable = new PuestoDesarmable(nombre, responsable, superficie, codigo, cantidadCarpas,
+				tiempo);
+		return dao.agregarUnidadVenta(puestoDesarmable);
+	}
+
+	public UnidadVenta traer(String codigo) {
 		
 		return dao.traer(codigo);
-		}
-	
+	}
+
 	public UnidadVenta traerUnidadVentaYEmpleados(String codigo) {
-		
 		return dao.traerUnidadYEmpleados(codigo);
+	}
+	public void actualizar(UnidadVenta unidadVenta) {
+		dao.actualizar(unidadVenta);
+	}
+	public List<UnidadVenta> traer(){
+		
+		return dao.traer();
 	}
 }

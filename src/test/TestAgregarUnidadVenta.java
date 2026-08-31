@@ -2,6 +2,7 @@ package test;
 
 
 
+
 import datos.UnidadVenta;
 import negocio.UnidadVentaABM;
 
@@ -14,8 +15,8 @@ public class TestAgregarUnidadVenta {
 		try {
 			abm.agregarUnidadVenta("Taco Movil", null, 25.5, "ABCDEFGHIJ", "ABC-123", true);
   		    abm.agregarUnidadVenta("Burger Express",null, 18.0, "HJKLMWXYZQ", "XYZ-789", false);
-
-		} catch (Exception e) {
+  		    abm.agregarUnidadVenta("Puesto de Comidas",null, 25.5, "AGRSHAEYFQ", 3, 120);
+  		    } catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -23,8 +24,9 @@ public class TestAgregarUnidadVenta {
 		String codigo2="HJKLMWXYZQ";
 		System.out.println(abm.traerUnidadVentaYEmpleados(codigo));
 		UnidadVenta u= abm.traerUnidadVentaYEmpleados(codigo2);
-		System.out.println(u.toString());
-		System.out.println(u.getEmpleados());
+		System.out.println("---------------");
+		abm.traer().forEach(nombre -> System.out.println(nombre.toString()));
+		
 		
 		
 		

@@ -17,7 +17,7 @@ public class UnidadVenta {
 		super();
 	}
 
-	public UnidadVenta(String nombre, Empleado responsable, double superficie, String codigo)throws Exception {
+	public UnidadVenta(String nombre, Empleado responsable, double superficie, String codigo) throws Exception {
 		super();
 		this.nombre = nombre;
 		this.responsable = responsable;
@@ -61,14 +61,11 @@ public class UnidadVenta {
 		return codigo;
 	}
 
-	public void setCodigo(String codigo)throws Exception {
-		if(!validarCodigo(codigo)) {
-			throw new Exception("ERROR: El código no puede ser null.\n" +
-                    "    Solución: Proporcione un valor válido.\n" +
-                    "    Requisitos del código:\n" +
-                    "      - Debe tener exactamente 10 caracteres\n" +
-                    "      - Todos los caracteres deben estar en mayúscula\n" +
-                    "    Ejemplo válido: 'ABCDEFGHIJ'");
+	public void setCodigo(String codigo) throws Exception {
+		if (!validarCodigo(codigo)) {
+			throw new Exception("ERROR: El código no puede ser null.\n" + "    Solución: Proporcione un valor válido.\n"
+					+ "    Requisitos del código:\n" + "      - Debe tener exactamente 10 caracteres\n"
+					+ "      - Todos los caracteres deben estar en mayúscula\n" + "    Ejemplo válido: 'ABCDEFGHIJ'");
 		}
 		this.codigo = codigo;
 	}
