@@ -1,12 +1,1 @@
-# Java
-*.class
-
-# Eclipse
-.metadata/
-.settings/
-.classpath
-.project
-
-# Compilados
-bin/
-target/
+/bin/
