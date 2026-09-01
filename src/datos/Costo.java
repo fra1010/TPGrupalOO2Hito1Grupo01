@@ -87,20 +87,17 @@ public class Costo {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Costo other = (Costo) obj;
-		return costoMontaje == other.costoMontaje && costoSuperficie == other.costoSuperficie
-				&& idCosto == other.idCosto && costoElectricidad == other.costoElectricidad
-				&& sueldoBase == other.sueldoBase;
+	public boolean equals(Object o) {
+	    if (this == o) return true;
+	    if (!(o instanceof Costo)) return false;
+	    Costo other = (Costo) o;
+	    return java.util.Objects.equals(festival, other.festival);
 	}
 
-
+	@Override
+	public int hashCode() {
+	    return java.util.Objects.hash(festival);
+	}
 	
 	
 }

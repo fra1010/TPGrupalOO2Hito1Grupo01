@@ -58,7 +58,7 @@ public class FestivalABM {
 
         if (existe == null) {
             throw new Exception(
-                "ERROR: no existe Festival con dicho ID "
+                "ERROR: no existe Festival con ese ID "
                 + f.getIdFestival()
             );
         }

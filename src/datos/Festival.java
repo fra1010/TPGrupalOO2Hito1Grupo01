@@ -3,8 +3,6 @@ package datos;
 import java.time.LocalDate;
 import java.util.Set;
 
-
-
 public class Festival {
 	private int idFestival;
 	private String nombre;
@@ -95,7 +93,15 @@ public class Festival {
 		this.costo = costo;
 	}
 
+	
+	public boolean equals(Festival festival) {
+	    return festival.getNombre().equals(this.nombre);
+	}
 
+	@Override
+	public int hashCode() {
+	    return java.util.Objects.hash(nombre);
+	}
 
 	@Override
 	public String toString() {

@@ -27,31 +27,21 @@ public class CostoABM {
 
 	public int agregar(Costo c) throws Exception {
 
-		List<Costo> listaCostos = traer();
+	    if (c.getFestival() == null) {
+	        throw new Exception("El costo debe estar asociado a un festival.");
+	    }
 
-		int i = 0;
-		boolean found = false;
-		int idCosto = 0;
+	    if (c.getFestival().getIdFestival() == 0) {
+	        throw new Exception("El festival no esta guardado en la db");
+	    }
 
-		while (i < listaCostos.size() && !found) {
+	    Costo costo = dao.traer(c.getFestival().getIdFestival());
+	    if (costo != null) {
+	        throw new Exception("ERROR: el festival " + c.getFestival().getNombre()
+	                + " ya tiene un costo asignado (ID " + costo.getIdCosto() + ").");
+	    }
 
-			if (listaCostos.get(i).getCostoMontaje() == c.getCostoMontaje()
-					&& listaCostos.get(i).getCostoSuperficie() == c.getCostoSuperficie()
-					&& listaCostos.get(i).getCostoElectricidad() == c.getCostoElectricidad()
-					&& listaCostos.get(i).getSueldoBase() == c.getSueldoBase()) {
-
-				found = true;
-				idCosto = listaCostos.get(i).getIdCosto();
-			}
-
-			i++;
-		}
-
-		if (found) {
-			throw new Exception("ERROR: ya existe un costo. ID: " + idCosto);
-		}
-
-		return dao.agregar(c);
+	    return dao.agregar(c);
 	}
 
 	public void modificar(Costo c) throws Exception {

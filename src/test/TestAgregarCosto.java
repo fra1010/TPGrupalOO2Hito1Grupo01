@@ -5,18 +5,31 @@ import negocio.CostoABM;
 import negocio.FestivalABM;
 
 public class TestAgregarCosto {
+
 	public static void main(String[] args) {
 
-		CostoABM abmCosto = new CostoABM();
 		FestivalABM abmFestival = new FestivalABM();
-		
-		Festival f = abmFestival.traerFestivalyCosto(1);
-		
+		CostoABM abmCosto = new CostoABM();
+
+		int idFestival = 1; //festival sin costo asignado
+
 		try {
-			abmCosto.agregar(1, 33, 44, 55,f);
+			Festival festival = abmFestival.traer(idFestival);
+
+			if (festival == null) {
+				System.out.println("No existe un Festival con id " + idFestival);
+				return;
+			}
+			System.out.println("Costo a agregar a festival: " + festival);
+			int idCosto = abmCosto.agregar(42, 54, 320, 220, festival);
+
+			
+
+			System.out.println("Costo agregado: " + abmFestival.traer(idFestival));
+
 		} catch (Exception e) {
+			System.out.println("ERROR al agregar el costo: " + e.getMessage());
 			e.printStackTrace();
 		}
-
 	}
 }

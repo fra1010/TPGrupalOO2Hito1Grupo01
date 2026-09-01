@@ -12,7 +12,8 @@
 			type="java.time.LocalDate" />
 		<property name="fechaFin" column="fecha_fin" type="java.time.LocalDate" />
 		<one-to-one name="costo" class="datos.Costo" cascade="all" />
-		<set name="unidadesVenta" table="unidad_venta" lazy="true" fetch="select"  cascade="all">
+		<set name="unidadesVenta" table="unidad_venta" lazy="true"
+			fetch="select" cascade="all">
 			<key column="id_festival" />
 			<one-to-many class="datos.UnidadVenta" />
 		</set>
