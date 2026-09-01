@@ -22,6 +22,7 @@ public class HibernateUtil {
 			System.err.println("ERROR en la inicialización de la SessionFactory: " + he);
 			throw new ExceptionInInitializerError(he);
 		}
+
 		return sessionFactory;
 	}
 }

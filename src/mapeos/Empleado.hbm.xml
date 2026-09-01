@@ -8,27 +8,26 @@
 	
 	<class name="datos.Empleado" table="empleado">
 		
-		<id column="idEmpleado" name="idEmpleado">
+		<id column="id_empleado" name="idEmpleado">
 			<generator class="identity" />
 		</id>
 		
 		<property name="nombre" column="nombre" type="string"/>
 		<property name="apellido" column="apellido" type="string" />
 		<property name="dni" column="dni" type="long" />
-		<property name="fechaNacimiento" column="fechaNacimiento" type="java.time.LocalDate" />
+		<property name="fechaNacimiento" column="fecha_nacimiento" type="java.time.LocalDate" />
 		<property name="ingreso" column="ingreso" type="java.time.LocalDate" />
 	
        <joined-subclass name="datos.Cocinero" table="cocinero">
-			<key column="idEmpleado" />
+			<key column="id_empleado" />
 			<property column="especialidad" name="especialidad" type="string" />
 		</joined-subclass>
 
 		<joined-subclass name="datos.Cajero" table="cajero">
-			<key column="idEmpleado" />
+			<key column="id_empleado" />
 			<property column="turno" name="turno" type="string" />
 		</joined-subclass>
 
      </class> 
      
 </hibernate-mapping>
-
