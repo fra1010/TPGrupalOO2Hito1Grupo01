@@ -1,11 +1,13 @@
 package datos;
 
+import java.util.Set;
+
 public class Plato {
 	private long idPlato;
 	private String nombre;
 	private double precioDeVenta;
 	private double costoDePlato;
-
+	private Set<ItemPedido> itemsPedidos;
 	public Plato() {
 	}
 
@@ -16,12 +18,21 @@ public class Plato {
 		this.costoDePlato = costoDePlato;
 	}
 
-	public long getId() {
+
+	public long getIdPlato() {
 		return idPlato;
 	}
 
-	protected void setId(long id) {
-		this.idPlato = id;
+	public void setIdPlato(long idPlato) {
+		this.idPlato = idPlato;
+	}
+
+	public Set<ItemPedido> getItemsPedidos() {
+		return itemsPedidos;
+	}
+
+	public void setItemsPedidos(Set<ItemPedido> itemsPedidos) {
+		this.itemsPedidos = itemsPedidos;
 	}
 
 	public String getNombre() {
@@ -47,7 +58,7 @@ public class Plato {
 	public void setCostoDePlato(double costoDePlato) {
 		this.costoDePlato = costoDePlato;
 	}
-
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

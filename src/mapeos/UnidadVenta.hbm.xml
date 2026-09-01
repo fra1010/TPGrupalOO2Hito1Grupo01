@@ -24,17 +24,17 @@
 			<one-to-many class="datos.Empleado" />
 		</set>
 
-		<!-- <set name="pedidos" table="pedido" order-by="id_pedido asc" -->
-		<!-- inverse="true" lazy="true" fetch="select"> -->
-		<!-- <key column="unidad_venta_id" not-null="true" /> -->
-		<!-- <one-to-many class="datos.Pedido" /> -->
-		<!-- </set> -->
+		<set name="pedidos" table="pedido" order-by="id_pedido asc"
+		inverse="true" lazy="true" fetch="select">
+		<key column="unidad_venta_id" not-null="true" />
+		<one-to-many class="datos.Pedido" />
+		</set>
 
-		<!-- <set name="platos" table="plato" order-by="id_plato asc" -->
-		<!-- inverse="true" lazy="true" fetch="select"> -->
-		<!-- <key column="unidad_venta_id" not-null="true" /> -->
-		<!-- <one-to-many class="datos.Plato" /> -->
-		<!-- </set> -->
+		<set name="platos" table="plato" order-by="id_plato asc"
+		inverse="true" lazy="true" fetch="select">
+		<key column="unidad_venta_id" not-null="true" />
+		<one-to-many class="datos.Plato" />
+		</set>
 		<joined-subclass name="datos.FoodTruck"
 			table="food_truck">
 			<key column="id_unidad_venta" />
