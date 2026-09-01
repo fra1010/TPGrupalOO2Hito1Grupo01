@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE hibernate-mapping PUBLIC
-        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-        "https://hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "https://hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="datos.Festival" table="festival">
-        <id name="idFestival" column="id_festival">
-            <generator class="identity"/>
-        </id>
+	<class name="datos.Festival" table="festival">
+		<id name="idFestival" column="id_festival">
+			<generator class="identity" />
+		</id>
 
-        <property name="nombre" column="nombre" type="string" />
-        <property name="temporada" column="temporada" type="string" />
-        <property name="fechaInicio" column="fecha_inicio" type="java.time.LocalDate"/>
-        <property name="fechaFin" column="fecha_fin" type="java.time.LocalDate" />
-        <one-to-one name="costo" class="datos.Costo" cascade="all"/>
+		<property name="nombre" column="nombre" type="string" />
+		<property name="temporada" column="temporada" type="string" />
+		<property name="fechaInicio" column="fecha_inicio"
+			type="java.time.LocalDate" />
+		<property name="fechaFin" column="fecha_fin" type="java.time.LocalDate" />
+		<one-to-one name="costo" class="datos.Costo" cascade="all" />
+		<set name="unidadesVenta" table="unidad_venta" lazy="true" fetch="select"  cascade="all">
+			<key column="id_festival" />
+			<one-to-many class="datos.UnidadVenta" />
+		</set>
 
- 	 </class>    
+	</class>
 </hibernate-mapping>

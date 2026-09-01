@@ -90,4 +90,8 @@ public class FestivalABM {
     public Festival traerFestivalyCosto(int idFestival) {
         return dao.traerFestivalYCosto(idFestival);
     }
+    
+    public Festival traerFestivalYUnidadesVenta(int idFestival) {
+        return dao.traerFestivalYUnidadesVenta(idFestival);
+    }
 }

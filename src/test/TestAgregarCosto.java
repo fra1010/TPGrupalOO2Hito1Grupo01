@@ -7,14 +7,13 @@ import negocio.FestivalABM;
 public class TestAgregarCosto {
 	public static void main(String[] args) {
 
-		FestivalABM abmFestival = new FestivalABM();
-		Festival festival = abmFestival.traer(1);
-		System.out.println(festival);
-
 		CostoABM abmCosto = new CostoABM();
-
+		FestivalABM abmFestival = new FestivalABM();
+		
+		Festival f = abmFestival.traerFestivalyCosto(1);
+		
 		try {
-			abmCosto.agregar(1, 33, 44, 55, festival);
+			abmCosto.agregar(1, 33, 44, 55,f);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

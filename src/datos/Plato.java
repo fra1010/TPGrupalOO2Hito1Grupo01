@@ -5,14 +5,23 @@ public class Plato {
 	private String nombre;
 	private double precioDeVenta;
 	private double costoDePlato;
-	
-	public Plato() {}
+
+	public Plato() {
+	}
 
 	public Plato(String nombre, double precioDeVenta, double costoDePlato) {
-		super();
+
 		this.nombre = nombre;
 		this.precioDeVenta = precioDeVenta;
 		this.costoDePlato = costoDePlato;
+	}
+
+	public long getId() {
+		return idPlato;
+	}
+
+	protected void setId(long id) {
+		this.idPlato = id;
 	}
 
 	public String getNombre() {
@@ -39,20 +48,48 @@ public class Plato {
 		this.costoDePlato = costoDePlato;
 	}
 
-	public long getIdPlato() {
-		return idPlato;
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		long temp;
+		temp = Double.doubleToLongBits(costoDePlato);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + (int) (idPlato ^ (idPlato >>> 32));
+		result = prime * result + ((nombre == null) ? 0 : nombre.hashCode());
+		temp = Double.doubleToLongBits(precioDeVenta);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		return result;
 	}
 
-	public void setIdPlato(long idPlato) {
-		this.idPlato = idPlato;
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Plato other = (Plato) obj;
+		if (Double.doubleToLongBits(costoDePlato) != Double.doubleToLongBits(other.costoDePlato))
+			return false;
+		if (idPlato != other.idPlato)
+			return false;
+		if (nombre == null) {
+			if (other.nombre != null)
+				return false;
+		} else if (!nombre.equals(other.nombre))
+			return false;
+		if (Double.doubleToLongBits(precioDeVenta) != Double.doubleToLongBits(other.precioDeVenta))
+			return false;
+		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "Plato [idPlato=" + idPlato + ", nombre=" + nombre + ", precioDeVenta=" + precioDeVenta
-				+ ", costoDePlato=" + costoDePlato + "]";
+		return "Plato [id=" + idPlato + ", nombre=" + nombre + ", precioDeVenta=" + precioDeVenta + ", costoDePlato="
+				+ costoDePlato + "]";
 	}
-	
-	
 
+	
 }

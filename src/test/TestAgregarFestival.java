@@ -13,7 +13,7 @@ public class TestAgregarFestival {
 		Costo c = new Costo(11,22,33,44);
 		int idFestivalUlt;
 		try {
-			idFestivalUlt = abm.agregar("Festival4","Verano", LocalDate.of(2026, 1, 3), LocalDate.now(),c);
+			idFestivalUlt = abm.agregar("Festival6","Verano", LocalDate.of(2026, 1, 3), LocalDate.now(),c);
 			System.out.printf("Festival creado: %d", idFestivalUlt);
 		} catch (Exception e) {
 			

@@ -23,6 +23,7 @@ public class CostoABM {
 
 		return agregar(c);
 	}
+	
 
 	public int agregar(Costo c) throws Exception {
 

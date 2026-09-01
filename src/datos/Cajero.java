@@ -1,26 +1,24 @@
 package datos;
 
-public class Cajero extends Empleado {
-	private long idCajero;
-	private String turno;
-	
-	public Cajero() {}
+import java.time.LocalDate;
 
-	public Cajero(String turno) {
-		super();
+public class Cajero extends Empleado
+{
+	private String turno;
+
+	public Cajero() 
+	{
+		
+	}
+	
+	public Cajero(String nombre, String apellido,long dni, LocalDate fechaNacimiento, LocalDate ingreso,String turno) 
+	{
+		super(nombre,apellido,dni,fechaNacimiento,ingreso);
 		this.turno = turno;
 	}
 
-	
-	public long getIdCajero() {
-		return idCajero;
-	}
-
-	public void setIdCajero(long idCajero) {
-		this.idCajero = idCajero;
-	}
-
-	public String getTurno() {
+	public String getTurno() 
+	{
 		return turno;
 	}
 
@@ -30,9 +28,6 @@ public class Cajero extends Empleado {
 
 	@Override
 	public String toString() {
-		return "Cajero [idCajero=" + idCajero + ", turno=" + turno + "]";
+		return super.toString() + "Cajero [turno=" + turno + "]\n";
 	}
-	
-	
-	
 }

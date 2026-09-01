@@ -117,4 +117,21 @@ public class FestivalDao {
 		return objeto;
 	}
 
+	public Festival traerFestivalYUnidadesVenta(int idFestival) {
+
+		Festival objeto = null;
+
+		try {
+			iniciaOperacion();
+
+			String hql = "from Festival f " + "left join fetch f.unidadesVenta " + "where f.idFestival = :idFestival";
+
+			objeto = (Festival) session.createQuery(hql).setParameter("idFestival", idFestival).uniqueResult();
+
+		} finally {
+			session.close();
+		}
+
+		return objeto;
+	}
 }
