@@ -2,7 +2,7 @@ package datos;
 
 import java.util.Set;
 
-public class UnidadVenta {
+public abstract class UnidadVenta {
 
 	protected int idUnidadVenta;
 	protected String nombre;
