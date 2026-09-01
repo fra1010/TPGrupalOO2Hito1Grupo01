@@ -6,22 +6,27 @@ import negocio.PedidoABM;
 
 public class TestTraerPedidoEItems {
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		
-		PedidoABM pedidoABM= new PedidoABM();
-		
-		Pedido pedido = pedidoABM.traerPedidoEItems(2);
-		
-		System.out.println("Pedido:");
-        System.out.println(pedido);
-        
-        System.out.println("Items:");
+    public static void main(String[] args) {
+        // TODO Auto-generated method stub
 
-        for (ItemPedido item : pedido.getItemsPedidos()) {
-            System.out.println(item);
+        try {
+            PedidoABM pedidoABM = new PedidoABM();
+
+            Pedido pedido = pedidoABM.traerPedidoEItems(2);
+
+            System.out.println("Pedido:");
+            System.out.println(pedido);
+
+            System.out.println("Items:");
+
+            for (ItemPedido item : pedido.getItemsPedidos()) {
+                System.out.println(item);
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
         }
-		
-	}
+
+    }
 
 }

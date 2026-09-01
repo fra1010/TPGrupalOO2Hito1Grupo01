@@ -38,7 +38,10 @@
         <mapping resource="mapeos/Festival.hbm.xml" />
 		<mapping resource="mapeos/Costo.hbm.xml" />
 
-        
+          <mapping resource="mapeos/Plato.hbm.xml" />
+		<mapping resource="mapeos/ItemPedido.hbm.xml" />
+		<mapping resource="mapeos/Pedido.hbm.xml" />
+
         
         
 

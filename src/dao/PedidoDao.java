@@ -91,16 +91,33 @@ public class PedidoDao {
 	}
 
 	public Pedido traerPedidoEItems(int idPedido) throws HibernateException {
-		Pedido objeto = null;
-		try {
-			iniciaOperacion();
-			String hql = "from Pedido p where p.idPedido=:idPedido";
-			objeto=(Pedido) session.createQuery(hql).setParameter("idPedido", idPedido).uniqueResult();
-			Hibernate.initialize(objeto.getItemsPedidos());
-		}
-		finally {
-			session.close();
-		}
-		return objeto;
+
+	    Pedido objeto = null;
+
+	    try {
+	        iniciaOperacion();
+
+	        String hql = "from Pedido p where p.idPedido = :idPedido";
+
+	        objeto = (Pedido) session.createQuery(hql)
+	                .setParameter("idPedido", idPedido)
+	                .uniqueResult();
+
+	        if (objeto != null) {
+	            Hibernate.initialize(objeto.getItemsPedidos());
+	        }
+
+	    } finally {
+	        if (session != null && session.isOpen()) {
+	            session.close();
+	        }
+	    }
+
+	    return objeto;
 	}
+
+	
+
+	
+	
 }

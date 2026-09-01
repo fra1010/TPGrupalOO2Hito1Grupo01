@@ -9,18 +9,22 @@ public class TestTraerPlatoEItems {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
-		PlatoABM platoABM= new PlatoABM();
-		
-		Plato plato = platoABM.traerPlatoEItems(3);
-		
-		System.out.println("Plato:");
-        System.out.println(plato.getNombre());
-        
-        System.out.println("Items:");
+		try {
+			PlatoABM platoABM= new PlatoABM();
+			
+			Plato plato = platoABM.traerPlatoEItems(3);
+			
+			System.out.println("Plato:");
+	        System.out.println(plato.getNombre());
+	        
+	        System.out.println("Items:");
 
-        for (ItemPedido item : plato.getItemsPedidos()) {
-            System.out.println(item);
-        }
+	        for (ItemPedido item : plato.getItemsPedidos()) {
+	            System.out.println(item);
+	        }
+		} catch (Exception e) {
+			System.out.println("Error: " + e.getMessage());
+		}
 	}
 
 }
