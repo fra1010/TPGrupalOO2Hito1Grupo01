@@ -1,8 +1,5 @@
 package test;
 
-
-
-
 import datos.UnidadVenta;
 import negocio.UnidadVentaABM;
 
@@ -26,10 +23,6 @@ public class TestAgregarUnidadVenta {
 		UnidadVenta u= abm.traerUnidadVentaYEmpleados(codigo2);
 		System.out.println("---------------");
 		abm.traer().forEach(nombre -> System.out.println(nombre.toString()));
-		
-		
-		
-		
 		
 	}
 

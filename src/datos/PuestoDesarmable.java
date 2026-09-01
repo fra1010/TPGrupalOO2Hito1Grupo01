@@ -3,25 +3,31 @@ package datos;
 public class PuestoDesarmable extends UnidadVenta{
 	private int cantidadCarpas;
 	private int tiempo;
-	public PuestoDesarmable() {
+	
+	public PuestoDesarmable() 
+	{
 		super();
 		// TODO Auto-generated constructor stub
 	}
 	public PuestoDesarmable(String nombre, Empleado responsable, double superficie, String codigo, int cantidadCarpas,
-			int tiempo) {
+			int tiempo) 
+	{
 		super(nombre, responsable, superficie, codigo);
 		this.cantidadCarpas = cantidadCarpas;
 		this.tiempo = tiempo;
 	}
+	
 	public int getCantidadCarpas() {
 		return cantidadCarpas;
 	}
 	public void setCantidadCarpas(int cantidadCarpas) {
 		this.cantidadCarpas = cantidadCarpas;
 	}
+	
 	public int getTiempo() {
 		return tiempo;
 	}
+	
 	public void setTiempo(int tiempo) {
 		this.tiempo = tiempo;
 	}
@@ -40,8 +46,4 @@ public class PuestoDesarmable extends UnidadVenta{
 	    sb.append(" ");
 	    return sb.toString();
 	}
-	
-	
-	
-
 }

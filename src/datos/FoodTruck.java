@@ -4,11 +4,9 @@ public class FoodTruck extends UnidadVenta{
 	private String patente;
 	private boolean conexion;
 	
-	
 	public FoodTruck() {
 		super();
 	}
-
 
 	public FoodTruck(String nombre, Empleado responsable, double superficie, String codigo, String patente,
 			boolean conexion) {
@@ -17,26 +15,21 @@ public class FoodTruck extends UnidadVenta{
 		this.conexion = conexion;
 	}
 
-
 	public String getPatente() {
 		return patente;
 	}
-
 
 	public void setPatente(String patente) {
 		this.patente = patente;
 	}
 
-
 	public boolean isConexion() {
 		return conexion;
 	}
 
-
 	public void setConexion(boolean conexion) {
 		this.conexion = conexion;
 	}
-
 
 	@Override
 	public String toString() {
@@ -52,14 +45,5 @@ public class FoodTruck extends UnidadVenta{
 	    sb.append(" ");
 	    return sb.toString();
 	}
-
-
-	
-
-
-	
-	
-	
-	
-
 }
+

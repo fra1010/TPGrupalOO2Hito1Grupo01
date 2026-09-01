@@ -100,6 +100,4 @@ public class UnidadVentaDao {
 		}
 		return lista;
 	}
-
-
 }

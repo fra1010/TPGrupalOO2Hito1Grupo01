@@ -94,8 +94,4 @@ public class Empleado {
 	    sb.append("}");
 	    return sb.toString();
 	}
-	
-	
-	
-
 }

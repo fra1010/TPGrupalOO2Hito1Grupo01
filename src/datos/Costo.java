@@ -1,6 +1,5 @@
 package datos;
 
-
 public class Costo {
 	private int idCosto;
 	private int costoSuperficie;
@@ -28,7 +27,6 @@ public class Costo {
         this.festival = festival;
     }
     
-
 	public int getIdCosto() {
 		return idCosto;
 	}
@@ -99,8 +97,4 @@ public class Costo {
 				&& idCosto == other.idCosto && costoElectricidad == other.costoElectricidad
 				&& sueldoBase == other.sueldoBase;
 	}
-
-
-	
-	
 }
