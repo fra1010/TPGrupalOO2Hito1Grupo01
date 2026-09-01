@@ -1,16 +1,29 @@
 package datos;
 
 public class ItemPedido {
-	private long idItemPedido;
+
+	private int idItemPedido;
 	private Plato plato;
+	private Pedido pedido;
 	private int cantidad;
 	
-	public ItemPedido() {}
+	public ItemPedido() {
+		super();
+	}
 
-	public ItemPedido(Plato plato, int cantidad) {
+	public ItemPedido(Plato plato, Pedido pedido, int cantidad) {
 		super();
 		this.plato = plato;
+		this.pedido = pedido;
 		this.cantidad = cantidad;
+	}
+
+	public int getIdItemPedido() {
+		return idItemPedido;
+	}
+
+	protected void setIdItemPedido(int idItemPedido) {
+		this.idItemPedido = idItemPedido;
 	}
 
 	public Plato getPlato() {
@@ -19,6 +32,14 @@ public class ItemPedido {
 
 	public void setPlato(Plato plato) {
 		this.plato = plato;
+	}
+	
+	public Pedido getPedido() {
+		return pedido;
+	}
+
+	public void setPedido(Pedido pedido) {
+		this.pedido = pedido;
 	}
 
 	public int getCantidad() {
@@ -29,20 +50,9 @@ public class ItemPedido {
 		this.cantidad = cantidad;
 	}
 
-
-	public long getIdItemPedido() {
-		return idItemPedido;
-	}
-
-	public void setIdItemPedido(long idItemPedido) {
-		this.idItemPedido = idItemPedido;
-	}
-
 	@Override
 	public String toString() {
-		return "ItemPedido [idItemPedido=" + idItemPedido + ", plato=" + plato + ", cantidad=" + cantidad + "]";
+		return "ItemPedido [idItemPedido=" + idItemPedido  + ", cantidad=" + cantidad + "]";
 	}
 	
-	
-
 }
