@@ -1,12 +1,12 @@
+# Java
+*.class
+
+# Eclipse
 .metadata/
 .settings/
-.recommenders/
+.classpath
+.project
 
-*.class
+# Compilados
 bin/
 target/
-
-*.log
-
-.DS_Store
-Thumbs.db
