@@ -5,13 +5,13 @@
 
     <class name="datos.Pedido" table="pedido">
     	<!-- ID -->
-        <id name="idPedido" column="idPedido">
+        <id name="idPedido" column="id_pedido">
             <generator class="identity"/>
         </id>
 		<!-- Atributos - Columnas -->
-        <property name="fechaTransaccion" column="fechaTransaccion" type="java.time.LocalDate" not-null="true"/>
-        <set name="itemsPedidos" table="itemPedido" order-by="idItemPedido asc" inverse="true" lazy="true" fetch="select">
-   			<key column="idPedido" not-null="true" />
+        <property name="fechaTransaccion" column="fecha_transaccion" type="java.time.LocalDate" not-null="true"/>
+        <set name="itemsPedidos" table="item_pedido" order-by="id_item_pedido asc" inverse="true" lazy="true" fetch="select">
+   			<key column="pedido_id" not-null="true" />
 			<one-to-many class="datos.ItemPedido" />
 		</set>
     </class>

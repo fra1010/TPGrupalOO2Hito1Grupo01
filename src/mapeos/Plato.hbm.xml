@@ -5,15 +5,15 @@
 
     <class name="datos.Plato" table="plato">
     	<!-- ID -->
-        <id name="idPlato" column="idPlato">
+        <id name="idPlato" column="id_plato">
             <generator class="identity"/>
         </id>
 		<!-- Atributos - Columnas -->
         <property name="nombre" column="nombre" type="string" not-null="true"/>
-        <property name="precioDeVenta" column="precioDeVenta" type="double" not-null="true"/>
-        <property name="costoDePlato" column="costoDePlato" type="double" not-null="true"/>
-        <set name="itemsPedidos" table="itemPedido" order-by="idItemPedido asc" inverse="true" lazy="true" fetch="select">
-   			<key column="idPlato" not-null="true" />
+        <property name="precioDeVenta" column="precio_de_venta" type="double" not-null="true"/>
+        <property name="costoDePlato" column="costo_de_plato" type="double" not-null="true"/>
+        <set name="itemsPedidos" table="item_pedido" order-by="id_item_pedido asc" inverse="true" lazy="true" fetch="select">
+   			<key column="plato_id" not-null="true" />
 			<one-to-many class="datos.ItemPedido" />
 		</set>
     </class>
