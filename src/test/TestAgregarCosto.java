@@ -11,7 +11,7 @@ public class TestAgregarCosto {
 		FestivalABM abmFestival = new FestivalABM();
 		CostoABM abmCosto = new CostoABM();
 
-		int idFestival = 1; //festival sin costo asignado
+		int idFestival = 1; // festival sin costo asignado
 
 		try {
 			Festival festival = abmFestival.traer(idFestival);
@@ -21,10 +21,8 @@ public class TestAgregarCosto {
 				return;
 			}
 			System.out.println("Costo a agregar a festival: " + festival);
-			int idCosto = abmCosto.agregar(42, 54, 320, 220, festival);
-
+			abmCosto.agregar(42, 54, 320, 220, festival);
 			
-
 			System.out.println("Costo agregado: " + abmFestival.traer(idFestival));
 
 		} catch (Exception e) {
