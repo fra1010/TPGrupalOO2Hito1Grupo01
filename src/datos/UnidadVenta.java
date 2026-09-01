@@ -29,7 +29,7 @@ public abstract class UnidadVenta {
 		return idUnidadVenta;
 	}
 
-	public void setIdUnidadVenta(int idUnidadVenta) {
+	protected void setIdUnidadVenta(int idUnidadVenta) {
 		this.idUnidadVenta = idUnidadVenta;
 	}
 

@@ -20,12 +20,6 @@ public class TestAgregarUnidadVenta {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		String codigo="ABCDEFGHIJ";
-		String codigo2="HJKLMWXYZQ";
-		System.out.println(abm.traerUnidadVentaYEmpleados(codigo));
-		UnidadVenta u= abm.traerUnidadVentaYEmpleados(codigo2);
-		System.out.println("---------------");
-		abm.traer().forEach(nombre -> System.out.println(nombre.toString()));
 		
 		
 		
