@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import datos.Pedido;
 import datos.Plato;
+import negocio.EmpleadoAbm;
 import negocio.ItemPedidoABM;
 import negocio.PedidoABM;
 import negocio.PlatoABM;
@@ -17,6 +18,40 @@ public class TestCargarDatos {
 		PedidoABM pedidoABM = new PedidoABM();
         ItemPedidoABM itemABM = new ItemPedidoABM();
 		
+        EmpleadoAbm empleadoABM = EmpleadoAbm.getInstance();
+
+        
+        // ------------------ AGREGAR COCINEROS ----------------------
+        
+        empleadoABM.agregarEmpleadoCocinero("Ramon","Perez",11111111,LocalDate.of(2000, 10, 6),LocalDate.of(2025, 10, 6),"fritos");
+        System.out.println("Empleado agregado. ID: ");
+       
+        empleadoABM.agregarEmpleadoCocinero("Juan","Lopez",33333333,LocalDate.of(1998, 5, 15),LocalDate.of(2024, 3, 10),"parrilla");
+        System.out.println("Empleado agregado. ID: ");
+        
+    
+        empleadoABM.agregarEmpleadoCocinero("Pedro","Gonzalez",44444444,LocalDate.of(1997, 8, 20),LocalDate.of(2023, 6, 1),"fritos");
+        System.out.println("Empleado agregado. ID: ");
+       
+        empleadoABM.agregarEmpleadoCocinero("Matias","Gomez",555555555,LocalDate.of(1997, 1, 14),LocalDate.of(2024, 3, 10),"parrilla");
+        System.out.println("Empleado agregado. ID: ");
+        
+        // ------------------ AGREGAR CAJEROS ----------------------
+        
+        empleadoABM.agregarEmpleadoCajero("Martin","Gomez",22222222,LocalDate.of(1999,11,23),LocalDate.of(2023,2,5),"tarde");
+        System.out.println("Empleado agregado. ID: ");
+
+        empleadoABM.agregarEmpleadoCajero("Laura","Rodriguez",66666666,LocalDate.of(2001,4,12),LocalDate.of(2024,1,15),"mañana");
+        System.out.println("Empleado agregado. ID: ");
+
+        empleadoABM.agregarEmpleadoCajero("Sofia","Martinez",77777777,LocalDate.of(1998,9,30),LocalDate.of(2023,8,20),"tarde");
+        System.out.println("Empleado agregado. ID: ");
+
+        empleadoABM.agregarEmpleadoCajero("Diego","Fernandez",88888888,LocalDate.of(2000,12,5),LocalDate.of(2025,2,10),"noche");
+        System.out.println("Empleado agregado. ID: ");
+
+        
+        
 		//AGERGAR PLATO
 		int idPlato1 = platoABM.agregar("Hamburguesa", 25000, 15000);
 		System.out.println("Plato agregado. ID: " + idPlato1);

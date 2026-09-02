@@ -1,35 +1,44 @@
 package test;
 
+import datos.Cocinero;
+import datos.Empleado;
+
 import java.time.LocalDate;
 
-import datos.Empleado;
+import datos.Cajero;
 import negocio.EmpleadoAbm;
 
 public class TestEmpleado 
 {
-	 public static void main(String[] args) 
-	 { 
-		 EmpleadoAbm.getInstance().agregarEmpleadoCocinero("Ramon","Perez", 11111111,LocalDate.of(2000,10,6),LocalDate.of(2025,10,6),"fritos");
-		 
-		 EmpleadoAbm.getInstance().agregarEmpleadoCajero("Martin","Gomez",22222222,LocalDate.of(1999,11,23),LocalDate.of(2023,2,5),"tarde");
-		 
-		 int idEmpleado=1;
-		 
-		 System.out.printf("+ traer(%d)\n", idEmpleado);
-		 
-		 System.out.println(EmpleadoAbm.getInstance().traer(idEmpleado));
+    public static void main(String[] args) 
+    {
+        System.out.println("\n---------------- CASO DE USO 1 ----------------\n");
 
-		 idEmpleado=2;
-		 
-		 System.out.printf("\n+ traer(%d)\n", idEmpleado);			
-		 System.out.println(EmpleadoAbm.getInstance().traer(idEmpleado));
-		 
-		 System.out.println("\n+ traer()");
-		 for (Empleado e: EmpleadoAbm.getInstance().traer()) 
-		 {
-			 System.out.println(e);
-		 }	
-	 }
+        for (Cocinero cocinero : EmpleadoAbm.getInstance().traerCocinerosPorEspecialidad("fritos")) 
+        {
+            System.out.println(cocinero);
+        }
+        
+        System.out.println("\n---------------- CASO DE USO 2 ----------------\n");
+
+        for (Cajero cajero : EmpleadoAbm.getInstance().traerCajerosPorTurno("tarde")) 
+        {
+            System.out.println(cajero);
+        }
+        
+        System.out.println("\n---------------- CASO DE USO 3 ----------------\n");
+
+        for (Empleado empleado : EmpleadoAbm.getInstance().traerEmpleadosPorFechaNacimiento(LocalDate.of(2000, 10, 6))) 
+        {
+            System.out.println(empleado);
+        }
+        
+        System.out.println("\n---------------- CASO DE USO 4 ----------------\n");
+
+        for (Cocinero cocinero : EmpleadoAbm.getInstance().traerCocineros()) 
+        {
+            System.out.println(cocinero);
+        }
+    }
 }
-
 

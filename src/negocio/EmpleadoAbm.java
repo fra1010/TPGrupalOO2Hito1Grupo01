@@ -24,16 +24,30 @@ public class EmpleadoAbm
 		return instancia;
 	}
 	
-	public int agregarEmpleadoCocinero(String nombre,String apellido,long dni,LocalDate fechaNacimiento,LocalDate ingreso,String especialidad) 
+	public int agregarEmpleadoCocinero(String nombre, String apellido, long dni,LocalDate fechaNacimiento, LocalDate ingreso, String especialidad)
 	{
-		return EmpleadoDao.getInstance().agregar(new Cocinero(nombre,apellido,dni,fechaNacimiento,ingreso,especialidad));
-	}
+	    int id = 0;
 
-	public int agregarEmpleadoCajero(String nombre,String apellido,long dni,LocalDate fechaNacimiento,LocalDate ingreso,String turno)
-	{
-		return EmpleadoDao.getInstance().agregar(new Cajero(nombre,apellido,dni,fechaNacimiento,ingreso,turno));
+	    if (EmpleadoDao.getInstance().traerPorDni(dni) == null)
+	    {
+	        id = EmpleadoDao.getInstance().agregar(new Cocinero(nombre, apellido, dni, fechaNacimiento, ingreso, especialidad));
+	    }
+
+	    return id;
 	}
 	
+	public int agregarEmpleadoCajero(String nombre, String apellido, long dni,LocalDate fechaNacimiento, LocalDate ingreso, String turno)
+	{
+	    int id = 0;
+
+	    if (EmpleadoDao.getInstance().traerPorDni(dni) == null)
+	    {
+	        id = EmpleadoDao.getInstance().agregar(new Cajero(nombre, apellido, dni, fechaNacimiento, ingreso, turno));
+	    }
+
+	    return id;
+	}
+
 	public Empleado traer(int idEmpleado) 
 	{
 		return EmpleadoDao.getInstance().traer(idEmpleado);
@@ -44,4 +58,32 @@ public class EmpleadoAbm
 		return EmpleadoDao.getInstance().traer();
 	}
 
+	// --------------------CASO DE USO 1----------------------------
+	
+	public List<Cocinero> traerCocinerosPorEspecialidad(String especialidad)
+	{
+		return EmpleadoDao.getInstance().traerCocinerosPorEspecialidad(especialidad);
+	}
+
+	// --------------------CASO DE USO 2----------------------------
+	
+	public List<Cajero> traerCajerosPorTurno(String turno)
+	{
+		 return EmpleadoDao.getInstance().traerCajerosPorTurno(turno);
+	}
+
+	// --------------------CASO DE USO 3----------------------------
+	
+	public List<Empleado> traerEmpleadosPorFechaNacimiento(LocalDate fechaNacimiento)
+	{
+		return EmpleadoDao.getInstance().traerEmpleadosPorFechaNacimiento(fechaNacimiento);
+	}
+	
+	// --------------------CASO DE USO 4----------------------------
+	
+	public List<Cocinero> traerCocineros()
+	{
+		return EmpleadoDao.getInstance().traerCocineros();
+	}
+	
 }

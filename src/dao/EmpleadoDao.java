@@ -1,11 +1,14 @@
 package dao;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import datos.Cajero;
+import datos.Cocinero;
 import datos.Empleado;
 
 public class EmpleadoDao 
@@ -77,6 +80,24 @@ public class EmpleadoDao
 		return objeto;
 	}
 
+	public Empleado traerPorDni(long dni)
+	{
+	    Empleado objeto = null;
+
+	    try
+	    {
+	        iniciaOperacion();
+	        objeto = (Empleado) session.createQuery("from Empleado e where e.dni = :dni")
+	                .setParameter("dni", dni).uniqueResult();
+	    }
+	    finally
+	    {
+	        session.close();
+	    }
+
+	    return objeto;
+	}
+	
 	public List<Empleado> traer() throws HibernateException 
 	{
 		List<Empleado> lista = null;
@@ -93,6 +114,84 @@ public class EmpleadoDao
 		
 		return lista;
 	}
+	
+
+	// ------------------------- CASO DE USO 1 ---------------------------------
+	
+	public List<Cocinero> traerCocinerosPorEspecialidad(String especialidad)
+	{
+	    List<Cocinero> lista = null;
+
+	    try
+	    {
+	        iniciaOperacion();
+	        lista = session.createQuery("from Cocinero c where c.especialidad = :especialidad",Cocinero.class)
+	                .setParameter("especialidad", especialidad).list();
+	    }
+	    finally
+	    {
+	        session.close();
+	    }
+	    return lista;
+	}
+
+	// ----------------------------CASO DE USO 2-----------------------------
+	
+	public List<Cajero> traerCajerosPorTurno(String turno)
+	{
+	    List<Cajero> lista = null;
+
+	    try
+	    {
+	        iniciaOperacion();
+	        lista = session.createQuery("from Cajero c where c.turno = :turno",
+	                Cajero.class).setParameter("turno", turno).list();
+	    }
+	    finally
+	    {
+	        session.close();
+	    }
+
+	    return lista;
+	}
+
+	// ---------------------------CASO DE USO 3------------------------------
+
+	public List<Empleado> traerEmpleadosPorFechaNacimiento(LocalDate fechaNacimiento)
+	{
+	    List<Empleado> lista = null;
+
+	    try
+	    {
+	        iniciaOperacion();
+	        lista = session.createQuery("from Empleado e where e.fechaNacimiento = :fechaNacimiento",
+	                Empleado.class).setParameter("fechaNacimiento", fechaNacimiento).list();
+	    }
+	    finally
+	    {
+	        session.close();
+	    }
+	    return lista;
+	}
+
+	// ----------------------------CASO DE USO 4-----------------------------
+
+	public List<Cocinero> traerCocineros()
+	{
+	    List<Cocinero> lista = null;
+
+	    try
+	    {
+	        iniciaOperacion();
+	        lista = session.createQuery("from Cocinero",Cocinero.class).list();
+	    }
+	    finally
+	    {
+	        session.close();
+	    }
+	    return lista;
+	}
+	
 }
 
 
