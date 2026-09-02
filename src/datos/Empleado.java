@@ -81,13 +81,17 @@ public class Empleado {
 			return false;
 		return true;
 	}
-	
 	@Override
-	public String toString() 
-	{
-		return "\n--------EMPLEADO ------\n" + " [idEmpleado=" + idEmpleado + ", nombre=" + nombre + ", apellido=" + apellido + ", dni=" + dni
-				+ ", fechaNacimiento=" + fechaNacimiento + ", ingreso=" + ingreso + "]\n";
+	public String toString() {
+	    StringBuilder sb = new StringBuilder();
+	    sb.append("Empleado {\n");
+	    sb.append("  idEmpleado: ").append(idEmpleado).append(",\n");
+	    sb.append("  nombre: ").append(nombre).append(",\n");
+	    sb.append("  apellido: ").append(apellido).append(",\n");
+	    sb.append("  dni: ").append(dni).append(",\n");
+	    sb.append("  fechaNacimiento: ").append(fechaNacimiento).append(",\n");
+	    sb.append("  ingreso: ").append(ingreso).append("\n");
+	    sb.append("}");
+	    return sb.toString();
 	}
-	
 }
-
