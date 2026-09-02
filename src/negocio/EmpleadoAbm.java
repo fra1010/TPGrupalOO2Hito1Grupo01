@@ -1,3 +1,4 @@
+
 package negocio;
 
 import java.time.LocalDate;
@@ -44,32 +45,4 @@ public class EmpleadoAbm
 		return EmpleadoDao.getInstance().traer();
 	}
 
-	// --------------------CASO DE USO 1----------------------------
-	
-	public List<Cocinero> traerCocinerosPorEspecialidad(String especialidad)
-	{
-		return EmpleadoDao.getInstance().traerCocinerosPorEspecialidad(especialidad);
-	}
-
-	// --------------------CASO DE USO 2----------------------------
-	
-	public List<Cajero> traerCajerosPorTurno(String turno)
-	{
-		 return EmpleadoDao.getInstance().traerCajerosPorTurno(turno);
-	}
-
-	// --------------------CASO DE USO 3----------------------------
-	
-	public List<Empleado> traerEmpleadosPorFechaNacimiento(LocalDate fechaNacimiento)
-	{
-		return EmpleadoDao.getInstance().traerEmpleadosPorFechaNacimiento(fechaNacimiento);
-	}
-	
-	// --------------------CASO DE USO 4----------------------------
-	
-	public List<Cocinero> traerCocineros()
-	{
-		return EmpleadoDao.getInstance().traerCocineros();
-	}
-	
 }
