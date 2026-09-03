@@ -18,7 +18,12 @@ public class TestAgregarUnidadVentaConPlatos {
 		listaDePlatos.add(new Plato("Lomo a la plancha", 12000.00, 5800.00));
 		listaDePlatos.add(new Plato("Pollo al horno con puré", 9000.00, 4300.00));
 		
-		abm.agregarUnidadVentaFoodTruckConPlatos("Taco Movil", null, 25.5, "ABCDEFGHIJ", "ABC-123", true,listaDePlatos);
+		try {
+			abm.agregarUnidadVentaFoodTruckConPlatos("Taco Movil", null, 25.5, "ABCDEFGHIJ", "ABC-123", true,listaDePlatos);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 

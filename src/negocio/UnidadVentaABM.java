@@ -61,10 +61,23 @@ public class UnidadVentaABM {
 		dao.eliminar(uv);
 	}
 	public int agregarUnidadVentaFoodTruckConPlatos(String nombre, Empleado responsable, double superficie,
-			String codigo, String patente, boolean conexion,Set<Plato> platos) {
+			String codigo, String patente, boolean conexion,Set<Plato> platos)throws Exception {
 		UnidadVenta foodTruck = new FoodTruck(nombre, responsable, superficie, codigo, patente, conexion);
+		if (dao.traer(codigo) != null) {
+			throw new Exception("Ya existe una unidad de venta con ese codigo : " + codigo);
+		}
 		foodTruck.setPlatos(platos);
 		return dao.agregarUnidadVentaYPlatos(foodTruck);
+	}
+	public int agregarUnidadVenta(String nombre, Empleado responsable, double superficie, String codigo,
+			int cantidadCarpas, int tiempo,Set<Plato> platos) throws Exception {
+		if (dao.traer(codigo) != null) {
+			throw new Exception("Ya existe una unidad de venta con ese codigo : " + codigo);
+		}
+		UnidadVenta puestoDesarmable = new PuestoDesarmable(nombre, responsable, superficie, codigo, cantidadCarpas,
+				tiempo);
+		puestoDesarmable.setPlatos(platos);
+		return dao.agregarUnidadVenta(puestoDesarmable);
 	}
 	public double calcularTotalUnidadVenta(String codigoUnidadVenta) {
 		double total=0;
