@@ -15,8 +15,18 @@ public class ItemPedidoABM {
 		return dao.traer(idItemPedido);
 	}
 
-	public int agregar(Plato plato, Pedido pedido, int cantidad) {
-		// Pendiente implementar lógica de negocio
+	public int agregar(Plato plato, Pedido pedido, int cantidad)throws Exception {
+		if (plato == null || pedido == null) {
+		    throw new Exception("El plato y el pedido son obligatorios");
+		}
+
+		if (plato.getUnidad() == null || pedido.getUnidad() == null) {
+		    throw new Exception("El plato y el pedido deben pertenecer a una unidad de venta");
+		}
+
+		if (plato.getUnidad().getIdUnidadVenta() != pedido.getUnidad().getIdUnidadVenta()) {
+		    throw new Exception("El plato y el pedido deben pertenecer a la misma unidad de venta");
+		}
 		ItemPedido i = new ItemPedido(plato, pedido, cantidad);
 		return dao.agregar(i);
 	}

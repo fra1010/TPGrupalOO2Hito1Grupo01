@@ -5,6 +5,7 @@ import java.util.List;
 
 import dao.PedidoDao;
 import datos.Pedido;
+import datos.UnidadVenta;
 
 public class PedidoABM {
 	
@@ -14,9 +15,11 @@ public class PedidoABM {
 		return dao.traer(idPedido);
 	}
 
-	public int agregar(LocalDate fechaDeTransaccion) {
-		// Pendiente implementar lógica de negocio
-		Pedido p = new Pedido(fechaDeTransaccion);
+	public int agregar(LocalDate fechaDeTransaccion, UnidadVenta unidad) throws Exception{
+		if(unidad == null) {
+			throw new Exception("El pedido debe pertenecer a una unidad de venta");
+		}
+		Pedido p = new Pedido(fechaDeTransaccion, unidad);
 		return dao.agregar(p);
 	}
 

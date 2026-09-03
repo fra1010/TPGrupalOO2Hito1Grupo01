@@ -4,6 +4,7 @@ import java.util.List;
 
 import dao.PlatoDao;
 import datos.Plato;
+import datos.UnidadVenta;
 
 public class PlatoABM {
 	
@@ -13,9 +14,11 @@ public class PlatoABM {
 		return dao.traer(idPlato);
 	}
 
-	public int agregar(String nombre, double precioDeVenta, double costoDePlato) {
-		// Pendiente implementar lógica de negocio
-		Plato p = new Plato(nombre, precioDeVenta, costoDePlato);
+	public int agregar(String nombre, double precioDeVenta, double costoDePlato, UnidadVenta unidad) throws Exception {
+		if(unidad == null) {
+			throw new Exception("El plato debe pertenecer a una unidad de venta");
+		}
+		Plato p = new Plato(nombre, precioDeVenta, costoDePlato, unidad);
 		return dao.agregar(p);
 	}
 
