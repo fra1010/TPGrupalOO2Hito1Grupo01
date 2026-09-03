@@ -12,3 +12,4 @@ target/
 Thumbs.db
 
 # Hibernate - NO subir estos
+hibernate.cfg.xml

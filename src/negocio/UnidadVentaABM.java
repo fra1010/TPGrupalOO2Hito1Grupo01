@@ -1,10 +1,12 @@
 package negocio;
 
 import java.util.List;
+import java.util.Set;
 
 import dao.UnidadVentaDao;
 import datos.Empleado;
 import datos.FoodTruck;
+import datos.Plato;
 import datos.PuestoDesarmable;
 import datos.UnidadVenta;
 
@@ -56,6 +58,12 @@ public class UnidadVentaABM {
 			throw new Exception("No existe unidad de venta con codigo " + codigo);
 		}
 		dao.eliminar(uv);
+	}
+	public int agregarUnidadVentaFoodTruckConPlatos(String nombre, Empleado responsable, double superficie,
+			String codigo, String patente, boolean conexion,Set<Plato> platos) {
+		UnidadVenta foodTruck = new FoodTruck(nombre, responsable, superficie, codigo, patente, conexion);
+		foodTruck.setPlatos(platos);
+		return dao.agregarUnidadVentaYPlatos(foodTruck);
 	}
 
 }

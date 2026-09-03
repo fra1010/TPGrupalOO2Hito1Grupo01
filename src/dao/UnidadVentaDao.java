@@ -10,6 +10,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
+import datos.Plato;
 import datos.UnidadVenta;
 
 public class UnidadVentaDao {
@@ -112,5 +113,26 @@ public class UnidadVentaDao {
 		} finally {
 			session.close();
 		}
+	}
+	
+	public int agregarUnidadVentaYPlatos(UnidadVenta objeto) {
+		int id = 0;
+		try {
+			iniciaOperacion();
+			id = Integer.parseInt(session.save(objeto).toString());
+
+			for (Plato p : objeto.getPlatos()) {
+				p.setUnidadVenta(objeto);
+				session.save(p);
+			}
+			tx.commit();
+		} catch (HibernateException e) {
+
+			manejaExcepcion(e);
+		} finally {
+			session.close();
+		}
+
+		return id;
 	}
 }
