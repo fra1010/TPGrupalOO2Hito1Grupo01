@@ -10,3 +10,11 @@
  - Diego Olmedo ([diego-olm](https://github.com/diego-olm))
 
 # Casos de uso:  
+### Diego Olmedo
+-  Traer Unidad por código
+-  Agregar Unidad
+-  Agregar Unidad con lista de platos
+-  Traer Unidad de Venta y Empleados
+-  Actualizar Unidad
+-  Traer lista de Unidades
+-  Calcular Total de Unidad de Venta
