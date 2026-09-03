@@ -5,6 +5,7 @@ import java.util.List;
 
 import dao.PedidoDao;
 import datos.Pedido;
+import datos.UnidadVenta;
 
 public class PedidoABM {
 	
@@ -19,7 +20,11 @@ public class PedidoABM {
 		Pedido p = new Pedido(fechaDeTransaccion);
 		return dao.agregar(p);
 	}
-
+	public int agregar(LocalDate fechaDeTransaccion,UnidadVenta unidad) {
+		// Pendiente implementar lógica de negocio
+		Pedido p = new Pedido(fechaDeTransaccion,unidad);
+		return dao.agregar(p);
+	}
 	public void modificar(Pedido p) {
 		// Pendiente implementar lógica de negocio
 		dao.actualizar(p);

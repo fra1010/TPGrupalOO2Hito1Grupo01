@@ -6,6 +6,7 @@ import java.util.Set;
 import dao.UnidadVentaDao;
 import datos.Empleado;
 import datos.FoodTruck;
+import datos.Pedido;
 import datos.Plato;
 import datos.PuestoDesarmable;
 import datos.UnidadVenta;
@@ -64,6 +65,14 @@ public class UnidadVentaABM {
 		UnidadVenta foodTruck = new FoodTruck(nombre, responsable, superficie, codigo, patente, conexion);
 		foodTruck.setPlatos(platos);
 		return dao.agregarUnidadVentaYPlatos(foodTruck);
+	}
+	public double calcularTotalUnidadVenta(String codigoUnidadVenta) {
+		double total=0;
+		UnidadVenta u =dao.traerUnidadVentaYPedidosEitem(codigoUnidadVenta);
+		for (Pedido p : u.getPedidos()) {
+			total=total+p.calcularTotal();
+		}
+		return total;
 	}
 
 }
