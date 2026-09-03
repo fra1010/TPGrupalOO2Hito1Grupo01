@@ -12,6 +12,9 @@
         <property name="nombre" column="nombre" type="string" not-null="true"/>
         <property name="precioDeVenta" column="precio_de_venta" type="double" not-null="true"/>
         <property name="costoDePlato" column="costo_de_plato" type="double" not-null="true"/>
-   		
+   		   		    <many-to-one name="unidadVenta" 
+                 column="unidad_venta_id" 
+                 class="datos.UnidadVenta" 
+                 not-null="true"/>
     </class>
 </hibernate-mapping>

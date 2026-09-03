@@ -6,7 +6,7 @@ import java.util.Set;
 public class Pedido {
 	private int idPedido;
 	private LocalDate fechaTransaccion;
-//	private UnidadVenta unidad;
+	private UnidadVenta unidadVenta;
 	private Set<ItemPedido> itemsPedidos;
 	
 	public Pedido() {
@@ -18,7 +18,12 @@ public class Pedido {
 		this.fechaTransaccion = fechaTransaccion;
 //		this.unidad = unidad;
 	}
-
+	public Pedido(LocalDate fechaTransaccion,UnidadVenta unidadVenta) {
+		super();
+		this.fechaTransaccion = fechaTransaccion;
+		this.unidadVenta = unidadVenta;
+		
+	}
 	public int getIdPedido() {
 		return idPedido;
 	}
@@ -35,14 +40,15 @@ public class Pedido {
 		this.fechaTransaccion = fechaTransaccion;
 	}
 
-/*	public UnidadVenta getUnidad() {
-		return unidad;
+
+	public UnidadVenta getUnidadVenta() {
+		return unidadVenta;
 	}
 
-	public void setUnidad(UnidadVenta unidad) {
-		this.unidad = unidad;
+	public void setUnidadVenta(UnidadVenta unidadVenta) {
+		this.unidadVenta = unidadVenta;
 	}
-*/
+
 	public Set<ItemPedido> getItemsPedidos() {
 		return itemsPedidos;
 	}
@@ -55,6 +61,14 @@ public class Pedido {
 	public String toString() {
 		return "Pedido [idPedido=" + idPedido + ", fechaTransaccion=" + fechaTransaccion + "]";
 	}
-	
+	public double calcularTotal() {
+		double total= 0;
+		for (ItemPedido itemPedido : itemsPedidos) {
+			total = total + itemPedido.calcularSubTotal();
+		}
+		
+		return total;
+		
+	}
 
 }

@@ -1,0 +1,21 @@
+# Archivos de Eclipse (NO subir)
+.classpath
+.project
+.settings/
+
+# Archivos compilados (NO subir)
+bin/
+target/
+
+# Archivos del sistema (NO subir)
+.DS_Store
+Thumbs.db
+
+# Hibernate - NO subir estos
+hibernate.cfg.xml
+Empleado.hbm.xml
+ItemPedido.hbm.xml
+Pedido.hbm.xml
+Plato.hbm.xml
+Costo.hbm.xml
+Festival.hbm.xml

@@ -7,11 +7,17 @@ public class Plato {
 	private String nombre;
 	private double precioDeVenta;
 	private double costoDePlato;
-	
+	private UnidadVenta unidadVenta;
 	public Plato() {
 		super();
 	}
-
+	public Plato(String nombre, double precioDeVenta, double costoDePlato,UnidadVenta unidadVenta) {
+		super();
+		this.nombre = nombre;
+		this.precioDeVenta = precioDeVenta;
+		this.costoDePlato = costoDePlato;
+		this.unidadVenta=unidadVenta;
+	}
 	public Plato(String nombre, double precioDeVenta, double costoDePlato) {
 		super();
 		this.nombre = nombre;
@@ -51,6 +57,12 @@ public class Plato {
 		this.costoDePlato = costoDePlato;
 	}
 
+	public UnidadVenta getUnidadVenta() {
+		return unidadVenta;
+	}
+	public void setUnidadVenta(UnidadVenta unidadVenta) {
+		this.unidadVenta = unidadVenta;
+	}
 	@Override
 	public String toString() {
 		return "Plato [idPlato=" + idPlato + ", nombre=" + nombre + ", precioDeVenta=" + precioDeVenta
