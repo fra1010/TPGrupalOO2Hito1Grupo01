@@ -5,9 +5,11 @@ import java.time.LocalDate;
 
 import datos.Pedido;
 import datos.Plato;
+import datos.UnidadVenta;
 import negocio.ItemPedidoABM;
 import negocio.PedidoABM;
 import negocio.PlatoABM;
+import negocio.UnidadVentaABM;
 
 public class TestCargarDatos {
 
@@ -17,22 +19,29 @@ public class TestCargarDatos {
 		PlatoABM platoABM =  new PlatoABM();
 		PedidoABM pedidoABM = new PedidoABM();
         ItemPedidoABM itemABM = new ItemPedidoABM();
+        UnidadVentaABM unidadABM = new UnidadVentaABM();
+        
+     // TRAER UNA UNIDAD YA EXISTENTE
+        UnidadVenta unidad = unidadABM.traer("UUUUUUUU");
 		
 		//AGERGAR PLATO
-		int idPlato1 = platoABM.agregar("Hamburguesa", 25000, 15000);
+		int idPlato1;
+		try {
+			idPlato1 = platoABM.agregar("Hamburguesa", 25000, 15000, unidad);
+		
 		System.out.println("Plato agregado. ID: " + idPlato1);
 		
-		int idPlato2 = platoABM.agregar("Pizza", 22000, 10000);
+		int idPlato2 = platoABM.agregar("Pizza", 22000, 10000, unidad);
 		System.out.println("Plato agregado. ID: " + idPlato2);
 
-		int idPlato3 = platoABM.agregar("Empanada", 3000, 1700);
+		int idPlato3 = platoABM.agregar("Empanada", 3000, 1700, unidad);
 		System.out.println("Plato agregado. ID: " + idPlato3);
 
         // AGREGAR PEDIDO
-        int idPedido1 = pedidoABM.agregar(LocalDate.now());
+        int idPedido1 = pedidoABM.agregar(LocalDate.now(), unidad);
         System.out.println("Pedido agregado. ID: " + idPedido1);
         
-        int idPedido2 = pedidoABM.agregar(LocalDate.now());
+        int idPedido2 = pedidoABM.agregar(LocalDate.now(), unidad);
         System.out.println("Pedido agregado. ID: " + idPedido2);
 
         // TRAER PARA RELACIONAR
@@ -54,5 +63,9 @@ public class TestCargarDatos {
         System.out.println("ItemPedido agregado. ID: " + idItem2);
         System.out.println("ItemPedido agregado. ID: " + idItem3);
         System.out.println("ItemPedido agregado. ID: " + idItem4);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 }
