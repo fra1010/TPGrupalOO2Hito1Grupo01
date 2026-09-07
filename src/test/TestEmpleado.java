@@ -12,6 +12,11 @@ public class TestEmpleado
 {
     public static void main(String[] args) 
     {
+    	EmpleadoAbm empleado1 = new EmpleadoAbm();
+    	
+    	empleado1.agregarEmpleadoCocinero("pepe", "Armando", 2551546, LocalDate.of(2000, 10, 6), LocalDate.now(), "fritos");
+    	empleado1.agregarEmpleadoCajero("Jose", "Fernandez", 3333546, LocalDate.of(2000, 10, 6), LocalDate.now(), "tarde");
+    	
         System.out.println("\n---------------- CASO DE USO 1 ----------------\n");
 
         for (Cocinero cocinero : EmpleadoAbm.getInstance().traerCocinerosPorEspecialidad("fritos")) 
@@ -41,4 +46,3 @@ public class TestEmpleado
         }
     }
 }
-

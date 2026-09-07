@@ -100,4 +100,17 @@ public class UnidadVentaDao {
 		}
 		return lista;
 	}
+
+	public void eliminar(UnidadVenta objeto) {
+		try {
+			iniciaOperacion();
+			session.delete(objeto);
+			tx.commit();
+		} catch (HibernateException he) {
+			manejaExcepcion(he);
+			throw he;
+		} finally {
+			session.close();
+		}
+	}
 }

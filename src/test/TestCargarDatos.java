@@ -1,13 +1,15 @@
+
 package test;
 
 import java.time.LocalDate;
 
 import datos.Pedido;
 import datos.Plato;
-import negocio.EmpleadoAbm;
+import datos.UnidadVenta;
 import negocio.ItemPedidoABM;
 import negocio.PedidoABM;
 import negocio.PlatoABM;
+import negocio.UnidadVentaABM;
 
 public class TestCargarDatos {
 
@@ -17,56 +19,29 @@ public class TestCargarDatos {
 		PlatoABM platoABM =  new PlatoABM();
 		PedidoABM pedidoABM = new PedidoABM();
         ItemPedidoABM itemABM = new ItemPedidoABM();
+        UnidadVentaABM unidadABM = new UnidadVentaABM();
+        
+     // TRAER UNA UNIDAD YA EXISTENTE
+        UnidadVenta unidad = unidadABM.traer("UUUUUUUU");
 		
-        EmpleadoAbm empleadoABM = EmpleadoAbm.getInstance();
-
-        
-        // ------------------ AGREGAR COCINEROS ----------------------
-        
-        empleadoABM.agregarEmpleadoCocinero("Ramon","Perez",11111111,LocalDate.of(2000, 10, 6),LocalDate.of(2025, 10, 6),"fritos");
-        System.out.println("Empleado agregado. ID: ");
-       
-        empleadoABM.agregarEmpleadoCocinero("Juan","Lopez",33333333,LocalDate.of(1998, 5, 15),LocalDate.of(2024, 3, 10),"parrilla");
-        System.out.println("Empleado agregado. ID: ");
-        
-    
-        empleadoABM.agregarEmpleadoCocinero("Pedro","Gonzalez",44444444,LocalDate.of(1997, 8, 20),LocalDate.of(2023, 6, 1),"fritos");
-        System.out.println("Empleado agregado. ID: ");
-       
-        empleadoABM.agregarEmpleadoCocinero("Matias","Gomez",555555555,LocalDate.of(1997, 1, 14),LocalDate.of(2024, 3, 10),"parrilla");
-        System.out.println("Empleado agregado. ID: ");
-        
-        // ------------------ AGREGAR CAJEROS ----------------------
-        
-        empleadoABM.agregarEmpleadoCajero("Martin","Gomez",22222222,LocalDate.of(1999,11,23),LocalDate.of(2023,2,5),"tarde");
-        System.out.println("Empleado agregado. ID: ");
-
-        empleadoABM.agregarEmpleadoCajero("Laura","Rodriguez",66666666,LocalDate.of(2001,4,12),LocalDate.of(2024,1,15),"mañana");
-        System.out.println("Empleado agregado. ID: ");
-
-        empleadoABM.agregarEmpleadoCajero("Sofia","Martinez",77777777,LocalDate.of(1998,9,30),LocalDate.of(2023,8,20),"tarde");
-        System.out.println("Empleado agregado. ID: ");
-
-        empleadoABM.agregarEmpleadoCajero("Diego","Fernandez",88888888,LocalDate.of(2000,12,5),LocalDate.of(2025,2,10),"noche");
-        System.out.println("Empleado agregado. ID: ");
-
-        
-        
 		//AGERGAR PLATO
-		int idPlato1 = platoABM.agregar("Hamburguesa", 25000, 15000);
+		int idPlato1;
+		try {
+			idPlato1 = platoABM.agregar("Hamburguesa", 25000, 15000, unidad);
+		
 		System.out.println("Plato agregado. ID: " + idPlato1);
 		
-		int idPlato2 = platoABM.agregar("Pizza", 22000, 10000);
+		int idPlato2 = platoABM.agregar("Pizza", 22000, 10000, unidad);
 		System.out.println("Plato agregado. ID: " + idPlato2);
 
-		int idPlato3 = platoABM.agregar("Empanada", 3000, 1700);
+		int idPlato3 = platoABM.agregar("Empanada", 3000, 1700, unidad);
 		System.out.println("Plato agregado. ID: " + idPlato3);
 
         // AGREGAR PEDIDO
-        int idPedido1 = pedidoABM.agregar(LocalDate.now());
+        int idPedido1 = pedidoABM.agregar(LocalDate.now(), unidad);
         System.out.println("Pedido agregado. ID: " + idPedido1);
         
-        int idPedido2 = pedidoABM.agregar(LocalDate.now());
+        int idPedido2 = pedidoABM.agregar(LocalDate.now(), unidad);
         System.out.println("Pedido agregado. ID: " + idPedido2);
 
         // TRAER PARA RELACIONAR
@@ -88,5 +63,9 @@ public class TestCargarDatos {
         System.out.println("ItemPedido agregado. ID: " + idItem2);
         System.out.println("ItemPedido agregado. ID: " + idItem3);
         System.out.println("ItemPedido agregado. ID: " + idItem4);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 }

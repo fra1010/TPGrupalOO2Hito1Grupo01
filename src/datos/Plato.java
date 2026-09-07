@@ -1,6 +1,5 @@
 package datos;
 
-import java.util.Set;
 
 public class Plato {
 
@@ -8,17 +7,18 @@ public class Plato {
 	private String nombre;
 	private double precioDeVenta;
 	private double costoDePlato;
-	private Set<ItemPedido> itemsPedidos;
+	private UnidadVenta unidad;
 	
 	public Plato() {
 		super();
 	}
 
-	public Plato(String nombre, double precioDeVenta, double costoDePlato) {
+	public Plato(String nombre, double precioDeVenta, double costoDePlato, UnidadVenta unidad) {
 		super();
 		this.nombre = nombre;
 		this.precioDeVenta = precioDeVenta;
 		this.costoDePlato = costoDePlato;
+		this.unidad = unidad;
 	}
 
 	public int getIdPlato() {
@@ -52,19 +52,18 @@ public class Plato {
 	public void setCostoDePlato(double costoDePlato) {
 		this.costoDePlato = costoDePlato;
 	}
+
+	public UnidadVenta getUnidad() {
+		return unidad;
+	}
+
+	public void setUnidad(UnidadVenta unidad) {
+		this.unidad = unidad;
+	}
 	
-	public Set<ItemPedido> getItemsPedidos() {
-		return itemsPedidos;
-	}
-
-	public void setItemsPedidos(Set<ItemPedido> itemsPedidos) {
-		this.itemsPedidos = itemsPedidos;
-	}
-
 	@Override
 	public String toString() {
 		return "Plato [idPlato=" + idPlato + ", nombre=" + nombre + ", precioDeVenta=" + precioDeVenta
 				+ ", costoDePlato=" + costoDePlato + "]";
 	}
-	
 }

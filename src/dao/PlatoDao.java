@@ -3,7 +3,6 @@ package dao;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -89,17 +88,4 @@ public class PlatoDao {
 		return lista;
 	}
 
-	public Plato traerPlatoEItems(int idPlato) throws HibernateException {
-		Plato objeto = null;
-		try {
-			iniciaOperacion();
-			String hql = "from Plato p where p.idPlato=:idPlato";
-			objeto=(Plato) session.createQuery(hql).setParameter("idPlato", idPlato).uniqueResult();
-			Hibernate.initialize(objeto.getItemsPedidos());
-		}
-		finally {
-			session.close();
-		}
-		return objeto;
-	}
 }

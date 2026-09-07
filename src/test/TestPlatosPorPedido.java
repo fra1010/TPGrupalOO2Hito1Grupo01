@@ -9,34 +9,20 @@ import negocio.PedidoABM;
 
 public class TestPlatosPorPedido {
 
-    public static void main(String[] args) {
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		
+		PedidoABM pedidoABM = new PedidoABM();
+		ItemPedidoABM itemABM = new ItemPedidoABM();
 
-        PedidoABM pedidoABM = new PedidoABM();
-        ItemPedidoABM itemABM = new ItemPedidoABM();
+		Pedido pedido = pedidoABM.traer(2);
 
-        // Buscar el pedido con ID 2
-        Pedido pedido = pedidoABM.traer(2);
+		List<ItemPedido> items = itemABM.traer(pedido);
 
-        // Verificar que el pedido exista
-        if (pedido == null) {
-            System.out.println("No existe un pedido con ID 2.");
-            return;
-        }
+		for (ItemPedido item : items) {
+		    System.out.println("Plato: " + item.getPlato().getNombre() +  "- " + item.getPlato().getPrecioDeVenta());
+		    System.out.println("Cantidad: " + item.getCantidad());
+		}
+	}
 
-        // Traer los items correspondientes al pedido
-        List<ItemPedido> items = itemABM.traer(pedido);
-
-        // Mostrar los platos del pedido
-        for (ItemPedido item : items) {
-            System.out.println(
-                "Plato: " + item.getPlato().getNombre()
-                + " - Precio: " + item.getPlato().getPrecioDeVenta()
-            );
-
-            System.out.println("Cantidad: " + item.getCantidad());
-            System.out.println("-------------------------");
-        }
-    }
 }
-
-

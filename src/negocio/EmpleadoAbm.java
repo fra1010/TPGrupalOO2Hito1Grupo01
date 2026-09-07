@@ -12,7 +12,7 @@ public class EmpleadoAbm
 {
 	private static EmpleadoAbm instancia = null; // Patrón Singleton
 
-	protected EmpleadoAbm() 
+	public EmpleadoAbm() 
 	{
 		
 	}

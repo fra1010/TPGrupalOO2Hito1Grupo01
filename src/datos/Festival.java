@@ -26,11 +26,14 @@ public class Festival {
 	    }
 	}
 	
+	
+
 	public Festival(String nombre, String temporada, LocalDate fechaInicio, LocalDate fechaFin) {
 	    this.nombre = nombre;
 	    this.temporada = temporada;
 	    this.fechaInicio = fechaInicio;
 	    this.fechaFin = fechaFin;
+
 	}
 	
 	public Set<UnidadVenta> getUnidadesVenta() {
@@ -80,6 +83,7 @@ public class Festival {
 	public void setFechaFin(LocalDate fechaFin) {
 		this.fechaFin = fechaFin;
 	}
+
 	
 	public Costo getCosto() {
 		return costo;
@@ -89,9 +93,23 @@ public class Festival {
 		this.costo = costo;
 	}
 
+	
+	public boolean equals(Festival festival) {
+	    return festival.getNombre().equals(this.nombre);
+	}
+
+	@Override
+	public int hashCode() {
+	    return java.util.Objects.hash(nombre);
+	}
+
 	@Override
 	public String toString() {
 		return "Festival [id=" + idFestival + ", nombre=" + nombre + ", temporada=" + temporada + ", fechaInicio=" + fechaInicio
 				+ ", fechaFin=" + fechaFin + ", costo=" + costo + "]";
 	};
+	
+	
+	
+
 }

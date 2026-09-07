@@ -8,6 +8,7 @@ import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import datos.Festival;
+import datos.UnidadVenta;
 
 public class FestivalDao {
 	private static Session session;
@@ -132,6 +133,18 @@ public class FestivalDao {
 			session.close();
 		}
 
+		return objeto;
+	}
+
+	public UnidadVenta traerUnidadPorCodigo(String codigo) {
+		UnidadVenta objeto = null;
+		try {
+			iniciaOperacion();
+			String hql = "from UnidadVenta uv where uv.codigo = :codigo";
+			objeto = (UnidadVenta) session.createQuery(hql).setParameter("codigo", codigo).uniqueResult();
+		} finally {
+			session.close();
+		}
 		return objeto;
 	}
 }

@@ -29,8 +29,6 @@ public class Cajero extends Empleado
 	@Override
 	public String toString() 
 	{
-		return super.toString() + "-----CAJERO [turno=" + turno + "]\n";
+		return super.toString() + "CAJERO [turno=" + turno + "]\n";
 	}
-	
-	
 }

@@ -1,3 +1,4 @@
+
 package datos;
 
 import java.time.LocalDate;
@@ -29,9 +30,9 @@ public class Cocinero extends Empleado{
 	@Override
 	public String toString() 
 	{
-		return super.toString() + "-----COCINERO [especialidad=" + especialidad + "]\n";
+		return super.toString() + "COCINERO [especialidad=" + especialidad + "]\n";
 	}
 	
+	
 }
-
 

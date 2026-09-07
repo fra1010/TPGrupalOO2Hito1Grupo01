@@ -12,7 +12,7 @@ public class UnidadVenta {
 	protected Set<Empleado> empleados;
 	protected Set<Pedido> pedidos;
 	protected Set<Plato> platos;
-	
+
 	public UnidadVenta() {
 		super();
 	}
@@ -119,14 +119,15 @@ public class UnidadVenta {
 
 	@Override
 	public String toString() {
-	    StringBuilder sb = new StringBuilder();
-	    sb.append("UnidadVenta \n");
-	    sb.append("  idUnidadVenta: ").append(idUnidadVenta).append(",\n");
-	    sb.append("  nombre: ").append(nombre).append(",\n");
-	    sb.append("  responsable: ").append(responsable).append(",\n");
-	    sb.append("  superficie: ").append(superficie).append(",\n");
-	    sb.append("  codigo: ").append(codigo).append("\n");
-	    sb.append(" ");
-	    return sb.toString();
+		StringBuilder sb = new StringBuilder();
+		sb.append("UnidadVenta \n");
+		sb.append("  idUnidadVenta: ").append(idUnidadVenta).append(",\n");
+		sb.append("  nombre: ").append(nombre).append(",\n");
+		sb.append("  responsable: ").append(responsable).append(",\n");
+		sb.append("  superficie: ").append(superficie).append(",\n");
+		sb.append("  codigo: ").append(codigo).append("\n");
+		sb.append(" ");
+		return sb.toString();
 	}
+
 }
