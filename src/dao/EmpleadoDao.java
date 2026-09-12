@@ -192,6 +192,113 @@ public class EmpleadoDao
 	    return lista;
 	}
 	
+	// ---------------------------- CASO DE USO 5 -----------------------------
+	
+	// Traer empleados que tienen más de X años trabajando
+
+	public List<Empleado> traerEmpleadosConMasDeAniosDeAntiguedad(int anios)
+	{
+	    List<Empleado> lista = null;
+
+	    try
+	    {
+	        iniciaOperacion();
+
+	        LocalDate fechaLimite = LocalDate.now().minusYears(anios);
+
+	        lista = session.createQuery(
+	                "from Empleado e where e.ingreso < :fechaLimite",
+	                Empleado.class).setParameter("fechaLimite", fechaLimite).list();
+	    }
+	    finally
+	    {
+	        session.close();
+	    }
+
+	    return lista;
+	}
+
+	// ---------------------------- CASO DE USO 6 -----------------------------
+	
+	// Traer cocineros con menos de X años de haber ingresado
+
+	public List<Cocinero> traerCocinerosConMenosDeAniosDeAntiguedad(int anios)
+	{
+	    List<Cocinero> lista = null;
+
+	    try
+	    {
+	        iniciaOperacion();
+
+	        LocalDate fechaLimite = LocalDate.now().minusYears(anios);
+
+	        lista = session.createQuery(
+	                "from Cocinero c where c.ingreso > :fechaLimite",
+	                Cocinero.class)
+	                .setParameter("fechaLimite", fechaLimite)
+	                .list();
+	    }
+	    finally
+	    {
+	        session.close();
+	    }
+
+	    return lista;
+	}
+
+	// ---------------------------- CASO DE USO 7 -----------------------------
+	
+	// Traer cajeros que ingresaron entre dos fechas
+
+	public List<Cajero> traerCajerosEntreFechasDeIngreso(LocalDate fechaDesde, LocalDate fechaHasta)
+	{
+	    List<Cajero> lista = null;
+
+	    try
+	    {
+	        iniciaOperacion();
+
+	        lista = session.createQuery(
+	                "from Cajero c where c.ingreso between :fechaDesde and :fechaHasta",
+	                Cajero.class)
+	                .setParameter("fechaDesde", fechaDesde)
+	                .setParameter("fechaHasta", fechaHasta)
+	                .list();
+	    }
+	    finally
+	    {
+	        session.close();
+	    }
+
+	    return lista;
+	}
+	
+	// ---------------------------- CASO DE USO 8 -----------------------------
+	
+	// Traer empleados que nacieron entre dos fechas
+
+	public List<Empleado> traerEmpleadosEntreFechasDeNacimiento(LocalDate fechaDesde, LocalDate fechaHasta)
+	{
+	    List<Empleado> lista = null;
+
+	    try
+	    {
+	        iniciaOperacion();
+
+	        lista = session.createQuery(
+	                "from Empleado e where e.fechaNacimiento between :fechaDesde and :fechaHasta",
+	                Empleado.class)
+	                .setParameter("fechaDesde", fechaDesde)
+	                .setParameter("fechaHasta", fechaHasta)
+	                .list();
+	    }
+	    finally
+	    {
+	        session.close();
+	    }
+
+	    return lista;
+	}
 }
 
 
