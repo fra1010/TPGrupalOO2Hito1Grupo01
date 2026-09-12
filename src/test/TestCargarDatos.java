@@ -14,7 +14,6 @@ import negocio.UnidadVentaABM;
 public class TestCargarDatos {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 
 		PlatoABM platoABM =  new PlatoABM();
 		PedidoABM pedidoABM = new PedidoABM();

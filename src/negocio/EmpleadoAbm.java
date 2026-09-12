@@ -24,25 +24,25 @@ public class EmpleadoAbm
 		return instancia;
 	}
 	
-	public int agregarEmpleadoCocinero(String nombre, String apellido, long dni,LocalDate fechaNacimiento, LocalDate ingreso, String especialidad)
+	public int agregarEmpleadoCocinero(String nombre, String apellido, long dni,LocalDate fechaNacimiento, LocalDate ingreso, String especialidad,String categoria,int porcentaje)
 	{
 	    int id = 0;
 
 	    if (EmpleadoDao.getInstance().traerPorDni(dni) == null)
 	    {
-	        id = EmpleadoDao.getInstance().agregar(new Cocinero(nombre, apellido, dni, fechaNacimiento, ingreso, especialidad));
+	        id = EmpleadoDao.getInstance().agregar(new Cocinero(nombre, apellido, dni, fechaNacimiento, ingreso, especialidad,categoria,porcentaje));
 	    }
 
 	    return id;
 	}
 	
-	public int agregarEmpleadoCajero(String nombre, String apellido, long dni,LocalDate fechaNacimiento, LocalDate ingreso, String turno)
+	public int agregarEmpleadoCajero(String nombre, String apellido, long dni,LocalDate fechaNacimiento, LocalDate ingreso, String turno,double plusAntiguedad)
 	{
 	    int id = 0;
 
 	    if (EmpleadoDao.getInstance().traerPorDni(dni) == null)
 	    {
-	        id = EmpleadoDao.getInstance().agregar(new Cajero(nombre, apellido, dni, fechaNacimiento, ingreso, turno));
+	        id = EmpleadoDao.getInstance().agregar(new Cajero(nombre, apellido, dni, fechaNacimiento, ingreso, turno,plusAntiguedad));
 	    }
 
 	    return id;
@@ -86,4 +86,33 @@ public class EmpleadoAbm
 		return EmpleadoDao.getInstance().traerCocineros();
 	}
 	
+	// ---------------------------- CASO DE USO 5 -----------------------------
+
+	public List<Empleado> traerEmpleadosConMasDeAniosDeAntiguedad(int anios)
+	{
+	    return EmpleadoDao.getInstance().traerEmpleadosConMasDeAniosDeAntiguedad(anios);
+	}
+
+	// ---------------------------- CASO DE USO 6 -----------------------------
+
+	public List<Cocinero> traerCocinerosConMenosDeAniosDeAntiguedad(int anios)
+	{
+	    return EmpleadoDao.getInstance().traerCocinerosConMenosDeAniosDeAntiguedad(anios);
+	}
+
+	// ---------------------------- CASO DE USO 7 -----------------------------
+
+	public List<Cajero> traerCajerosEntreFechasDeIngreso(LocalDate fechaDesde, LocalDate fechaHasta)
+	{
+	    return EmpleadoDao.getInstance().traerCajerosEntreFechasDeIngreso(fechaDesde, fechaHasta);
+	}
+
+
+	// ---------------------------- CASO DE USO 8 -----------------------------
+
+	public List<Empleado> traerEmpleadosEntreFechasDeNacimiento(LocalDate fechaDesde, LocalDate fechaHasta)
+	{
+	    return EmpleadoDao.getInstance().traerEmpleadosEntreFechasDeNacimiento(fechaDesde, fechaHasta);
+	}
+
 }
