@@ -81,10 +81,11 @@ public class Empleado {
 			return false;
 		return true;
 	}
-	@Override
+    
+    @Override
 	public String toString() {
 	    StringBuilder sb = new StringBuilder();
-	    sb.append("Empleado {\n");
+	    sb.append("\n------EMPLEADO----- {\n");
 	    sb.append("  idEmpleado: ").append(idEmpleado).append(",\n");
 	    sb.append("  nombre: ").append(nombre).append(",\n");
 	    sb.append("  apellido: ").append(apellido).append(",\n");
@@ -94,4 +95,5 @@ public class Empleado {
 	    sb.append("}");
 	    return sb.toString();
 	}
+	
 }
