@@ -85,5 +85,34 @@ public class EmpleadoAbm
 	{
 		return EmpleadoDao.getInstance().traerCocineros();
 	}
+
+	
+	// ---------------------------- CASO DE USO 5 -----------------------------
+
+	public List<Empleado> traerEmpleadosConMasDeAniosDeAntiguedad(int anios)
+	{
+	    return EmpleadoDao.getInstance().traerEmpleadosConMasDeAniosDeAntiguedad(anios);
+	}
+
+	// ---------------------------- CASO DE USO 6 -----------------------------
+
+	public List<Cocinero> traerCocinerosConMenosDeAniosDeAntiguedad(int anios)
+	{
+	    return EmpleadoDao.getInstance().traerCocinerosConMenosDeAniosDeAntiguedad(anios);
+	}
+
+	// ---------------------------- CASO DE USO 7 -----------------------------
+
+	public List<Cajero> traerCajerosEntreFechasDeIngreso(LocalDate fechaDesde, LocalDate fechaHasta)
+	{
+	    return EmpleadoDao.getInstance().traerCajerosEntreFechasDeIngreso(fechaDesde, fechaHasta);
+	}
+
+	// ---------------------------- CASO DE USO 8 -----------------------------
+
+	public List<Empleado> traerEmpleadosEntreFechasDeNacimiento(LocalDate fechaDesde, LocalDate fechaHasta)
+	{
+	    return EmpleadoDao.getInstance().traerEmpleadosEntreFechasDeNacimiento(fechaDesde, fechaHasta);
+	}
 	
 }
