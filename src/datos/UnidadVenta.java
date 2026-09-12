@@ -2,7 +2,7 @@ package datos;
 
 import java.util.Set;
 
-public class UnidadVenta {
+public abstract class UnidadVenta {
 
 	protected int idUnidadVenta;
 	protected String nombre;
@@ -12,6 +12,7 @@ public class UnidadVenta {
 	protected Set<Empleado> empleados;
 	protected Set<Pedido> pedidos;
 	protected Set<Plato> platos;
+	protected Festival festival;
 
 	public UnidadVenta() {
 		super();
@@ -25,11 +26,20 @@ public class UnidadVenta {
 		this.codigo = codigo;
 	}
 
+	public UnidadVenta(String nombre, Empleado responsable, double superficie, String codigo, Festival festival) {
+		super();
+		this.nombre = nombre;
+		this.responsable = responsable;
+		this.superficie = superficie;
+		this.codigo = codigo;
+		this.festival = festival;
+	}
+
 	public int getIdUnidadVenta() {
 		return idUnidadVenta;
 	}
 
-	public void setIdUnidadVenta(int idUnidadVenta) {
+	protected void setIdUnidadVenta(int idUnidadVenta) {
 		this.idUnidadVenta = idUnidadVenta;
 	}
 
@@ -87,6 +97,14 @@ public class UnidadVenta {
 
 	public void setPlatos(Set<Plato> platos) {
 		this.platos = platos;
+	}
+
+	public Festival getFestival() {
+		return festival;
+	}
+
+	public void setFestival(Festival festival) {
+		this.festival = festival;
 	}
 
 	@Override

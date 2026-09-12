@@ -17,7 +17,10 @@
 		<many-to-one name="responsable" column="responsable_id"
 			class="datos.Empleado" unique="true" />
 
-
+   		<many-to-one name="festival" 
+                 column="id_festival" 
+                 class="datos.Festival" 
+                 not-null="true"/>
 		<set name="empleados" table="empleado" order-by="id_empleado asc"
 			inverse="true" lazy="true" fetch="select">
 			<key column="unidad_venta_id" not-null="false" />
