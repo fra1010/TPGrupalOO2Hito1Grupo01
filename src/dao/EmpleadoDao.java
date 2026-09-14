@@ -1,6 +1,7 @@
 package dao;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.HibernateException;
@@ -193,37 +194,37 @@ public class EmpleadoDao
 	}
 	
 	// ---------------------------- CASO DE USO 5 -----------------------------
-	// Traer empleados que tienen más de X años trabajando
+	
+	// Traer empleados ENTRE FECHAS
 
-	public List<Empleado> traerEmpleadosConMasDeAniosDeAntiguedad(int anios)
+	public Empleado traerEmpleadoConMasAntiguedadEntreFechas(LocalDate inicio,LocalDate fin)
 	{
-	    List<Empleado> lista = null;
-
 	    try
 	    {
 	        iniciaOperacion();
 
-	        LocalDate fechaLimite = LocalDate.now().minusYears(anios);
-
-	        lista = session.createQuery(
-	                "from Empleado e where e.ingreso < :fechaLimite",
-	                Empleado.class).setParameter("fechaLimite", fechaLimite).list();
+	        
+	        return session.createQuery(
+	                "from Empleado e where e.ingreso between :inicio and :fin",
+	                Empleado.class).setParameter("inicio",inicio)
+	        		               .setParameter("fin",fin).uniqueResult() ;
 	    }
 	    finally
 	    {
 	        session.close();
 	    }
-
-	    return lista;
 	}
 
-
 	// ---------------------------- CASO DE USO 6 -----------------------------
+	
 	// Traer cocineros con menos de X años de haber ingresado
 
+	
+	// AGREGAR BETWEEN
+	
 	public List<Cocinero> traerCocinerosConMenosDeAniosDeAntiguedad(int anios)
 	{
-	    List<Cocinero> lista = null;
+	    List<Cocinero> lista = new ArrayList<Cocinero>();
 
 	    try
 	    {
@@ -247,12 +248,12 @@ public class EmpleadoDao
 
 
 	// ---------------------------- CASO DE USO 7 -----------------------------
+	
 	// Traer cajeros que ingresaron entre dos fechas
 
-	public List<Cajero> traerCajerosEntreFechasDeIngreso(
-	        LocalDate fechaDesde, LocalDate fechaHasta)
+	public List<Cajero> traerCajerosEntreFechasDeIngreso(LocalDate fechaDesde, LocalDate fechaHasta)
 	{
-	    List<Cajero> lista = null;
+	    List<Cajero> lista = new ArrayList<Cajero>();
 
 	    try
 	    {
@@ -275,12 +276,15 @@ public class EmpleadoDao
 
 
 	// ---------------------------- CASO DE USO 8 -----------------------------
+	
 	// Traer empleados que nacieron entre dos fechas
+	
+	
+	// LA LISTA NO SE INICIALIZA NULA 
 
-	public List<Empleado> traerEmpleadosEntreFechasDeNacimiento(
-	        LocalDate fechaDesde, LocalDate fechaHasta)
+	public List<Empleado> traerEmpleadosEntreFechasDeNacimiento(LocalDate fechaDesde, LocalDate fechaHasta)
 	{
-	    List<Empleado> lista = null;
+	    List<Empleado> lista = new ArrayList<Empleado>();
 
 	    try
 	    {
@@ -300,9 +304,11 @@ public class EmpleadoDao
 
 	    return lista;
 	}
-
 	
 	
+	// ------------------  AGREGAR CON JOIN  ----------------------
+	// ------------------  AGREGAR CON JOIN  ----------------------
+	// ------------------  AGREGAR CON JOIN  ----------------------
 	
 }
 

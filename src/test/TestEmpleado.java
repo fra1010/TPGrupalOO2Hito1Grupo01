@@ -4,6 +4,7 @@ import datos.Cocinero;
 import datos.Empleado;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import datos.Cajero;
 import negocio.EmpleadoAbm;
@@ -59,16 +60,14 @@ public class TestEmpleado
             System.out.println(cocinero);
         }
         
-        
         System.out.println("\n---------------- CASO DE USO 5 ----------------\n");
-        System.out.println("Empleados con mas de 5 años de antigüedad:");
+        System.out.println("Empleados con mas de 5 anios de antiguedad:");
 
-        for (Empleado empleado : EmpleadoAbm.getInstance()
-        		.traerEmpleadosConMasDeAniosDeAntiguedad(5))
-        {
-            System.out.println(empleado);
-        }
         
+        // AGREGAR EXCEPCION
+        
+        System.out.println(EmpleadoAbm.getInstance().traerEmpleadoConMasDeAniosDeAntiguedad(LocalDate.of(1999, 2, 3), LocalDate.of(2020, 2, 3)));
+
         
         System.out.println("\n---------------- CASO DE USO 6 ----------------\n");
         System.out.println("Cocineros con menos de 3 años de antiguedad:");
@@ -77,7 +76,6 @@ public class TestEmpleado
         {
             System.out.println(cocinero);
         }
-        
         
         System.out.println("\n---------------- CASO DE USO 7 ----------------\n");
         System.out.println("Cajeros ingresados entre 2020 y 2025:");
@@ -96,9 +94,7 @@ public class TestEmpleado
         {
             System.out.println(empleado);
         }
-        
       
-        
     }
 }
 
