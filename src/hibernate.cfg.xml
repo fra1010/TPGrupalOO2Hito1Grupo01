@@ -20,7 +20,7 @@
 		<mapping resource="mapeos/Plato.hbm.xml" />
 		<mapping resource="mapeos/Costo.hbm.xml" />
 		<mapping resource="mapeos/Empleado.hbm.xml" />
-		<mapping resource="mapeos/Festival.hbm.xml" />
+		<mapping resource="mapeos/Festival.hbm.xml" />  
 		<mapping resource="mapeos/UnidadVenta.hbm.xml" />
 	</session-factory>
 </hibernate-configuration>

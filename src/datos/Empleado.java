@@ -9,6 +9,7 @@ public class Empleado {
 	protected long dni;
 	protected LocalDate fechaNacimiento;
 	protected LocalDate ingreso;
+	
 	public Empleado() {
 		
 	}
