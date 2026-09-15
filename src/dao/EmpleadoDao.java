@@ -17,7 +17,7 @@ public class EmpleadoDao
 	private static Session session;
 	private Transaction tx;
 	
-	private static EmpleadoDao instancia = null; // Patrón Singleton
+	private static EmpleadoDao instancia = null;
 
 	protected EmpleadoDao() 
 	{
@@ -32,7 +32,8 @@ public class EmpleadoDao
 		return instancia;
 	}
 
-	protected void iniciaOperacion() throws HibernateException {
+	protected void iniciaOperacion() throws HibernateException 
+	{
 		session = HibernateUtil.getSessionFactory().openSession();
 		tx = session.beginTransaction();
 	}
@@ -46,6 +47,7 @@ public class EmpleadoDao
 	public int agregar(Empleado objeto) 
 	{
 		int id = 0;
+
 		try 
 		{
 			iniciaOperacion();
@@ -60,6 +62,7 @@ public class EmpleadoDao
 		{
 			session.close();
 		}
+
 		return id;
 	}
 	
@@ -70,8 +73,11 @@ public class EmpleadoDao
 		try 
 		{
 			iniciaOperacion();
-			objeto = (Empleado) session.createQuery("from Empleado e where e.idEmpleado=:idEmpleado")
-						.setParameter("idEmpleado", idEmpleado).uniqueResult();
+
+			objeto = (Empleado) session.createQuery(
+					"from Empleado e where e.idEmpleado = :idEmpleado")
+					.setParameter("idEmpleado", idEmpleado)
+					.uniqueResult();
 		} 
 		finally 
 		{
@@ -83,20 +89,23 @@ public class EmpleadoDao
 
 	public Empleado traerPorDni(long dni)
 	{
-	    Empleado objeto = null;
+		Empleado objeto = null;
 
-	    try
-	    {
-	        iniciaOperacion();
-	        objeto = (Empleado) session.createQuery("from Empleado e where e.dni = :dni")
-	                .setParameter("dni", dni).uniqueResult();
-	    }
-	    finally
-	    {
-	        session.close();
-	    }
+		try
+		{
+			iniciaOperacion();
 
-	    return objeto;
+			objeto = (Empleado) session.createQuery(
+					"from Empleado e where e.dni = :dni")
+					.setParameter("dni", dni)
+					.uniqueResult();
+		}
+		finally
+		{
+			session.close();
+		}
+
+		return objeto;
 	}
 	
 	public List<Empleado> traer() throws HibernateException 
@@ -106,7 +115,10 @@ public class EmpleadoDao
 		try 
 		{
 			iniciaOperacion();
-			lista = session.createQuery("from Empleado",Empleado.class).list();
+
+			lista = session.createQuery(
+					"from Empleado", Empleado.class)
+					.list();
 		} 
 		finally 
 		{
@@ -115,201 +127,205 @@ public class EmpleadoDao
 		
 		return lista;
 	}
-	
 
-	// ------------------------- CASO DE USO 1 ---------------------------------
-	
+	// ------------------------- CASO DE USO 1 -------------------------
+
 	public List<Cocinero> traerCocinerosPorEspecialidad(String especialidad)
 	{
-	    List<Cocinero> lista = null;
+		List<Cocinero> lista = null;
 
-	    try
-	    {
-	        iniciaOperacion();
-	        lista = session.createQuery("from Cocinero c where c.especialidad = :especialidad",Cocinero.class)
-	                .setParameter("especialidad", especialidad).list();
-	    }
-	    finally
-	    {
-	        session.close();
-	    }
-	    return lista;
+		try
+		{
+			iniciaOperacion();
+
+			lista = session.createQuery(
+					"from Cocinero c where c.especialidad = :especialidad",
+					Cocinero.class)
+					.setParameter("especialidad", especialidad)
+					.list();
+		}
+		finally
+		{
+			session.close();
+		}
+
+		return lista;
 	}
 
-	// ----------------------------CASO DE USO 2-----------------------------
-	
+	// ------------------------- CASO DE USO 2 -------------------------
+
 	public List<Cajero> traerCajerosPorTurno(String turno)
 	{
-	    List<Cajero> lista = null;
+		List<Cajero> lista = null;
 
-	    try
-	    {
-	        iniciaOperacion();
-	        lista = session.createQuery("from Cajero c where c.turno = :turno",
-	                Cajero.class).setParameter("turno", turno).list();
-	    }
-	    finally
-	    {
-	        session.close();
-	    }
+		try
+		{
+			iniciaOperacion();
 
-	    return lista;
+			lista = session.createQuery(
+					"from Cajero c where c.turno = :turno",
+					Cajero.class)
+					.setParameter("turno", turno)
+					.list();
+		}
+		finally
+		{
+			session.close();
+		}
+
+		return lista;
 	}
 
-	// ---------------------------CASO DE USO 3------------------------------
+	// ------------------------- CASO DE USO 3 -------------------------
 
 	public List<Empleado> traerEmpleadosPorFechaNacimiento(LocalDate fechaNacimiento)
 	{
-	    List<Empleado> lista = null;
+		List<Empleado> lista = null;
 
-	    try
-	    {
-	        iniciaOperacion();
-	        lista = session.createQuery("from Empleado e where e.fechaNacimiento = :fechaNacimiento",
-	                Empleado.class).setParameter("fechaNacimiento", fechaNacimiento).list();
-	    }
-	    finally
-	    {
-	        session.close();
-	    }
-	    return lista;
+		try
+		{
+			iniciaOperacion();
+
+			lista = session.createQuery(
+					"from Empleado e where e.fechaNacimiento = :fechaNacimiento",
+					Empleado.class)
+					.setParameter("fechaNacimiento", fechaNacimiento)
+					.list();
+		}
+		finally
+		{
+			session.close();
+		}
+
+		return lista;
 	}
 
-	// ----------------------------CASO DE USO 4-----------------------------
+	// ------------------------- CASO DE USO 4 -------------------------
 
 	public List<Cocinero> traerCocineros()
 	{
-	    List<Cocinero> lista = null;
+		List<Cocinero> lista = null;
 
-	    try
-	    {
-	        iniciaOperacion();
-	        lista = session.createQuery("from Cocinero",Cocinero.class).list();
-	    }
-	    finally
-	    {
-	        session.close();
-	    }
-	    return lista;
+		try
+		{
+			iniciaOperacion();
+
+			lista = session.createQuery(
+					"from Cocinero",
+					Cocinero.class)
+					.list();
+		}
+		finally
+		{
+			session.close();
+		}
+
+		return lista;
 	}
-	
-	// ---------------------------- CASO DE USO 5 -----------------------------
-	
-	// Traer empleados ENTRE FECHAS
 
-	public Empleado traerEmpleadoConMasAntiguedadEntreFechas(LocalDate inicio,LocalDate fin)
+	// ------------------------- CASO DE USO 5 -------------------------
+
+	public Empleado traerEmpleadoConMasAntiguedadEntreFechas(
+			LocalDate inicio, LocalDate fin)
 	{
-	    try
-	    {
-	        iniciaOperacion();
+		Empleado empleado = null;
 
-	        
-	        return session.createQuery(
-	                "from Empleado e where e.ingreso between :inicio and :fin",
-	                Empleado.class).setParameter("inicio",inicio)
-	        		               .setParameter("fin",fin).uniqueResult() ;
-	    }
-	    finally
-	    {
-	        session.close();
-	    }
+		try
+		{
+			iniciaOperacion();
+
+			empleado = session.createQuery(
+					"from Empleado e where e.ingreso between :inicio and :fin order by e.ingreso asc",
+					Empleado.class)
+					.setParameter("inicio", inicio)
+					.setParameter("fin", fin)
+					.setMaxResults(1)
+					.uniqueResult();
+		}
+		finally
+		{
+			session.close();
+		}
+
+		return empleado;
 	}
 
-	// ---------------------------- CASO DE USO 6 -----------------------------
-	
-	// Traer cocineros con menos de X años de haber ingresado
+	// ------------------------- CASO DE USO 6 -------------------------
 
-	
-	// AGREGAR BETWEEN
-	
 	public List<Cocinero> traerCocinerosConMenosDeAniosDeAntiguedad(int anios)
 	{
-	    List<Cocinero> lista = new ArrayList<Cocinero>();
+		List<Cocinero> lista = new ArrayList<Cocinero>();
 
-	    try
-	    {
-	        iniciaOperacion();
+		try
+		{
+			iniciaOperacion();
 
-	        LocalDate fechaLimite = LocalDate.now().minusYears(anios);
+			LocalDate fechaLimite = LocalDate.now().minusYears(anios);
 
-	        lista = session.createQuery(
-	                "from Cocinero c where c.ingreso > :fechaLimite",
-	                Cocinero.class)
-	                .setParameter("fechaLimite", fechaLimite)
-	                .list();
-	    }
-	    finally
-	    {
-	        session.close();
-	    }
+			lista = session.createQuery(
+					"from Cocinero c where c.ingreso > :fechaLimite",
+					Cocinero.class)
+					.setParameter("fechaLimite", fechaLimite)
+					.list();
+		}
+		finally
+		{
+			session.close();
+		}
 
-	    return lista;
+		return lista;
 	}
 
+	// ------------------------- CASO DE USO 7 -------------------------
 
-	// ---------------------------- CASO DE USO 7 -----------------------------
-	
-	// Traer cajeros que ingresaron entre dos fechas
-
-	public List<Cajero> traerCajerosEntreFechasDeIngreso(LocalDate fechaDesde, LocalDate fechaHasta)
+	public List<Cajero> traerCajerosEntreFechasDeIngreso(
+			LocalDate fechaDesde, LocalDate fechaHasta)
 	{
-	    List<Cajero> lista = new ArrayList<Cajero>();
+		List<Cajero> lista = new ArrayList<Cajero>();
 
-	    try
-	    {
-	        iniciaOperacion();
+		try
+		{
+			iniciaOperacion();
 
-	        lista = session.createQuery(
-	                "from Cajero c where c.ingreso between :fechaDesde and :fechaHasta",
-	                Cajero.class)
-	                .setParameter("fechaDesde", fechaDesde)
-	                .setParameter("fechaHasta", fechaHasta)
-	                .list();
-	    }
-	    finally
-	    {
-	        session.close();
-	    }
+			lista = session.createQuery(
+					"from Cajero c where c.ingreso between :fechaDesde and :fechaHasta",
+					Cajero.class)
+					.setParameter("fechaDesde", fechaDesde)
+					.setParameter("fechaHasta", fechaHasta)
+					.list();
+		}
+		finally
+		{
+			session.close();
+		}
 
-	    return lista;
+		return lista;
 	}
 
+	// ------------------------- CASO DE USO 8 -------------------------
 
-	// ---------------------------- CASO DE USO 8 -----------------------------
-	
-	// Traer empleados que nacieron entre dos fechas
-	
-	
-	// LA LISTA NO SE INICIALIZA NULA 
-
-	public List<Empleado> traerEmpleadosEntreFechasDeNacimiento(LocalDate fechaDesde, LocalDate fechaHasta)
+	public List<Empleado> traerEmpleadosEntreFechasDeNacimiento(
+			LocalDate fechaDesde, LocalDate fechaHasta)
 	{
-	    List<Empleado> lista = new ArrayList<Empleado>();
+		List<Empleado> lista = new ArrayList<Empleado>();
 
-	    try
-	    {
-	        iniciaOperacion();
+		try
+		{
+			iniciaOperacion();
 
-	        lista = session.createQuery(
-	                "from Empleado e where e.fechaNacimiento between :fechaDesde and :fechaHasta",
-	                Empleado.class)
-	                .setParameter("fechaDesde", fechaDesde)
-	                .setParameter("fechaHasta", fechaHasta)
-	                .list();
-	    }
-	    finally
-	    {
-	        session.close();
-	    }
+			lista = session.createQuery(
+					"from Empleado e where e.fechaNacimiento between :fechaDesde and :fechaHasta",
+					Empleado.class)
+					.setParameter("fechaDesde", fechaDesde)
+					.setParameter("fechaHasta", fechaHasta)
+					.list();
+		}
+		finally
+		{
+			session.close();
+		}
 
-	    return lista;
+		return lista;
 	}
-	
-	
-	// ------------------  AGREGAR CON JOIN  ----------------------
-	// ------------------  AGREGAR CON JOIN  ----------------------
-	// ------------------  AGREGAR CON JOIN  ----------------------
-	
 }
-
 

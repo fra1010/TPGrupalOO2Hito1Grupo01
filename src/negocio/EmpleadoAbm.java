@@ -10,7 +10,7 @@ import datos.Cajero;
 
 public class EmpleadoAbm 
 {
-	private static EmpleadoAbm instancia = null; // Patrón Singleton
+	private static EmpleadoAbm instancia = null;
 
 	public EmpleadoAbm() 
 	{
@@ -21,31 +21,64 @@ public class EmpleadoAbm
 	{
 		if (instancia == null)
 			instancia = new EmpleadoAbm();
+
 		return instancia;
 	}
 	
-	public int agregarEmpleadoCocinero(String nombre, String apellido, long dni,LocalDate fechaNacimiento, LocalDate ingreso, String especialidad,String categoria,int porcentaje)
+	public int agregarEmpleadoCocinero(
+			String nombre,
+			String apellido,
+			long dni,
+			LocalDate fechaNacimiento,
+			LocalDate ingreso,
+			String especialidad,
+			String categoria,
+			int porcentaje)
 	{
-	    int id = 0;
+		int id = 0;
 
-	    if (EmpleadoDao.getInstance().traerPorDni(dni) == null)
-	    {
-	        id = EmpleadoDao.getInstance().agregar(new Cocinero(nombre, apellido, dni, fechaNacimiento, ingreso, especialidad,categoria,porcentaje));
-	    }
+		if (EmpleadoDao.getInstance().traerPorDni(dni) == null)
+		{
+			id = EmpleadoDao.getInstance().agregar(
+					new Cocinero(
+							nombre,
+							apellido,
+							dni,
+							fechaNacimiento,
+							ingreso,
+							especialidad,
+							categoria,
+							porcentaje));
+		}
 
-	    return id;
+		return id;
 	}
 	
-	public int agregarEmpleadoCajero(String nombre, String apellido, long dni,LocalDate fechaNacimiento, LocalDate ingreso, String turno,double plusAntiguedad)
+	public int agregarEmpleadoCajero(
+			String nombre,
+			String apellido,
+			long dni,
+			LocalDate fechaNacimiento,
+			LocalDate ingreso,
+			String turno,
+			double plusAntiguedad)
 	{
-	    int id = 0;
+		int id = 0;
 
-	    if (EmpleadoDao.getInstance().traerPorDni(dni) == null)
-	    {
-	        id = EmpleadoDao.getInstance().agregar(new Cajero(nombre, apellido, dni, fechaNacimiento, ingreso, turno,plusAntiguedad));
-	    }
+		if (EmpleadoDao.getInstance().traerPorDni(dni) == null)
+		{
+			id = EmpleadoDao.getInstance().agregar(
+					new Cajero(
+							nombre,
+							apellido,
+							dni,
+							fechaNacimiento,
+							ingreso,
+							turno,
+							plusAntiguedad));
+		}
 
-	    return id;
+		return id;
 	}
 
 	public Empleado traer(int idEmpleado) 
@@ -58,61 +91,73 @@ public class EmpleadoAbm
 		return EmpleadoDao.getInstance().traer();
 	}
 
-	// --------------------CASO DE USO 1----------------------------
-	
+	// ------------------------- CASO DE USO 1 -------------------------
+
 	public List<Cocinero> traerCocinerosPorEspecialidad(String especialidad)
 	{
-		return EmpleadoDao.getInstance().traerCocinerosPorEspecialidad(especialidad);
+		return EmpleadoDao.getInstance()
+				.traerCocinerosPorEspecialidad(especialidad);
 	}
 
-	// --------------------CASO DE USO 2----------------------------
-	
+	// ------------------------- CASO DE USO 2 -------------------------
+
 	public List<Cajero> traerCajerosPorTurno(String turno)
 	{
-		 return EmpleadoDao.getInstance().traerCajerosPorTurno(turno);
+		return EmpleadoDao.getInstance()
+				.traerCajerosPorTurno(turno);
 	}
 
-	// --------------------CASO DE USO 3----------------------------
-	
-	public List<Empleado> traerEmpleadosPorFechaNacimiento(LocalDate fechaNacimiento)
+	// ------------------------- CASO DE USO 3 -------------------------
+
+	public List<Empleado> traerEmpleadosPorFechaNacimiento(
+			LocalDate fechaNacimiento)
 	{
-		return EmpleadoDao.getInstance().traerEmpleadosPorFechaNacimiento(fechaNacimiento);
+		return EmpleadoDao.getInstance()
+				.traerEmpleadosPorFechaNacimiento(fechaNacimiento);
 	}
 	
-	// --------------------CASO DE USO 4----------------------------
-	
+	// ------------------------- CASO DE USO 4 -------------------------
+
 	public List<Cocinero> traerCocineros()
 	{
 		return EmpleadoDao.getInstance().traerCocineros();
 	}
 	
-	// ---------------------------- CASO DE USO 5 -----------------------------
+	// ------------------------- CASO DE USO 5 -------------------------
 
-	public Empleado traerEmpleadoConMasDeAniosDeAntiguedad(LocalDate inicio,LocalDate fin)
+	public Empleado traerEmpleadoConMasDeAniosDeAntiguedad(
+			LocalDate inicio, LocalDate fin)
 	{
-	    return EmpleadoDao.getInstance().traerEmpleadoConMasAntiguedadEntreFechas(inicio,fin);
+		return EmpleadoDao.getInstance()
+				.traerEmpleadoConMasAntiguedadEntreFechas(inicio, fin);
 	}
 
-	// ---------------------------- CASO DE USO 6 -----------------------------
+	// ------------------------- CASO DE USO 6 -------------------------
 
-	public List<Cocinero> traerCocinerosConMenosDeAniosDeAntiguedad(int anios)
+	public List<Cocinero> traerCocinerosConMenosDeAniosDeAntiguedad(
+			int anios)
 	{
-		
-	    return EmpleadoDao.getInstance().traerCocinerosConMenosDeAniosDeAntiguedad(anios);
+		return EmpleadoDao.getInstance()
+				.traerCocinerosConMenosDeAniosDeAntiguedad(anios);
 	}
 
-	// ---------------------------- CASO DE USO 7 -----------------------------
+	// ------------------------- CASO DE USO 7 -------------------------
 
-	public List<Cajero> traerCajerosEntreFechasDeIngreso(LocalDate fechaDesde, LocalDate fechaHasta)
+	public List<Cajero> traerCajerosEntreFechasDeIngreso(
+			LocalDate fechaDesde, LocalDate fechaHasta)
 	{
-	    return EmpleadoDao.getInstance().traerCajerosEntreFechasDeIngreso(fechaDesde, fechaHasta);
+		return EmpleadoDao.getInstance()
+				.traerCajerosEntreFechasDeIngreso(fechaDesde, fechaHasta);
 	}
 
-	// ---------------------------- CASO DE USO 8 -----------------------------
+	// ------------------------- CASO DE USO 8 -------------------------
 
-	public List<Empleado> traerEmpleadosEntreFechasDeNacimiento(LocalDate fechaDesde, LocalDate fechaHasta)
+	public List<Empleado> traerEmpleadosEntreFechasDeNacimiento(
+			LocalDate fechaDesde, LocalDate fechaHasta)
 	{
-	    return EmpleadoDao.getInstance().traerEmpleadosEntreFechasDeNacimiento(fechaDesde, fechaHasta);
+		return EmpleadoDao.getInstance()
+				.traerEmpleadosEntreFechasDeNacimiento(
+						fechaDesde, fechaHasta);
 	}
-
 }
+

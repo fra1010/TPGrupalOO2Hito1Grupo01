@@ -81,7 +81,8 @@ public class Empleado {
 			return false;
 		return true;
 	}
-	@Override
+    
+    @Override
 	public String toString() {
 	    StringBuilder sb = new StringBuilder();
 	    sb.append("\n------EMPLEADO----- {\n");
@@ -94,4 +95,5 @@ public class Empleado {
 	    sb.append("}");
 	    return sb.toString();
 	}
+	
 }
