@@ -9,12 +9,16 @@ public class PuestoDesarmable extends UnidadVenta {
 		// TODO Auto-generated constructor stub
 	}
 
-	public PuestoDesarmable(String nombre, Empleado responsable, double superficie, String codigo, int cantidadCarpas,
-			int tiempo) {
-		super(nombre, responsable, superficie, codigo);
+
+
+	public PuestoDesarmable(String nombre, Empleado responsable, double superficie, String codigo, Festival festival,
+			int cantidadCarpas, int tiempo) {
+		super(nombre, responsable, superficie, codigo, festival);
 		this.cantidadCarpas = cantidadCarpas;
 		this.tiempo = tiempo;
 	}
+
+
 
 	public int getCantidadCarpas() {
 		return cantidadCarpas;
@@ -37,12 +41,11 @@ public class PuestoDesarmable extends UnidadVenta {
 		StringBuilder sb = new StringBuilder();
 		sb.append("PuestoDesarmable \n");
 		sb.append("  idUnidadVenta: ").append(idUnidadVenta).append(",\n");
-		sb.append("  nombre: ").append(nombre).append(",\n");
-		sb.append("  responsable: ").append(responsable).append(",\n");
+		sb.append("  nombre: ").append(nombre).append(",\n");	
 		sb.append("  superficie: ").append(superficie).append(",\n");
 		sb.append("  codigo: ").append(codigo).append(",\n");
 		sb.append("  cantidadCarpas: ").append(cantidadCarpas).append(",\n");
-		sb.append("  tiempo: ").append(tiempo).append("\n");
+		sb.append("  tiempo: ").append(tiempo).append(",\n");
 		sb.append(" ");
 		return sb.toString();
 	}
