@@ -6,6 +6,8 @@ public class ItemPedido {
 	private Plato plato;
 	private Pedido pedido;
 	private int cantidad;
+	private double precioUnitario;
+	private double costoUnitario;
 	
 	public ItemPedido() {
 		super();
@@ -16,6 +18,8 @@ public class ItemPedido {
 		this.plato = plato;
 		this.pedido = pedido;
 		this.cantidad = cantidad;
+		this.costoUnitario = plato.getCostoDePlato();
+		this.precioUnitario = plato.getPrecioDeVenta();
 	}
 
 	public int getIdItemPedido() {
@@ -50,13 +54,25 @@ public class ItemPedido {
 		this.cantidad = cantidad;
 	}
 
+	public double getPrecioUnitario() {
+		return precioUnitario;
+	}
+
+	public void setPrecioUnitario(double precioUnitario) {
+		this.precioUnitario = precioUnitario;
+	}
+
+	public double getCostoUnitario() {
+		return costoUnitario;
+	}
+
+	public void setCosto_unitario(double costoUnitario) {
+		this.costoUnitario = costoUnitario;
+	}
+
 	@Override
 	public String toString() {
 		return "ItemPedido [idItemPedido=" + idItemPedido  + ", cantidad=" + cantidad + "]";
-	}
-		public double calcularSubTotal() {
-		
-		return this.cantidad * this.plato.getPrecioDeVenta();
 	}
 	
 }

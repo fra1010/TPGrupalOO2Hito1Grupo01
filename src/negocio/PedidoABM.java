@@ -33,6 +33,14 @@ public class PedidoABM {
 		Pedido p = dao.traer(idPedido);
 		dao.eliminar(p);
 	}
+	
+	public void cerrarPedido(Pedido pedido) throws Exception {
+	    if (!pedido.isAbierto()) {
+	        throw new Exception("El pedido ya se encuentra cerrado");
+	    }
+	    pedido.setAbierto(false);
+	    dao.actualizar(pedido);
+	}
 
 	public List<Pedido> traer() {
 		return dao.traer();
