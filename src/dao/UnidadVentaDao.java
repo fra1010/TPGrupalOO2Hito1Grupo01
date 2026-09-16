@@ -125,7 +125,7 @@ public class UnidadVentaDao {
 			id = Integer.parseInt(session.save(objeto).toString());
 
 			for (Plato p : objeto.getPlatos()) {
-				p.setUnidadVenta(objeto);
+				p.setUnidad(objeto);
 				session.save(p);
 			}
 			tx.commit();
