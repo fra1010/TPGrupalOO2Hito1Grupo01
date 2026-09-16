@@ -11,107 +11,118 @@ import datos.UnidadVenta;
 
 public class FestivalABM {
 
-	FestivalDao dao = new FestivalDao();
-	UnidadVentaDao unidadDao = new UnidadVentaDao();
+    FestivalDao dao = new FestivalDao();
+    UnidadVentaDao unidadDao = new UnidadVentaDao();
+    CostoABM abmCosto = new CostoABM();
 
-	public int agregar(Festival f) throws Exception {
+    public int agregar(Festival f) throws Exception {
 
-		if (dao.traerPorNombre(f.getNombre()) != null) {
-			throw new Exception("ERROR: ya existe un festival con el mismo nombre " + f.getNombre());
-		}
+        if (dao.traerPorNombre(f.getNombre()) != null) {
+            throw new Exception("ERROR: ya existe un festival con el mismo nombre " + f.getNombre());
+        }
 
-		return dao.agregar(f);
-	}
+        return dao.agregar(f);
+    }
 
-	public int agregar(String nombre, String temporada, LocalDate fechaInicio, LocalDate fechaFin, Costo costo)
-			throws Exception {
+    public int agregar(String nombre, String temporada, LocalDate fechaInicio, LocalDate fechaFin, Costo costo)
+            throws Exception {
 
-		Festival f = new Festival(nombre, temporada, fechaInicio, fechaFin, costo);
+        Festival f = new Festival(nombre, temporada, fechaInicio, fechaFin, costo);
 
-		return agregar(f);
-	}
+        return agregar(f);
+    }
 
-	public int agregar(String nombre, String temporada, LocalDate fechaInicio, LocalDate fechaFin) throws Exception {
+    public int agregar(String nombre, String temporada, LocalDate fechaInicio, LocalDate fechaFin) throws Exception {
 
-		Festival f = new Festival(nombre, temporada, fechaInicio, fechaFin);
+        Festival f = new Festival(nombre, temporada, fechaInicio, fechaFin);
 
-		return agregar(f);
-	}
+        return agregar(f);
+    }
 
-	public void modificar(Festival f) throws Exception {
+    public int agregarConCosto(String nombre, String temporada, LocalDate fechaInicio, LocalDate fechaFin,
+            int costoSuperficie, int costoMontaje, int costoElectricidad, int sueldoBase) throws Exception {
 
-		Festival existe = dao.traer(f.getIdFestival());
+        int idFestival = agregar(nombre, temporada, fechaInicio, fechaFin);
+        Festival f = dao.traer(idFestival);
 
-		if (existe == null) {
-			throw new Exception("ERROR: no existe Festival con ese ID " + f.getIdFestival());
-		}
+        abmCosto.agregar(costoSuperficie, costoMontaje, costoElectricidad, sueldoBase, f);
 
-		dao.actualizar(f);
-	}
+        return idFestival;
+    }
 
-	public void eliminar(int id) throws Exception {
+    public void modificar(Festival f) throws Exception {
 
-		Festival f = dao.traer(id);
+        Festival existe = dao.traer(f.getIdFestival());
 
-		if (f == null) {
-			throw new Exception("ERROR: no existe Festival con dicho ID");
-		}
+        if (existe == null) {
+            throw new Exception("ERROR: no existe Festival con ese ID " + f.getIdFestival());
+        }
 
-		dao.eliminar(f);
-	}
+        dao.actualizar(f);
+    }
 
-	public Festival traer(int idFestival) {
-		return dao.traer(idFestival);
-	}
+    public void eliminar(int id) throws Exception {
 
-	public List<Festival> traer() {
-		return dao.traer();
-	}
+        Festival f = dao.traer(id);
 
-	public Festival traerFestivalyCosto(int idFestival) {
-		return dao.traerFestivalYCosto(idFestival);
-	}
+        if (f == null) {
+            throw new Exception("ERROR: no existe Festival con dicho ID");
+        }
 
-	public Festival traerFestivalYUnidadesVenta(int idFestival) {
-		return dao.traerFestivalYUnidadesVenta(idFestival);
-	}
-	
-	public void asociarUnidadVenta(int idFestival, String codigoUnidad) throws Exception {
-	    Festival f = dao.traerFestivalYUnidadesVenta(idFestival); // lista cargada con left join fetch
-	    if (f == null) {
-	        throw new Exception("No existe festival con id " + idFestival);
-	    }
+        dao.eliminar(f);
+    }
 
-	    UnidadVenta uv = dao.traerUnidadPorCodigo(codigoUnidad);
-	    if (uv == null) {
-	        throw new Exception("No existe unidad de venta con codigo " + codigoUnidad);
-	    }
+    public Festival traer(int idFestival) {
+        return dao.traer(idFestival);
+    }
 
-	    f.getUnidadesVenta().add(uv);
-	    dao.actualizar(f);
-	}
-	
-	public void desasociarUnidadVenta(int idFestival, String codigoUnidad) throws Exception {
-	    Festival f = dao.traerFestivalYUnidadesVenta(idFestival);
-	    if (f == null) {
-	        throw new Exception("No existe festival con id " + idFestival);
-	    }
+    public List<Festival> traer() {
+        return dao.traer();
+    }
 
-	    UnidadVenta uv = dao.traerUnidadPorCodigo(codigoUnidad);
-	    if (uv == null) {
-	        throw new Exception("No existe unidad de venta con codigo " + codigoUnidad);
-	    }
+    public Festival traerFestivalyCosto(int idFestival) {
+        return dao.traerFestivalYCosto(idFestival);
+    }
 
-	    // Verificacion que la unidad pertenezca a este festival
-	    if (!f.getUnidadesVenta().contains(uv)) {
-	        throw new Exception("La unidad de venta " + codigoUnidad + " no pertenece al festival " + f.getNombre());
-	    }
+    public Festival traerFestivalYUnidadesVenta(int idFestival) {
+        return dao.traerFestivalYUnidadesVenta(idFestival);
+    }
 
-	    f.getUnidadesVenta().remove(uv);
-	    dao.actualizar(f);
-	}
-	
-	public void eliminarUnidadVentaDeFestival(int idFestival, String codigoUnidad) throws Exception {
+    public void asociarUnidadVenta(int idFestival, String codigoUnidad) throws Exception {
+        Festival f = dao.traerFestivalYUnidadesVenta(idFestival);
+        if (f == null) {
+            throw new Exception("No existe festival con id " + idFestival);
+        }
+
+        UnidadVenta uv = dao.traerUnidadPorCodigo(codigoUnidad);
+        if (uv == null) {
+            throw new Exception("No existe unidad de venta con codigo " + codigoUnidad);
+        }
+
+        f.getUnidadesVenta().add(uv);
+        dao.actualizar(f);
+    }
+
+    public void desasociarUnidadVenta(int idFestival, String codigoUnidad) throws Exception {
+        Festival f = dao.traerFestivalYUnidadesVenta(idFestival);
+        if (f == null) {
+            throw new Exception("No existe festival con id " + idFestival);
+        }
+
+        UnidadVenta uv = dao.traerUnidadPorCodigo(codigoUnidad);
+        if (uv == null) {
+            throw new Exception("No existe unidad de venta con codigo " + codigoUnidad);
+        }
+
+        if (!f.getUnidadesVenta().contains(uv)) {
+            throw new Exception("La unidad de venta " + codigoUnidad + " no pertenece al festival " + f.getNombre());
+        }
+
+        f.getUnidadesVenta().remove(uv);
+        dao.actualizar(f);
+    }
+
+    public void eliminarUnidadVentaDeFestival(int idFestival, String codigoUnidad) throws Exception {
         Festival f = dao.traerFestivalYUnidadesVenta(idFestival);
         if (f == null) {
             throw new Exception("No existe festival con id " + idFestival);
@@ -130,5 +141,39 @@ public class FestivalABM {
         dao.actualizar(f);
         unidadDao.eliminar(uv);
     }
-	
+
+    public List<Festival> traerPorRangoDeFechas(LocalDate desde, LocalDate hasta) throws Exception {
+
+        if (desde == null || hasta == null) {
+            throw new Exception("ERROR: las fechas 'desde' y 'hasta' no pueden ser nulas");
+        }
+
+        if (hasta.isBefore(desde)) {
+            throw new Exception("ERROR: la fecha 'hasta' (" + hasta + ") no puede ser anterior a 'desde' (" + desde + ")");
+        }
+
+        return dao.traerPorRangoDeFechas(desde, hasta);
+    }
+
+    public List<Festival> traerPorTemporada(String temporada) throws Exception {
+
+        if (temporada == null || temporada.trim().isEmpty()) {
+            throw new Exception("ERROR: la temporada no puede ser nula ni vacia");
+        }
+
+        return dao.traerPorTemporada(temporada);
+    }
+
+    public List<Festival> traerPorRangoDeCosto(double montoMinimo, double montoMaximo) throws Exception {
+
+        if (montoMinimo < 0 || montoMaximo < 0) {
+            throw new Exception("ERROR: los montos no pueden ser negativos");
+        }
+
+        if (montoMaximo < montoMinimo) {
+            throw new Exception("ERROR: el monto maximo (" + montoMaximo + ") no puede ser menor al minimo (" + montoMinimo + ")");
+        }
+
+        return dao.traerPorRangoDeCosto(montoMinimo, montoMaximo);
+    }
 }
