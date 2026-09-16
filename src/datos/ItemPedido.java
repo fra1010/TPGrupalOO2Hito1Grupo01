@@ -66,7 +66,7 @@ public class ItemPedido {
 		return costoUnitario;
 	}
 
-	public void setCosto_unitario(double costoUnitario) {
+	public void setCostoUnitario(double costoUnitario) {
 		this.costoUnitario = costoUnitario;
 	}
 
