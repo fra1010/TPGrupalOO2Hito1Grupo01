@@ -79,10 +79,9 @@ public class ItemPedidoDao {
 	public List<ItemPedido> traer() {
 
 	    List<ItemPedido> lista = new ArrayList<ItemPedido>();
-
 	    try {
 	        iniciaOperacion();
-	        String hql = "from ItemPedido i " + "inner join fetch i.pedido " + "inner join fetch i.plato " + "order by i.idItemPedido asc";
+	        String hql = "from ItemPedido i inner join fetch i.pedido inner join fetch i.plato order by i.idItemPedido asc";
 	        lista = session.createQuery(hql, ItemPedido.class).getResultList();
 	        
 	    } finally {
@@ -95,10 +94,9 @@ public class ItemPedidoDao {
 	public List<ItemPedido> traer(Pedido pedido) {
 
 	    List<ItemPedido> lista = new ArrayList<ItemPedido>();
-
 	    try {
 	        iniciaOperacion();
-	        String hql = "from ItemPedido i " + "inner join fetch i.plato " + "where i.pedido.idPedido = :idPedido " + "order by i.idItemPedido asc";
+	        String hql = "from ItemPedido i inner join fetch i.plato where i.pedido.idPedido = :idPedido order by i.idItemPedido asc";
 	        lista = session.createQuery(hql, ItemPedido.class).setParameter("idPedido", pedido.getIdPedido()).getResultList();
 	        
 	    } finally {
@@ -114,7 +112,7 @@ public class ItemPedidoDao {
 
 	    try {
 	        iniciaOperacion();
-	        String hql = "from ItemPedido i " + "inner join fetch i.pedido " + "where i.plato.idPlato = :idPlato " + "order by i.idItemPedido asc";
+	        String hql = "from ItemPedido i inner join fetch i.pedido where i.plato.idPlato = :idPlato order by i.idItemPedido asc";
 	        lista = session.createQuery(hql, ItemPedido.class).setParameter("idPlato", plato.getIdPlato()).getResultList();
 	        
 	    } finally {

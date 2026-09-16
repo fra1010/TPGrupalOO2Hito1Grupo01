@@ -142,6 +142,7 @@ public class FestivalABM {
         unidadDao.eliminar(uv);
     }
 
+
     public List<Festival> traerPorRangoDeFechas(LocalDate desde, LocalDate hasta) throws Exception {
 
         if (desde == null || hasta == null) {
@@ -152,7 +153,13 @@ public class FestivalABM {
             throw new Exception("ERROR: la fecha 'hasta' (" + hasta + ") no puede ser anterior a 'desde' (" + desde + ")");
         }
 
-        return dao.traerPorRangoDeFechas(desde, hasta);
+        List<Festival> lista = dao.traerPorRangoDeFechas(desde, hasta);
+
+        if (lista.isEmpty()) {
+            throw new Exception("No hay festivales en el rango de fechas " + desde + " - " + hasta);
+        }
+
+        return lista;
     }
 
     public List<Festival> traerPorTemporada(String temporada) throws Exception {
@@ -161,10 +168,16 @@ public class FestivalABM {
             throw new Exception("ERROR: la temporada no puede ser nula ni vacia");
         }
 
-        return dao.traerPorTemporada(temporada);
+        List<Festival> lista = dao.traerPorTemporada(temporada);
+
+        if (lista.isEmpty()) {
+            throw new Exception("No hay festivales cargados para la temporada " + temporada);
+        }
+
+        return lista;
     }
 
-    public List<Festival> traerPorRangoDeCosto(double montoMinimo, double montoMaximo) throws Exception {
+    public List<Festival> traerPorRangoDeCosto(int montoMinimo, int montoMaximo) throws Exception {
 
         if (montoMinimo < 0 || montoMaximo < 0) {
             throw new Exception("ERROR: los montos no pueden ser negativos");
@@ -174,6 +187,12 @@ public class FestivalABM {
             throw new Exception("ERROR: el monto maximo (" + montoMaximo + ") no puede ser menor al minimo (" + montoMinimo + ")");
         }
 
-        return dao.traerPorRangoDeCosto(montoMinimo, montoMaximo);
+        List<Festival> lista = dao.traerPorRangoDeCosto(montoMinimo, montoMaximo);
+
+        if (lista.isEmpty()) {
+            throw new Exception("No hay festivales con costo entre " + montoMinimo + " y " + montoMaximo);
+        }
+
+        return lista;
     }
 }

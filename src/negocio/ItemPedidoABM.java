@@ -16,6 +16,9 @@ public class ItemPedidoABM {
 	}
 
 	public int agregar(Plato plato, Pedido pedido, int cantidad)throws Exception {
+		if (! pedido.isAbierto()) {
+			throw new Exception("No se pueden agregar items a un pedido cerrado");
+		}
 		if (plato == null || pedido == null) {
 		    throw new Exception("El plato y el pedido son obligatorios");
 		}
