@@ -28,7 +28,7 @@
 		<joined-subclass name="datos.Cajero" table="cajero">
 			<key column="id_empleado" />
 			<property column="turno" name="turno" type="string" />
-			<property column="plus_Antiguedad" name="plusAntiguedad" type="double" />
+			<property column="plus_antiguedad" name="plusAntiguedad" type="double" />
 		</joined-subclass>
 
      </class> 
