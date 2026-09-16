@@ -8,6 +8,7 @@ public class Pedido {
 	private LocalDate fechaTransaccion;
 	private UnidadVenta unidad;
 	private Set<ItemPedido> itemsPedidos;
+	private boolean abierto;
 	
 	public Pedido() {
 		super();
@@ -17,6 +18,7 @@ public class Pedido {
 		super();
 		this.fechaTransaccion = fechaTransaccion;
 		this.unidad = unidad;
+		this.abierto = true;
 	}
 
 	public int getIdPedido() {
@@ -51,18 +53,25 @@ public class Pedido {
 		this.itemsPedidos = itemsPedidos;
 	}
 
-	@Override
-	public String toString() {
-		return "Pedido [idPedido=" + idPedido + ", fechaTransaccion=" + fechaTransaccion + "]";
+	public boolean isAbierto() {
+		return abierto;
 	}
+
+	public void setAbierto(boolean abierto) {
+		this.abierto = abierto;
+	}
+	
 	public double calcularTotal() {
 		double total= 0;
 		for (ItemPedido itemPedido : itemsPedidos) {
 			total = total + itemPedido.calcularSubTotal();
-		}
-		
+			}
 		return total;
-		
+	}
+
+	@Override
+	public String toString() {
+		return "Pedido [idPedido=" + idPedido + ", fechaTransaccion=" + fechaTransaccion + "]";
 	}
 
 }

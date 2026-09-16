@@ -9,6 +9,8 @@
         </id>
 		<!-- Atributos - Columnas -->
         <property name="cantidad" column="cantidad" type="int" not-null="true"/>
+        <property name="precioUnitario" column="precio_unitario" type="double" not-null="true"/>
+        <property name="costoUnitario" column="costo_unitario" type="double" not-null="true"/>
         <many-to-one name="pedido" class="datos.Pedido" column="pedido_id" not-null="true"/>
         <many-to-one name="plato" class="datos.Plato" column="plato_id" not-null="true"/>
     </class>
