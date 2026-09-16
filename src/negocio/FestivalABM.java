@@ -164,7 +164,7 @@ public class FestivalABM {
         return dao.traerPorTemporada(temporada);
     }
 
-    public List<Festival> traerPorRangoDeCosto(double montoMinimo, double montoMaximo) throws Exception {
+    public List<Festival> traerPorRangoDeCosto(int montoMinimo, int montoMaximo) throws Exception {
 
         if (montoMinimo < 0 || montoMaximo < 0) {
             throw new Exception("ERROR: los montos no pueden ser negativos");
