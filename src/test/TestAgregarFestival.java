@@ -2,41 +2,25 @@ package test;
 
 import java.time.LocalDate;
 
-import datos.Costo;
-import datos.Festival;
-import negocio.CostoABM;
 import negocio.FestivalABM;
 
 public class TestAgregarFestival {
 
-	public static void main(String[] args) {
+    public static void main(String[] args) {
 
-		FestivalABM abmFestival = new FestivalABM();
-		CostoABM abmCosto = new CostoABM();
+        FestivalABM abmFestival = new FestivalABM();
 
-		try {
-			String nombre = "Festival222";
-			String temporada = "Invierno";
-			LocalDate fechaInicio = LocalDate.of(2026, 1, 12);
-			LocalDate fechaFin = LocalDate.of(2026, 12, 31);
+        try {
 
-			int idFestival = abmFestival.agregar(nombre, temporada, fechaInicio, fechaFin);
+            abmFestival.agregarConCosto("Festival Lanus", "Primavera", LocalDate.of(2025, 9, 21), LocalDate.of(2025, 9, 25), 50, 30, 200, 500);
+            abmFestival.agregarConCosto("Festival Lomas", "Invierno", LocalDate.of(2025, 7, 13), LocalDate.of(2025, 7, 18), 60, 15, 300, 450);
+            abmFestival.agregarConCosto("Festival Ezeiza", "Verano", LocalDate.of(2025, 1, 22), LocalDate.of(2025, 1, 28), 70, 20, 250, 550);
+            abmFestival.agregarConCosto("Festival Avellaneda", "Otoño", LocalDate.of(2025, 5, 14), LocalDate.of(2025, 5, 19), 55, 10, 150, 600);
 
-			System.out.println("Festival agregado : " + abmFestival.traer(idFestival));
 
-			Festival festival = abmFestival.traer(idFestival);//agrega costo a el nuevo festival
-
-			int idCosto = abmCosto.agregar(1, 1, 2, 2, festival);
-
-			System.out.println("Costo agregado: " + abmCosto.traer(idCosto));
-
-			//Verificacion
-			Festival nuevo = abmFestival.traerFestivalyCosto(idFestival);
-			System.out.println("Festival con costo cargado: " + nuevo);
-
-		} catch (Exception e) {
-			System.out.println("ERROR al agregar festival/costo: " + e.getMessage());
-			e.printStackTrace();
-		}
-	}
+        } catch (Exception e) {
+            System.out.println("ERROR al agregar festival: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
 }
