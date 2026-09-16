@@ -9,7 +9,7 @@ import datos.Cajero;
 import negocio.EmpleadoAbm;
 
 public class TestEmpleado 
-{
+{ 
     public static void main(String[] args) 
     {
     	EmpleadoAbm empleado1 = new EmpleadoAbm();

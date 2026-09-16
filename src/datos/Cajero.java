@@ -5,7 +5,7 @@ import java.time.LocalDate;
 public class Cajero extends Empleado
 {
 	private String turno;
-	private double plusAntiguedad;
+	private Double plusAntiguedad;
 
 	public Cajero() 
 	{
@@ -13,7 +13,7 @@ public class Cajero extends Empleado
 	}
 	
 	public Cajero(String nombre, String apellido,long dni, LocalDate fechaNacimiento, LocalDate ingreso,
-					String turno,double plusAntiguedad) 
+					String turno,Double plusAntiguedad) 
 	{
 		super(nombre,apellido,dni,fechaNacimiento,ingreso);
 		this.turno = turno;
