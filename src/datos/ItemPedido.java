@@ -54,5 +54,9 @@ public class ItemPedido {
 	public String toString() {
 		return "ItemPedido [idItemPedido=" + idItemPedido  + ", cantidad=" + cantidad + "]";
 	}
+		public double calcularSubTotal() {
+		
+		return this.cantidad * this.plato.getPrecioDeVenta();
+	}
 	
 }
