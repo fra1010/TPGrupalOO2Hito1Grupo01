@@ -171,10 +171,6 @@ public class FestivalDao {
         return lista;
     }
 
-    /**
-     * Trae todos los festivales que pertenecen a una temporada dada.
-     * Ordenados por fecha de inicio ascendente.
-     */
     public List<Festival> traerPorTemporada(String temporada) {
         List<Festival> lista = new ArrayList<Festival>();
         try {
@@ -193,12 +189,7 @@ public class FestivalDao {
         return lista;
     }
 
-    /**
-     * Trae los festivales cuyo costo total (superficie + montaje + electricidad + sueldo base)
-     * esta dentro del rango [montoMinimo, montoMaximo]. Requiere que el festival tenga
-     * un Costo asociado (inner join). Ordenados por costo total descendente.
-     */
-    public List<Festival> traerPorRangoDeCosto(double montoMinimo, double montoMaximo) {
+    public List<Festival> traerPorRangoDeCosto(int montoMinimo, int montoMaximo) {
         List<Festival> lista = new ArrayList<Festival>();
         try {
             iniciaOperacion();
