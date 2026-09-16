@@ -10,6 +10,9 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
+import datos.ItemPedido;
+import datos.Pedido;
+import datos.Plato;
 import datos.UnidadVenta;
 
 public class UnidadVentaDao {
@@ -50,6 +53,8 @@ public class UnidadVentaDao {
 					.setParameter("codigo", codigo).uniqueResult();
 			if (unidadVenta != null) {
 				Hibernate.initialize(unidadVenta.getResponsable());
+				Hibernate.initialize(unidadVenta.getFestival());
+				
 			}
 
 		} finally {
@@ -65,8 +70,7 @@ public class UnidadVentaDao {
 			iniciaOperacion();
 			unidadVenta = (UnidadVenta) session.createQuery(" from UnidadVenta u where u.codigo = :codigo")
 					.setParameter("codigo", codigo).uniqueResult();
-			if (unidadVenta != null) {
-				Hibernate.initialize(unidadVenta.getResponsable());
+			if (unidadVenta != null) {		
 				Hibernate.initialize(unidadVenta.getEmpleados());
 			}
 		} finally {
@@ -112,5 +116,50 @@ public class UnidadVentaDao {
 		} finally {
 			session.close();
 		}
+	}
+	
+	public int agregarUnidadVentaYPlatos(UnidadVenta objeto) {
+		int id = 0;
+		try {
+			iniciaOperacion();
+			id = Integer.parseInt(session.save(objeto).toString());
+
+			for (Plato p : objeto.getPlatos()) {
+				p.setUnidadVenta(objeto);
+				session.save(p);
+			}
+			tx.commit();
+		} catch (HibernateException e) {
+
+			manejaExcepcion(e);
+		} finally {
+			session.close();
+		}
+
+		return id;
+	}
+	public UnidadVenta traerUnidadVentaYPedidosEitem(String codigo) {
+
+		UnidadVenta unidadVenta = null;
+		try {
+			iniciaOperacion();
+			unidadVenta = (UnidadVenta) session.createQuery(" from UnidadVenta u where u.codigo = :codigo")
+					.setParameter("codigo", codigo).uniqueResult();
+			if (unidadVenta != null) {
+				Hibernate.initialize(unidadVenta.getPedidos());
+
+				for (Pedido p : unidadVenta.getPedidos()) {
+					Hibernate.initialize(p.getItemsPedidos());
+					for (ItemPedido i : p.getItemsPedidos()) {
+						Hibernate.initialize(i.getPlato());
+					}
+				}
+
+			}
+		} finally {
+			session.close();
+		}
+
+		return unidadVenta;
 	}
 }
