@@ -60,11 +60,18 @@ public class Pedido {
 	public void setAbierto(boolean abierto) {
 		this.abierto = abierto;
 	}
+	
+	public double calcularTotal() {
+		double total= 0;
+		for (ItemPedido itemPedido : itemsPedidos) {
+			total = total + itemPedido.calcularSubTotal();
+			}
+		return total;
+	}
 
 	@Override
 	public String toString() {
 		return "Pedido [idPedido=" + idPedido + ", fechaTransaccion=" + fechaTransaccion + "]";
 	}
-	
 
 }

@@ -70,6 +70,10 @@ public class ItemPedido {
 		this.costoUnitario = costoUnitario;
 	}
 
+	public double calcularSubTotal() {
+		return this.cantidad * this.plato.getPrecioDeVenta();
+	}
+	
 	@Override
 	public String toString() {
 		return "ItemPedido [idItemPedido=" + idItemPedido  + ", cantidad=" + cantidad + "]";
