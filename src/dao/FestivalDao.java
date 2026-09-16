@@ -1,5 +1,6 @@
 package dao;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.HibernateException;
@@ -147,4 +148,75 @@ public class FestivalDao {
 		}
 		return objeto;
 	}
+	
+
+    public List<Festival> traerPorRangoDeFechas(LocalDate desde, LocalDate hasta) {
+        List<Festival> lista = new ArrayList<Festival>();
+        try {
+            iniciaOperacion();
+
+            String hql = "from Festival f "
+                    + "where f.fechaInicio >= :desde and f.fechaFin <= :hasta "
+                    + "order by f.fechaInicio";
+
+            Query<Festival> query = session.createQuery(hql, Festival.class);
+            query.setParameter("desde", desde);
+            query.setParameter("hasta", hasta);
+
+            lista = query.getResultList();
+
+        } finally {
+            session.close();
+        }
+        return lista;
+    }
+
+    /**
+     * Trae todos los festivales que pertenecen a una temporada dada.
+     * Ordenados por fecha de inicio ascendente.
+     */
+    public List<Festival> traerPorTemporada(String temporada) {
+        List<Festival> lista = new ArrayList<Festival>();
+        try {
+            iniciaOperacion();
+
+            String hql = "from Festival f where f.temporada = :temporada order by f.fechaInicio";
+
+            Query<Festival> query = session.createQuery(hql, Festival.class);
+            query.setParameter("temporada", temporada);
+
+            lista = query.getResultList();
+
+        } finally {
+            session.close();
+        }
+        return lista;
+    }
+
+    /**
+     * Trae los festivales cuyo costo total (superficie + montaje + electricidad + sueldo base)
+     * esta dentro del rango [montoMinimo, montoMaximo]. Requiere que el festival tenga
+     * un Costo asociado (inner join). Ordenados por costo total descendente.
+     */
+    public List<Festival> traerPorRangoDeCosto(double montoMinimo, double montoMaximo) {
+        List<Festival> lista = new ArrayList<Festival>();
+        try {
+            iniciaOperacion();
+
+            String hql = "select f from Festival f inner join fetch f.costo c "
+                    + "where (c.costoSuperficie + c.costoMontaje + c.costoElectricidad + c.sueldoBase) "
+                    + "between :min and :max "
+                    + "order by (c.costoSuperficie + c.costoMontaje + c.costoElectricidad + c.sueldoBase) desc";
+
+            Query<Festival> query = session.createQuery(hql, Festival.class);
+            query.setParameter("min", montoMinimo);
+            query.setParameter("max", montoMaximo);
+
+            lista = query.getResultList();
+
+        } finally {
+            session.close();
+        }
+        return lista;
+    }
 }
