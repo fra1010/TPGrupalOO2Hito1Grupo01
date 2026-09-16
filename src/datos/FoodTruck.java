@@ -10,12 +10,14 @@ public class FoodTruck extends UnidadVenta{
 	}
 
 
-	public FoodTruck(String nombre, Empleado responsable, double superficie, String codigo, String patente,
-			boolean conexion) {
-		super(nombre, responsable, superficie, codigo);
+
+	public FoodTruck(String nombre, Empleado responsable, double superficie, String codigo, Festival festival,
+			String patente, boolean conexion) {
+		super(nombre, responsable, superficie, codigo, festival);
 		this.patente = patente;
 		this.conexion = conexion;
 	}
+
 
 
 	public String getPatente() {
@@ -37,29 +39,20 @@ public class FoodTruck extends UnidadVenta{
 		this.conexion = conexion;
 	}
 
-
 	@Override
 	public String toString() {
-	    StringBuilder sb = new StringBuilder();
-	    sb.append("FoodTruck \n");
-	    sb.append("  idUnidadVenta: ").append(idUnidadVenta).append(",\n");
-	    sb.append("  nombre: ").append(nombre).append(",\n");
-	    sb.append("  responsable: ").append(responsable).append(",\n");
-	    sb.append("  superficie: ").append(superficie).append(",\n");
-	    sb.append("  codigo: ").append(codigo).append(",\n");
-	    sb.append("  patente: ").append(patente).append(",\n");
-	    sb.append("  conexion: ").append(conexion).append("\n");
-	    sb.append(" ");
-	    return sb.toString();
+		StringBuilder sb = new StringBuilder();
+		sb.append("FoodTruck \n");
+		sb.append("  idUnidadVenta: ").append(idUnidadVenta).append(",\n");
+		sb.append("  nombre: ").append(nombre).append(",\n");
+		sb.append("  superficie: ").append(superficie).append(",\n");
+		sb.append("  codigo: ").append(codigo).append(",\n");
+		sb.append("  patente: ").append(patente).append(",\n");
+		sb.append("  conexion: ").append(conexion).append(",\n");
+		sb.append(" ");
+		return sb.toString();
 	}
 
-
-	
-
-
-	
-	
-	
 	
 
 }
