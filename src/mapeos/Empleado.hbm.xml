@@ -1,4 +1,3 @@
-
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!DOCTYPE hibernate-mapping PUBLIC
@@ -29,7 +28,7 @@
 		<joined-subclass name="datos.Cajero" table="cajero">
 			<key column="id_empleado" />
 			<property column="turno" name="turno" type="string" />
-			<property column="plusAntiguedad" name="plusAntiguedad" type="double" />
+			<property column="plus_Antiguedad" name="plusAntiguedad" type="double" />
 		</joined-subclass>
 
      </class> 
