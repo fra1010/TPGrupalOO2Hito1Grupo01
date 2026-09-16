@@ -3,7 +3,8 @@ package datos;
 import java.time.LocalDate;
 import java.util.Set;
 
-public class Festival {
+public class Festival 
+{
 	private int idFestival;
 	private String nombre;
 	private String temporada;
@@ -12,7 +13,10 @@ public class Festival {
 	private Set<UnidadVenta> unidadesVenta;
 	private Costo costo;
 
-	public Festival() {}
+	public Festival() 
+	{
+		
+	}
 
 	public Festival(String nombre, String temporada, LocalDate fechaInicio, LocalDate fechaFin, Costo costo) {
 	    this.nombre = nombre;
@@ -21,13 +25,12 @@ public class Festival {
 	    this.fechaFin = fechaFin;
 	    this.costo = costo;
 
-	    if (costo != null) {
+	    if (costo != null) 
+	    {
 	        costo.setFestival(this);
 	    }
 	}
 	
-	
-
 	public Festival(String nombre, String temporada, LocalDate fechaInicio, LocalDate fechaFin) {
 	    this.nombre = nombre;
 	    this.temporada = temporada;

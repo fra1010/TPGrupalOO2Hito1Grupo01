@@ -1,39 +1,34 @@
 package datos;
 
-public class FoodTruck extends UnidadVenta{
+public class FoodTruck extends UnidadVenta
+{
 	private String patente;
 	private boolean conexion;
 	
-	
-	public FoodTruck() {
+	public FoodTruck() 
+	{
 		super();
 	}
 
-
-
 	public FoodTruck(String nombre, Empleado responsable, double superficie, String codigo, Festival festival,
-			String patente, boolean conexion) {
+			String patente, boolean conexion) 
+	{
 		super(nombre, responsable, superficie, codigo, festival);
 		this.patente = patente;
 		this.conexion = conexion;
 	}
 
-
-
 	public String getPatente() {
 		return patente;
 	}
-
 
 	public void setPatente(String patente) {
 		this.patente = patente;
 	}
 
-
 	public boolean isConexion() {
 		return conexion;
 	}
-
 
 	public void setConexion(boolean conexion) {
 		this.conexion = conexion;

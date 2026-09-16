@@ -9,7 +9,8 @@ public class ItemPedido {
 	private double precioUnitario;
 	private double costoUnitario;
 	
-	public ItemPedido() {
+	public ItemPedido() 
+	{
 		super();
 	}
 

@@ -1,7 +1,8 @@
 package datos;
 
 
-public class Costo {
+public class Costo 
+{
 	private int idCosto;
 	private int costoSuperficie;
 	private int costoMontaje;
@@ -9,9 +10,13 @@ public class Costo {
 	private int sueldoBase;
 	private Festival festival;
 	
-	public Costo() {}
+	public Costo() 
+	{
+		
+	}
 
-	public Costo(int costoSuperficie, int costoMontaje, int costoElectricidad, int sueldoBase) {
+	public Costo(int costoSuperficie, int costoMontaje, int costoElectricidad, int sueldoBase) 
+	{
 		super();
 		this.costoSuperficie = costoSuperficie;
 		this.costoMontaje = costoMontaje;

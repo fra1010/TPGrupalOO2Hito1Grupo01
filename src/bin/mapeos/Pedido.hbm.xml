@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "https://hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+
+    <class name="datos.Pedido" table="pedido">
+    	<!-- ID -->
+        <id name="idPedido" column="id_pedido">
+            <generator class="identity"/>
+        </id>
+		<!-- Atributos - Columnas -->
+        <property name="fechaTransaccion" column="fecha_transaccion" type="java.time.LocalDate" not-null="true"/>
+        <set name="itemsPedidos" table="item_pedido" order-by="id_item_pedido asc" inverse="true" lazy="true" fetch="select">
+   			<key column="pedido_id" not-null="true" />
+			<one-to-many class="datos.ItemPedido" />
+		</set>
+    </class>
+</hibernate-mapping>

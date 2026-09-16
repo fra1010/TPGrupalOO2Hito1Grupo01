@@ -1,4 +1,3 @@
-
 package dao;
 
 import java.time.LocalDate;
@@ -48,10 +47,7 @@ public class EmpleadoDao
 		throw new HibernateException("ERROR en la capa de acceso a datos", he);
 	}
 	
-	
-	// -----------------------------------------------------------------
 	// ------- METODOS DE CONSULTA DE BASE DE DATOS EMPLEADO -----------
-    // -----------------------------------------------------------------
 	
 	// ---- metodo agregar empleado a la base de datos -----
 	
@@ -341,6 +337,4 @@ public class EmpleadoDao
 
 	    return lista;
 	}
-	
-
 }

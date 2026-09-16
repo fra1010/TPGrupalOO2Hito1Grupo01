@@ -5,19 +5,23 @@ import dao.CostoDao;
 import datos.Costo;
 import datos.Festival;
 
-public class CostoABM {
+public class CostoABM 
+{
 	CostoDao dao = new CostoDao();
 
-	public Costo traer(int idCosto) {
+	public Costo traer(int idCosto) 
+	{
 		return dao.traer(idCosto);
 	}
 
-	public List<Costo> traer() {
+	public List<Costo> traer() 
+	{
 		return dao.traer();
 	}
 
 	public int agregar(int costoSuperficie, int costoMontaje, int costoElectricidad, int sueldoBase, Festival festival)
-			throws Exception {
+			throws Exception 
+	{
 
 		Costo c = new Costo(costoSuperficie, costoMontaje, costoElectricidad, sueldoBase, festival);
 
@@ -25,7 +29,8 @@ public class CostoABM {
 	}
 	
 
-	public int agregar(Costo c) throws Exception {
+	public int agregar(Costo c) throws Exception 
+	{
 
 	    if (c.getFestival() == null) {
 	        throw new Exception("El costo debe estar asociado a un festival.");
@@ -36,7 +41,8 @@ public class CostoABM {
 	    }
 
 	    Costo costo = dao.traer(c.getFestival().getIdFestival());
-	    if (costo != null) {
+	    if (costo != null) 
+	    {
 	        throw new Exception("ERROR: el festival " + c.getFestival().getNombre()
 	                + " ya tiene un costo asignado (ID " + costo.getIdCosto() + ").");
 	    }
@@ -44,7 +50,8 @@ public class CostoABM {
 	    return dao.agregar(c);
 	}
 
-	public void modificar(Costo c) throws Exception {
+	public void modificar(Costo c) throws Exception 
+	{
 		Costo existe = dao.traer(c.getIdCosto());
 		if (existe == null) {
 			throw new Exception("ERROR:  no existe costo con dicho ID " + c.getIdCosto());
@@ -53,7 +60,8 @@ public class CostoABM {
 		dao.actualizar(c);
 	}
 
-	public void eliminar(int id) throws Exception {
+	public void eliminar(int id) throws Exception 
+	{
 		Costo c = dao.traer(id);
 		if (c == null) {
 			throw new Exception("ERROR: no existe costo con dicho ID");

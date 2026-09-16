@@ -2,7 +2,8 @@ package datos;
 
 import java.time.LocalDate;
 
-public class Empleado {
+public abstract class Empleado 
+{
 	protected int idEmpleado;
 	protected String nombre;
 	protected String apellido;

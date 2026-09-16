@@ -9,12 +9,14 @@ import org.hibernate.query.Query;
 import datos.Costo;
 
 
-public class CostoDao {
-
+public class CostoDao 
+{
 	private static Session session;
+	
 	private Transaction tx;
 
-	private void iniciaOperacion() throws HibernateException {
+	private void iniciaOperacion() throws HibernateException 
+	{
 		session = HibernateUtil.getSessionFactory().openSession();
 		tx = session.beginTransaction();
 	}
@@ -76,10 +78,12 @@ public class CostoDao {
 		}
 	}
 	
-	public List<Costo> traer(){
+	public List<Costo> traer()
+	{
 		List <Costo> lista = new ArrayList<Costo>();
 		
-		try {
+		try 
+		{
 			iniciaOperacion();
 			
 			Query<Costo> query = session.createQuery("from Costo c", Costo.class);

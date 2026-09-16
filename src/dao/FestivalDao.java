@@ -11,16 +11,19 @@ import org.hibernate.query.Query;
 import datos.Festival;
 import datos.UnidadVenta;
 
-public class FestivalDao {
+public class FestivalDao 
+{
 	private static Session session;
 	private Transaction tx;
 
-	private void iniciaOperacion() throws HibernateException {
+	private void iniciaOperacion() throws HibernateException 
+	{
 		session = HibernateUtil.getSessionFactory().openSession();
 		tx = session.beginTransaction();
 	}
 
-	private void manejaExcepcion(HibernateException he) throws HibernateException {
+	private void manejaExcepcion(HibernateException he) throws HibernateException 
+	{
 		tx.rollback();
 		throw new HibernateException("ERROR en la capa de acceso a datos", he);
 	}
