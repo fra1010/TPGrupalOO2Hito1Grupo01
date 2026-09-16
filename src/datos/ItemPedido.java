@@ -71,7 +71,7 @@ public class ItemPedido {
 	}
 
 	public double calcularSubTotal() {
-		return this.cantidad * this.plato.getPrecioDeVenta();
+	    return this.cantidad * this.precioUnitario;
 	}
 	
 	@Override
