@@ -2,13 +2,25 @@ package datos;
 
 import java.time.LocalDate;
 
-public abstract class Empleado {
+public abstract class Empleado 
+{
 	protected int idEmpleado;
 	protected String nombre;
 	protected String apellido;
 	protected long dni;
 	protected LocalDate fechaNacimiento;
 	protected LocalDate ingreso;
+	protected UnidadVenta unidadVenta;
+	
+	public UnidadVenta getUnidadVenta() 
+	{
+		return unidadVenta;
+	}
+	
+	public void setUnidadVenta(UnidadVenta unidadVenta)
+	{
+		this.unidadVenta = unidadVenta;
+	}
 	public Empleado() {
 		
 	}
