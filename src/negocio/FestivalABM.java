@@ -15,6 +15,7 @@ public class FestivalABM {
 	FestivalDao dao = new FestivalDao();
 	UnidadVentaDao unidadDao = new UnidadVentaDao();
 	CostoABM abmCosto = new CostoABM();
+	UnidadVentaABM abmUnidadVenta = new UnidadVentaABM();
 
 	public int agregar(Festival f) throws Exception {
 
@@ -199,6 +200,7 @@ public class FestivalABM {
 	}
 
 	public double calcularCostoReal(int idFestival) throws Exception {
+
 		Festival festival = dao.traerFestivalYUnidadesVenta(idFestival);
 
 		if (festival == null) {
@@ -216,6 +218,7 @@ public class FestivalABM {
 
 		if (festival.getUnidadesVenta() != null) {
 			for (UnidadVenta unidad : festival.getUnidadesVenta()) {
+
 				UnidadVenta unidadCompleta = unidadDao.traerUnidadVentaYEmpleadosYFestival(unidad.getCodigo());
 
 				if (unidadCompleta != null) {
@@ -243,6 +246,44 @@ public class FestivalABM {
 		}
 
 		return resultado;
+	}
+
+	public List<Festival> traerPorTipoUnidad(String tipoUnidad) throws Exception {
+		if (tipoUnidad == null || tipoUnidad.trim().isEmpty()) {
+			throw new Exception("El tipo de unidad no puede ser nulo ni vacio");
+		}
+
+		if (!tipoUnidad.equalsIgnoreCase("FoodTruck") && !tipoUnidad.equalsIgnoreCase("PuestoDesarmable")) {
+			throw new Exception("Tipo de unidad no valido: " + tipoUnidad);
+		}
+
+		List<Festival> lista = dao.traerPorTipoUnidad(tipoUnidad);
+
+		if (lista.isEmpty()) {
+			throw new Exception("No hay festivales con unidades del tipo " + tipoUnidad);
+		}
+
+		return lista;
+	}
+
+	public double calcularGananciaEstimada(int idFestival) throws Exception {
+		Festival festival = dao.traerFestivalYUnidadesVenta(idFestival);
+
+		if (festival == null) {
+			throw new Exception("No existe festival con id " + idFestival);
+		}
+
+		double gananciaPlatos = 0;
+
+		if (festival.getUnidadesVenta() != null) {
+			for (UnidadVenta unidad : festival.getUnidadesVenta()) {
+				gananciaPlatos += abmUnidadVenta.calcularGananciaPlatosPorUnidadVenta(unidad.getCodigo());
+			}
+		}
+
+		double costoReal = calcularCostoReal(idFestival);
+
+		return gananciaPlatos - costoReal;
 	}
 
 }
