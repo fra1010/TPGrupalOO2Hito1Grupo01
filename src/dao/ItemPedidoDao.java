@@ -128,13 +128,13 @@ public class ItemPedidoDao {
 	    try {
 	        iniciaOperacion();
 	        String hql = "SELECT i.plato,"
-	        		+ "           SUM((i.precioUnitario - i.costoUnitario) * i.cantidad)"
-	        		+ "    FROM ItemPedido i"
-	        		+ "    JOIN i.pedido p"
-	        		+ "    WHERE p.fechaTransaccion BETWEEN :desde AND :hasta"
-	        		+ "      AND p.abierto = false"
-	        		+ "    GROUP BY i.plato"
-	        		+ "    ORDER BY SUM((i.precioUnitario - i.costoUnitario) * i.cantidad) DESC";
+	        		+ "SUM((i.precioUnitario - i.costoUnitario) * i.cantidad)"
+	        		+ "FROM ItemPedido i"
+	        		+ "JOIN i.pedido p"
+	        		+ "WHERE p.fechaTransaccion BETWEEN :desde AND :hasta"
+	        		+ "AND p.abierto = false"
+	        		+ "GROUP BY i.plato"
+	        		+ "ORDER BY SUM((i.precioUnitario - i.costoUnitario) * i.cantidad) DESC";
 	        lista = session.createQuery(hql, Object[].class).setParameter("desde", desde).setParameter("hasta", hasta).setMaxResults(top).getResultList();
 	        
 	    } finally {
