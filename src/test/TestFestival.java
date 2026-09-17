@@ -8,54 +8,55 @@ import negocio.FestivalABM;
 
 public class TestFestival {
 
-    public static void main(String[] args) {
+	public static void main(String[] args) {
 
-        FestivalABM abm = new FestivalABM();
+		FestivalABM abm = new FestivalABM();
 
-        try {
-            LocalDate desde = LocalDate.of(2025, 2, 21);
-            LocalDate hasta = LocalDate.of(2025, 9, 25);
+		try {
+			LocalDate desde = LocalDate.of(2025, 2, 21);
+			LocalDate hasta = LocalDate.of(2025, 9, 25);
 
-            List<Festival> lista = abm.traerPorRangoDeFechas(desde, hasta);
+			List<Festival> lista = abm.traerPorRangoDeFechas(desde, hasta);
 
-            System.out.println("Festivales entre fechas " + desde + " - " + hasta);
-            for (Festival f : lista) {
-                System.out.println("  - " + f.getNombre() + " (" + f.getFechaInicio() + " a " + f.getFechaFin() + ")");
-            }
+			System.out.println("Festivales entre fechas " + desde + " - " + hasta);
+			for (Festival f : lista) {
+				System.out.println("  - " + f.getNombre() + " (" + f.getFechaInicio() + " a " + f.getFechaFin() + ")");
+			}
 
-        } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
-        }
+		} catch (Exception e) {
+			System.out.println("Error: " + e.getMessage());
+		}
 
-        try {
-            String temporada = "Invierno";
+		try {
+			String temporada = "Invierno";
 
-            List<Festival> lista = abm.traerPorTemporada(temporada);
+			List<Festival> lista = abm.traerPorTemporada(temporada);
 
-            System.out.println("Festivales para la temporada: " + temporada);
-            for (Festival f : lista) {
-                System.out.println("  - " + f.getNombre() + " (" + f.getFechaInicio() + " a " + f.getFechaFin() + ")");
-            }
+			System.out.println("Festivales para la temporada: " + temporada);
+			for (Festival f : lista) {
+				System.out.println("  - " + f.getNombre() + " (" + f.getFechaInicio() + " a " + f.getFechaFin() + ")");
+			}
 
-        } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
-        }
+		} catch (Exception e) {
+			System.out.println("Error: " + e.getMessage());
+		}
 
-        try {
-            int costoMin = 100;
-            int costoMax = 820;
+		try {
+			int costoMin = 350;
+			int costoMax = 5000;
 
-            List<Festival> lista = abm.traerPorRangoDeCosto(costoMin, costoMax);
+			List<Festival> lista = abm.traerPorRangoDeCostoReal(costoMin, costoMax);
 
-            System.out.println("Festivales con costo entre: " + costoMin + " - " + costoMax);
-            for (Festival f : lista) {
-                int total = f.getCosto().getCostoSuperficie() + f.getCosto().getCostoMontaje()
-                        + f.getCosto().getCostoElectricidad() + f.getCosto().getSueldoBase();
-                System.out.println("  - " + f.getNombre() + " - costo total: " + total);
-            }
+			System.out.println("Festivales con costo entre: " + costoMin + " - " + costoMax);
 
-        } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
-        }
-    }
+			for (Festival festival : lista) {
+				double total = abm.calcularCostoReal(festival.getIdFestival());
+
+				System.out.println("  - " + festival.getNombre() + " - costo total: " + total);
+			}
+
+		} catch (Exception e) {
+			System.out.println("Error: " + e.getMessage());
+		}
+	}
 }
