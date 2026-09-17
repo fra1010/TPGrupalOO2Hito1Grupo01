@@ -198,37 +198,48 @@ public class FestivalABM {
 		return lista;
 	}
 
+	public double calcularCostoReal(int idFestival) throws Exception {
+		Festival festival = dao.traerFestivalYUnidadesVenta(idFestival);
+
+		if (festival == null) {
+			throw new Exception("No existe festival con id " + idFestival);
+		}
+
+		if (festival.getCosto() == null) {
+			throw new Exception("El festival no tiene un costo asociado");
+		}
+
+		double costosFijos = festival.getCosto().getCostoSuperficie() + festival.getCosto().getCostoMontaje()
+				+ festival.getCosto().getCostoElectricidad();
+
+		double sueldos = 0;
+
+		if (festival.getUnidadesVenta() != null) {
+			for (UnidadVenta unidad : festival.getUnidadesVenta()) {
+				UnidadVenta unidadCompleta = unidadDao.traerUnidadVentaYEmpleadosYFestival(unidad.getCodigo());
+
+				if (unidadCompleta != null) {
+					sueldos += unidadCompleta.todoTotalSueldoEmpleados();
+				}
+			}
+		}
+
+		return costosFijos + sueldos;
+	}
+
 	public List<Festival> traerPorRangoDeCostoReal(int minimo, int maximo) throws Exception {
 		List<Festival> resultado = new ArrayList<Festival>();
 
 		for (Festival festival : dao.traer()) {
-			Festival festivalCompleto = dao.traerFestivalYUnidadesVenta(festival.getIdFestival());
-
-			double costosFijos = festivalCompleto.getCosto().getCostoSuperficie()
-					+ festivalCompleto.getCosto().getCostoMontaje()
-					+ festivalCompleto.getCosto().getCostoElectricidad();
-
-			double sueldos = 0;
-
-			if (festivalCompleto.getUnidadesVenta() != null) {
-				for (UnidadVenta unidad : festivalCompleto.getUnidadesVenta()) {
-					UnidadVenta unidadCompleta = unidadDao.traerUnidadVentaYEmpleadosYFestival(unidad.getCodigo());
-
-					if (unidadCompleta != null) {
-						sueldos += unidadCompleta.todoTotalSueldoEmpleados();
-					}
-				}
-			}
-
-			double costoReal = costosFijos + sueldos;
+			double costoReal = calcularCostoReal(festival.getIdFestival());
 
 			if (costoReal >= minimo && costoReal <= maximo) {
-				resultado.add(festivalCompleto);
+				resultado.add(festival);
 			}
 		}
 
 		if (resultado.isEmpty()) {
-			throw new Exception("No hay festivales con costo entre " + minimo + " y " + maximo);
+			throw new Exception("No hay festivales con costo real entre " + minimo + " y " + maximo);
 		}
 
 		return resultado;
