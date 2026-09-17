@@ -58,5 +58,35 @@ public class TestFestival {
 		} catch (Exception e) {
 			System.out.println("Error: " + e.getMessage());
 		}
+
+		try {
+			String tipoUnidad = "FoodTruck";
+
+			List<Festival> lista = abm.traerPorTipoUnidad(tipoUnidad);
+
+			System.out.println("Festivales con unidades tipo " + tipoUnidad + ":");
+
+			for (Festival festival : lista) {
+				System.out.println("Festival: " + festival.getNombre() + " - Unidades: "
+						+ festival.nombresUnidadesPorTipo(tipoUnidad));
+			}
+
+		} catch (Exception e) {
+			System.out.println("Error: " + e.getMessage());
+		}
+
+		try {
+			int idFestival = 1;
+
+			Festival festival = abm.traer(idFestival);
+			double ganancia = abm.calcularGananciaEstimada(idFestival);
+
+			System.out.println("Ganancia estimada del festival " + festival.getNombre() + ": " + ganancia);
+
+		} catch (Exception e) {
+			System.out.println("Error: " + e.getMessage());
+		}
+
 	}
+
 }
