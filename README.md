@@ -18,3 +18,22 @@
 -  Actualizar Unidad
 -  Traer lista de Unidades
 -  Calcular Total de Unidad de Venta
+
+### Denis Flores
+-  Traer festivales por rango de fechas
+-  Traer festivales por temporada
+-  Traer costo total de festival
+-  Traer festivales con tipo de unidadVenta
+-  Traer ganancia total de festivales
+
+### Leandro Vera
+-  Traer TOP N de ganancias entre rango de fechas
+-  Traer cierre diario por unidad en una fecha
+
+### Diego Olmedo
+-  Traer agregar empleado
+-  Traer cocinero por especialidad
+-  Traer cajero por turno
+-  Traer empleados por fecha de nacimiento entre dos fechas
+-  Traer empleado mas antiguo
+
