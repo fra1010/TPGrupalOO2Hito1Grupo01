@@ -12,8 +12,8 @@ public class TestCalcularGananciaPlatosPorUnidadVenta {
 		String codigo3 ="AGISHAEYFQ";
 
 		double ganancia = abmUnidadVenta.calcularGananciaPlatosPorUnidadVenta(codigo);
-		double ganancia2 = abmUnidadVenta.totalSueldoEmpleados(codigo2);
-		double ganancia3 = abmUnidadVenta.totalSueldoEmpleados(codigo3);
+		double ganancia2 = abmUnidadVenta.calcularGananciaPlatosPorUnidadVenta(codigo2);
+		double ganancia3 = abmUnidadVenta.calcularGananciaPlatosPorUnidadVenta(codigo3);
 		System.out.println("Ganancia de platos vendidos: " + ganancia  + " codigo unidad de venta: " + codigo);
 		System.out.println("Ganancia de platos vendidos: " + ganancia2 + " codigo unidad de venta: " + codigo2);
 		System.out.println("Ganancia de platos vendidos: " + ganancia3 + " codigo unidad de venta: " + codigo3);
