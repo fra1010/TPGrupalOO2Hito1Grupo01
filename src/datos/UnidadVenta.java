@@ -2,6 +2,8 @@ package datos;
 
 import java.util.Set;
 
+
+
 public abstract class UnidadVenta {
 
 	protected int idUnidadVenta;
@@ -17,7 +19,6 @@ public abstract class UnidadVenta {
 	public UnidadVenta() {
 		super();
 	}
-
 
 	public UnidadVenta(String nombre, Empleado responsable, double superficie, String codigo, Festival festival) {
 		super();
@@ -128,6 +129,11 @@ public abstract class UnidadVenta {
 		return true;
 	}
 
+	public void agregarEmpleado(Empleado empleado) {
+		empleados.add(empleado);
+		empleado.setUnidadVenta(this);
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
@@ -138,6 +144,29 @@ public abstract class UnidadVenta {
 		sb.append("  codigo: ").append(codigo).append(",\n");
 		sb.append(" ");
 		return sb.toString();
+	}
+
+	public double todoTotalSueldoEmpleados() {
+	    double total = 0;
+	    
+	    if (this.empleados == null || this.festival == null || this.festival.getCosto() == null) {
+	        return total;
+	    }
+
+	    double sueldoBase = this.festival.getCosto().getSueldoBase();
+
+	    for (Empleado empleado : this.empleados) {
+	        if (empleado instanceof Cocinero) {
+	            Cocinero cocinero = (Cocinero) empleado;
+	            total += sueldoBase + (sueldoBase * (cocinero.getPorcentaje() / 100.0));
+	            
+	        } else if (empleado instanceof Cajero) {
+	            Cajero cajero = (Cajero) empleado;
+	            total += sueldoBase + cajero.getPlusAntiguedad();
+	        }
+	    }
+	    
+	    return total;
 	}
 
 }
