@@ -3,13 +3,15 @@ package dao;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
-import datos.Festival;
 import datos.UnidadVenta;
+import datos.Festival;
 
 public class FestivalDao {
 	private static Session session;
@@ -148,66 +150,91 @@ public class FestivalDao {
 		}
 		return objeto;
 	}
-	
 
-    public List<Festival> traerPorRangoDeFechas(LocalDate desde, LocalDate hasta) {
-        List<Festival> lista = new ArrayList<Festival>();
-        try {
-            iniciaOperacion();
+	public List<Festival> traerPorRangoDeFechas(LocalDate desde, LocalDate hasta) {
+		List<Festival> lista = new ArrayList<Festival>();
+		try {
+			iniciaOperacion();
 
-            String hql = "from Festival f "
-                    + "where f.fechaInicio >= :desde and f.fechaFin <= :hasta "
-                    + "order by f.fechaInicio";
+			String hql = "from Festival f " + "where f.fechaInicio >= :desde and f.fechaFin <= :hasta "
+					+ "order by f.fechaInicio";
 
-            Query<Festival> query = session.createQuery(hql, Festival.class);
-            query.setParameter("desde", desde);
-            query.setParameter("hasta", hasta);
+			Query<Festival> query = session.createQuery(hql, Festival.class);
+			query.setParameter("desde", desde);
+			query.setParameter("hasta", hasta);
 
-            lista = query.getResultList();
+			lista = query.getResultList();
 
-        } finally {
-            session.close();
-        }
-        return lista;
-    }
+		} finally {
+			session.close();
+		}
+		return lista;
+	}
 
-    public List<Festival> traerPorTemporada(String temporada) {
-        List<Festival> lista = new ArrayList<Festival>();
-        try {
-            iniciaOperacion();
+	public List<Festival> traerPorTemporada(String temporada) {
+		List<Festival> lista = new ArrayList<Festival>();
+		try {
+			iniciaOperacion();
 
-            String hql = "from Festival f where f.temporada = :temporada order by f.fechaInicio";
+			String hql = "from Festival f where f.temporada = :temporada order by f.fechaInicio";
 
-            Query<Festival> query = session.createQuery(hql, Festival.class);
-            query.setParameter("temporada", temporada);
+			Query<Festival> query = session.createQuery(hql, Festival.class);
+			query.setParameter("temporada", temporada);
 
-            lista = query.getResultList();
+			lista = query.getResultList();
 
-        } finally {
-            session.close();
-        }
-        return lista;
-    }
+		} finally {
+			session.close();
+		}
+		return lista;
+	}
 
-    public List<Festival> traerPorRangoDeCosto(int montoMinimo, int montoMaximo) {
-        List<Festival> lista = new ArrayList<Festival>();
-        try {
-            iniciaOperacion();
+	public List<Festival> traerPorRangoDeCosto(int montoMinimo, int montoMaximo) {
+		List<Festival> lista = new ArrayList<Festival>();
+		try {
+			iniciaOperacion();
 
-            String hql = "select f from Festival f inner join fetch f.costo c "
-                    + "where (c.costoSuperficie + c.costoMontaje + c.costoElectricidad + c.sueldoBase) "
-                    + "between :min and :max "
-                    + "order by (c.costoSuperficie + c.costoMontaje + c.costoElectricidad + c.sueldoBase) desc";
+			String hql = "select f from Festival f inner join fetch f.costo c "
+					+ "where (c.costoSuperficie + c.costoMontaje + c.costoElectricidad + c.sueldoBase) "
+					+ "between :min and :max "
+					+ "order by (c.costoSuperficie + c.costoMontaje + c.costoElectricidad + c.sueldoBase) desc";
 
-            Query<Festival> query = session.createQuery(hql, Festival.class);
-            query.setParameter("min", montoMinimo);
-            query.setParameter("max", montoMaximo);
+			Query<Festival> query = session.createQuery(hql, Festival.class);
+			query.setParameter("min", montoMinimo);
+			query.setParameter("max", montoMaximo);
 
-            lista = query.getResultList();
+			lista = query.getResultList();
 
-        } finally {
-            session.close();
-        }
-        return lista;
-    }
+		} finally {
+			session.close();
+		}
+		return lista;
+	}
+
+	public List<Festival> traerPorTipoUnidad(String tipoUnidad) {
+		List<Festival> lista = new ArrayList<Festival>();
+
+		try {
+			iniciaOperacion();
+
+			String hql = "select distinct f " + "from Festival f " + "left join fetch f.unidadesVenta";
+
+			List<Festival> festivales = session.createQuery(hql, Festival.class).getResultList();
+
+			for (Festival festival : festivales) {
+				Set<UnidadVenta> unidades = festival.getUnidadesPorTipo(tipoUnidad);
+
+				if (!unidades.isEmpty()) {
+					festival.setUnidadesVenta(unidades);
+					lista.add(festival);
+				}
+			}
+
+		} finally {
+			session.close();
+		}
+
+		return lista;
+	}
+
 }
