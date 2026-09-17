@@ -162,4 +162,58 @@ public class UnidadVentaDao {
 
 		return unidadVenta;
 	}
+	
+	public List<Plato> traerPlatosPorUnidadYRangoPrecio(String codigoUnidad, double precioDesde, double precioHasta) {
+	    List<Plato> lista = null;
+	    try {
+	        iniciaOperacion();
+	        String hQL = "select p from UnidadVenta u " +
+	                     "inner join u.platos p " +
+	                     "where u.codigo = :codigoUnidad " +
+	                     "and p.precioDeVenta between :precioDesde and :precioHasta " +
+	                     "order by p.precioDeVenta asc";
+
+	        lista = session.createQuery(hQL, Plato.class)
+	                .setParameter("codigoUnidad", codigoUnidad)
+	                .setParameter("precioDesde", precioDesde)
+	                .setParameter("precioHasta", precioHasta)
+	                .getResultList();
+	    } finally {
+	        session.close();
+	    }
+	    return lista;
+	}
+	
+	public UnidadVenta traerUnidadYPlatos(String codigo) {
+	    UnidadVenta unidadVenta = null;
+	    try {
+	        iniciaOperacion();
+	        unidadVenta = (UnidadVenta) session.createQuery("from UnidadVenta u where u.codigo = :codigo")
+	                .setParameter("codigo", codigo)
+	                .uniqueResult();
+	        if (unidadVenta != null) {
+	            Hibernate.initialize(unidadVenta.getPlatos());
+	        }
+	    } finally {
+	        session.close();
+	    }
+
+	    return unidadVenta;
+	}
+	public UnidadVenta traerUnidadVentaYEmpleadosYFestival(String codigo) {
+		UnidadVenta unidadVenta = null;
+		try {
+			iniciaOperacion();
+			unidadVenta = (UnidadVenta) session.createQuery(" from UnidadVenta u where u.codigo = :codigo")
+					.setParameter("codigo", codigo).uniqueResult();
+			if (unidadVenta != null) {		
+				Hibernate.initialize(unidadVenta.getEmpleados());
+				Hibernate.initialize(unidadVenta.getFestival());
+			}
+		} finally {
+			session.close();
+		}
+
+		return unidadVenta;
+	}
 }
