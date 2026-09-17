@@ -1,196 +1,357 @@
-package negocio;
+package dao;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
-import dao.EmpleadoDao;
-import datos.Empleado;
-import datos.Cocinero;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
 import datos.Cajero;
+import datos.Cocinero;
+import datos.Empleado;
 
-public class EmpleadoAbm 
+public class EmpleadoDao 
 {
-	private static EmpleadoAbm instancia = null;
+	private static Session session;
+	private Transaction tx;
+	
+	private static EmpleadoDao instancia = null;
 
-	public EmpleadoAbm() 
+	protected EmpleadoDao() 
 	{
 		
 	}
 
-	public static EmpleadoAbm getInstance() 
+	public static EmpleadoDao getInstance() 
 	{
 		if (instancia == null)
-			instancia = new EmpleadoAbm();
-
+		{	
+			instancia = new EmpleadoDao();
+		}	
+		
 		return instancia;
 	}
+
+	protected void iniciaOperacion() throws HibernateException 
+	{
+		session = HibernateUtil.getSessionFactory().openSession();
+		tx = session.beginTransaction();
+	}
+
+	protected void manejaExcepcion(HibernateException he) throws HibernateException 
+	{
+		tx.rollback();
+		
+		throw new HibernateException("ERROR en la capa de acceso a datos", he);
+	}
 	
-	public int agregarEmpleadoCocinero(String nombre,String apellido,long dni,LocalDate fechaNacimiento,
-			LocalDate ingreso,String especialidad,String categoria,int porcentaje) throws Exception
+	public void actualizar(Empleado objeto) 
+	{
+		try 
+		{
+			iniciaOperacion();
+			session.update(objeto);
+			tx.commit();
+		} 
+		catch (HibernateException he) 
+		{
+			manejaExcepcion(he);
+		} finally 
+		{
+			session.close();
+		}
+	}
+	
+	// ------- METODOS DE CONSULTA DE BASE DE DATOS EMPLEADO -----------
+	
+	// ---- metodo agregar empleado a la base de datos -----
+	
+	public int agregar(Empleado objeto) 
 	{
 		int id = 0;
 
-		if (EmpleadoDao.getInstance().traerPorDni(dni) != null)
+		try 
 		{
-			throw new Exception("ERROR: ya existe un empleado con dicho DNI");
+			iniciaOperacion();
+			id = Integer.parseInt(session.save(objeto).toString());
+			tx.commit();
+		} 
+		catch (HibernateException he) 
+		{
+			manejaExcepcion(he);
+		} 
+		finally 
+		{
+			session.close();
 		}
-
-		id = EmpleadoDao.getInstance().agregar(new Cocinero(nombre,apellido,dni,fechaNacimiento,
-				ingreso,especialidad,categoria,porcentaje));
-
 		return id;
 	}
 	
-	public int agregarEmpleadoCajero(String nombre,String apellido,long dni,LocalDate fechaNacimiento,
-			LocalDate ingreso,String turno,double plusAntiguedad) throws Exception
+	// ----- metodo traer empleado por su id -----
+	
+	public Empleado traer(int idEmpleado) 
 	{
-		int id = 0;
-
-		if (EmpleadoDao.getInstance().traerPorDni(dni) != null)
+		Empleado objeto = null;
+		
+		try 
 		{
-			throw new Exception("ERROR: ya existe un empleado con dicho DNI");
+			iniciaOperacion();
+
+			objeto = (Empleado)session.createQuery(
+					"from Empleado e where e.idEmpleado = :idEmpleado")
+					.setParameter("idEmpleado", idEmpleado)
+					.uniqueResult();
+		} 
+		finally 
+		{
+			session.close();
 		}
-
-		id = EmpleadoDao.getInstance().agregar(new Cajero(nombre,apellido,dni,fechaNacimiento,
-					ingreso,turno,plusAntiguedad));
-
-		return id;
+		
+		return objeto;
 	}
 
-	public Empleado traer(int idEmpleado) throws Exception
+	// -------- metodo traer empleado por su documento -------
+	
+	public Empleado traerPorDni(long dni)
 	{
-		Empleado e = EmpleadoDao.getInstance().traer(idEmpleado);
+		Empleado objeto = null;
 
-		if (e == null)
+		try
 		{
-			throw new Exception("ERROR: no existe empleado con dicho ID");
+			iniciaOperacion();
+
+			objeto = (Empleado) session.createQuery(
+					"from Empleado e where e.dni = :dni")
+					.setParameter("dni", dni)
+					.uniqueResult();
+		}
+		finally
+		{
+			session.close();
 		}
 
-		return e;
+		return objeto;
+	}
+	
+	// ------- metodo traer lista de todos los empleados -------- 
+	
+	public List<Empleado> traer() throws HibernateException 
+	{
+		List<Empleado> lista = new ArrayList<Empleado>();
+		
+		try 
+		{
+			iniciaOperacion();
+
+			lista = session.createQuery(
+					"from Empleado", Empleado.class)
+					.list();
+		} 
+		finally 
+		{
+			session.close();
+		}
+		
+		return lista;
 	}
 
-	public List<Empleado> traer() throws Exception
-	{
-		List<Empleado> lista = EmpleadoDao.getInstance().traer();
+	// ------- traer una lista de empleados segun la fecha de nacimiento -------
 
-		if (lista.isEmpty())
+	public List<Empleado> traerEmpleadosPorFechaNacimiento(LocalDate fechaNacimiento)
+	{
+		List<Empleado> lista = new ArrayList<Empleado>();
+
+		try
 		{
-			throw new Exception("ERROR: no hay empleados registrados");
+			iniciaOperacion();
+
+			lista = session.createQuery(
+					"from Empleado e where e.fechaNacimiento = :fechaNacimiento",
+					Empleado.class)
+					.setParameter("fechaNacimiento", fechaNacimiento)
+					.list();
+		}
+		finally
+		{
+			session.close();
+		}
+
+		return lista;
+	}
+	
+	// ------- traer una lista de cocineros -------
+
+	public List<Cocinero> traerCocineros()
+	{
+		List<Cocinero> lista = new ArrayList<Cocinero>();
+
+		try
+		{
+			iniciaOperacion();
+
+			lista = session.createQuery(
+					"from Cocinero",
+					Cocinero.class)
+					.list();
+		}
+		finally
+		{
+			session.close();
+		}
+
+		return lista;
+	}
+	
+	// ----------- traer una lista de cocineros por especialidad ------------
+
+	public List<Cocinero> traerCocinerosPorEspecialidad(String especialidad)
+	{
+		List<Cocinero> lista = new ArrayList<Cocinero>();
+
+		try
+		{
+			iniciaOperacion();
+
+			lista = session.createQuery(
+				   "from Cocinero c where c.especialidad = :especialidad",
+					Cocinero.class)
+					.setParameter("especialidad", especialidad)
+					.list();
+		}
+		finally
+		{
+			session.close();
 		}
 
 		return lista;
 	}
 
-	// ----------- traer una lista de empleados por fecha de nacimiento -------------
+	// ---------- traer una lista de cajeros segun el turno ----------
 
-	public List<Empleado> traerEmpleadosPorFechaNacimiento(LocalDate fechaNacimiento) throws Exception
+	public List<Cajero> traerCajerosPorTurno(String turno)
 	{
-		List<Empleado> lista = EmpleadoDao.getInstance().traerEmpleadosPorFechaNacimiento(fechaNacimiento);
+		List<Cajero> lista = new ArrayList<Cajero>();
 
-		if (lista.isEmpty())
+		try
 		{
-			throw new Exception("ERROR: no se encontraron empleados con esa fecha de nacimiento");
+			iniciaOperacion();
+
+			lista = session.createQuery(
+					"from Cajero c where c.turno = :turno",
+					Cajero.class)
+					.setParameter("turno", turno)
+					.list();
+		}
+		finally
+		{
+			session.close();
 		}
 
 		return lista;
 	}
 
-	// -------- traer una lista de cocineros por especialidad ---------
+	// ---------- caso de uso 1: traer solo el empleado mas antiguo entre fechas -------------
 
-	public List<Cocinero> traerCocinerosPorEspecialidad(String especialidad) throws Exception
+	public Empleado traerEmpleadoConMasAntiguedadEntreFechas(LocalDate inicio, LocalDate fin)
 	{
-		List<Cocinero> lista = EmpleadoDao.getInstance().traerCocinerosPorEspecialidad(especialidad);
+		Empleado empleado = null;
 
-		if (lista.isEmpty())
+		try
 		{
-			throw new Exception("ERROR: no se encontraron cocineros con esa especialidad");
+			iniciaOperacion();
+
+			empleado = session.createQuery(
+					"from Empleado e where e.ingreso between :inicio and :fin order by e.ingreso asc",
+					Empleado.class)
+					.setParameter("inicio", inicio)
+					.setParameter("fin", fin)
+					.setMaxResults(1)
+					.uniqueResult();
+		}
+		finally
+		{
+			session.close();
+		}
+
+		return empleado;
+	}
+	
+	// ------------------ caso de uso 2: traer una lista de empleados entre 2 fechas --------------------
+
+	public List<Empleado> traerEmpleadosEntreFechasDeNacimiento(LocalDate fechaDesde, LocalDate fechaHasta)
+	{
+		List<Empleado> lista = new ArrayList<Empleado>();
+
+		try
+		{
+			iniciaOperacion();
+
+			lista = session.createQuery(
+					"from Empleado e where e.fechaNacimiento between :fechaDesde and :fechaHasta",
+					Empleado.class)
+					.setParameter("fechaDesde", fechaDesde)
+					.setParameter("fechaHasta", fechaHasta)
+					.list();
+		}
+		finally
+		{
+			session.close();
 		}
 
 		return lista;
 	}
 
-	// --------- traer una lista de cajeros por turno ------------
+	// -------- caso de uso 3: traer la lista de cocinero con menos anios de antiguedad --------
 
-	public List<Cajero> traerCajerosPorTurno(String turno) throws Exception
+	public List<Cocinero> traerCocinerosConMenosDeAniosDeAntiguedad(int anios)
 	{
-		List<Cajero> lista = EmpleadoDao.getInstance().traerCajerosPorTurno(turno);
+		List<Cocinero> lista = new ArrayList<Cocinero>();
 
-		if (lista.isEmpty())
+		try
 		{
-			throw new Exception("ERROR: no se encontraron cajeros con ese turno");
+			iniciaOperacion();
+
+			LocalDate fechaLimite = LocalDate.now().minusYears(anios);
+
+			lista = session.createQuery(
+					"from Cocinero c where c.ingreso > :fechaLimite",
+					Cocinero.class)
+					.setParameter("fechaLimite", fechaLimite)
+					.list();
+		}
+		finally
+		{
+			session.close();
 		}
 
 		return lista;
 	}
 
-	// ------------- traer una lista de cocineros ------------------
+	// --- caso de uso 4: traer una lista de cajeros que ingresaron entre un intervalo de fechas ---
 
-	public List<Cocinero> traerCocineros() throws Exception
+	public List<Cajero> traerCajerosEntreFechasDeIngreso(LocalDate fechaDesde, LocalDate fechaHasta) 
 	{
-		List<Cocinero> lista = EmpleadoDao.getInstance().traerCocineros();
+	    List<Cajero> lista = new ArrayList<Cajero>();
 
-		if (lista.isEmpty())
-		{
-			throw new Exception("ERROR: no hay cocineros registrados");
-		}
+	    try 
+	    {
+	        iniciaOperacion();
 
-		return lista;
-	}
+	        lista = session.createQuery(
+	                "from Cajero c where c.ingreso >= :fechaDesde and c.ingreso <= :fechaHasta",
+	                Cajero.class)
+	        		.setParameter("fechaDesde", fechaDesde)
+	        		.setParameter("fechaHasta", fechaHasta)
+	        		.list();
+	    } 
+	    
+	    finally 
+	    {
+	        session.close();
+	    }
 
-	// ------------- traer al empleado con mas antiguedad entre 2 fechas ---------------
-
-	public Empleado traerEmpleadoConMasDeAniosDeAntiguedad(LocalDate inicio, LocalDate fin) throws Exception
-	{
-		Empleado e = EmpleadoDao.getInstance().traerEmpleadoConMasAntiguedadEntreFechas(inicio, fin);
-
-		if (e == null)
-		{
-			throw new Exception("ERROR: no se encontro ningun empleado");
-		}
-
-		return e;
-	}
-
-	// ------------------------- traer empleados que nacieron entre 2 fechas -------------------------
-
-	public List<Empleado> traerEmpleadosEntreFechasDeNacimiento(LocalDate fechaDesde, LocalDate fechaHasta) throws Exception
-	{
-		List<Empleado> lista = EmpleadoDao.getInstance().traerEmpleadosEntreFechasDeNacimiento(fechaDesde, fechaHasta);
-
-		if (lista.isEmpty())
-		{
-			throw new Exception("ERROR: no se encontraron empleados entre esas fechas");
-		}
-
-		return lista;
-	}
-
-	// ------------ traer una lista de cocineros con menos anios de antiguedad -------------
-
-	public List<Cocinero> traerCocinerosConMenosDeAniosDeAntiguedad(int anios) throws Exception
-	{
-		List<Cocinero> lista = EmpleadoDao.getInstance().traerCocinerosConMenosDeAniosDeAntiguedad(anios);
-
-		if (lista.isEmpty())
-		{
-			throw new Exception("ERROR: no se encontraron cocineros con menos de " + anios + " anios de antiguedad");
-		}
-
-		return lista;
-	}
-
-	// ------------------------- traer cajeros con fecha de ingreso entre 2 fechas -------------------------
-
-	public List<Cajero> traerCajerosEntreFechasDeIngreso(LocalDate fechaDesde, LocalDate fechaHasta) throws Exception
-	{
-		List<Cajero> lista = EmpleadoDao.getInstance().traerCajerosEntreFechasDeIngreso(fechaDesde, fechaHasta);
-
-		if (lista.isEmpty())
-		{
-			throw new Exception("ERROR: no se encontraron cajeros entre esas fechas de ingreso");
-		}
-
-		return lista;
+	    return lista;
 	}
 }
-
