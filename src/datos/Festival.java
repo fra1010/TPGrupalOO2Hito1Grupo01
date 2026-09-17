@@ -94,8 +94,12 @@ public class Festival {
 	}
 
 	
-	public boolean equals(Festival festival) {
-	    return festival.getNombre().equals(this.nombre);
+	@Override
+	public boolean equals(Object o) {
+	    if (this == o) return true;
+	    if (!(o instanceof Festival)) return false;
+	    Festival other = (Festival) o;
+	    return java.util.Objects.equals(nombre, other.nombre);
 	}
 
 	@Override
