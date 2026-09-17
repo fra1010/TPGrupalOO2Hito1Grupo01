@@ -49,4 +49,17 @@ public class PedidoABM {
 	public Pedido traerPedidoEItems(int idPedido) {
 		return dao.traerPedidoEItems(idPedido);
 	}
+	
+	public Object[] traerCierreDiario(UnidadVenta unidad, LocalDate fecha) throws Exception {
+
+	    if (unidad == null) {
+	        throw new Exception("La unidad de venta es obligatoria");
+	    }
+
+	    if (fecha == null) {
+	        throw new Exception("La fecha es obligatoria");
+	    }
+
+	    return dao.traerCierreDiario(unidad, fecha);
+	}
 }

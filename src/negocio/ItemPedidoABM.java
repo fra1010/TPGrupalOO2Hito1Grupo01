@@ -1,5 +1,6 @@
 package negocio;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import dao.ItemPedidoDao;
@@ -30,6 +31,7 @@ public class ItemPedidoABM {
 		if (plato.getUnidad().getIdUnidadVenta() != pedido.getUnidad().getIdUnidadVenta()) {
 		    throw new Exception("El plato y el pedido deben pertenecer a la misma unidad de venta");
 		}
+		
 		ItemPedido i = new ItemPedido(plato, pedido, cantidad);
 		return dao.agregar(i);
 	}
@@ -55,5 +57,21 @@ public class ItemPedidoABM {
 	
 	public List<ItemPedido> traer(Plato plato) {
 	    return dao.traer(plato);
+	}
+	
+	public List<Object[]> traerPlatosMasRentables(LocalDate desde, LocalDate hasta, int top)throws Exception{
+		if (desde == null || hasta == null) {
+			throw new Exception("Las fechas son obligatorias");
+	    }
+
+	    if (hasta.isBefore(desde)) {
+	        throw new Exception("La fecha hasta no puede ser anterior a la fecha desde");
+	    }
+
+	    if (top <= 0) {
+	        throw new Exception("El top debe ser mayor a cero");
+	    }
+	    
+		return dao.traerPlatosMasRentables(desde, hasta, top);
 	}
 }

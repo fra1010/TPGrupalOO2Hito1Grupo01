@@ -1,5 +1,6 @@
 package dao;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.HibernateException;
@@ -114,6 +115,27 @@ public class ItemPedidoDao {
 	        iniciaOperacion();
 	        String hql = "from ItemPedido i inner join fetch i.pedido where i.plato.idPlato = :idPlato order by i.idItemPedido asc";
 	        lista = session.createQuery(hql, ItemPedido.class).setParameter("idPlato", plato.getIdPlato()).getResultList();
+	        
+	    } finally {
+	        session.close();
+	    }
+
+	    return lista;
+	}
+	
+	public List<Object[]> traerPlatosMasRentables(LocalDate desde, LocalDate hasta, int top){
+		List<Object[]> lista = new ArrayList<Object[]>();
+	    try {
+	        iniciaOperacion();
+	        String hql = "SELECT i.plato,"
+	        		+ "SUM((i.precioUnitario - i.costoUnitario) * i.cantidad)"
+	        		+ "FROM ItemPedido i"
+	        		+ "JOIN i.pedido p"
+	        		+ "WHERE p.fechaTransaccion BETWEEN :desde AND :hasta"
+	        		+ "AND p.abierto = false"
+	        		+ "GROUP BY i.plato"
+	        		+ "ORDER BY SUM((i.precioUnitario - i.costoUnitario) * i.cantidad) DESC";
+	        lista = session.createQuery(hql, Object[].class).setParameter("desde", desde).setParameter("hasta", hasta).setMaxResults(top).getResultList();
 	        
 	    } finally {
 	        session.close();
