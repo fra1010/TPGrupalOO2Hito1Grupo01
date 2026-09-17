@@ -7,6 +7,7 @@ import dao.UnidadVentaDao;
 import datos.Empleado;
 import datos.Festival;
 import datos.FoodTruck;
+import datos.ItemPedido;
 import datos.Pedido;
 import datos.Plato;
 import datos.PuestoDesarmable;
@@ -16,23 +17,22 @@ public class UnidadVentaABM {
 
 	UnidadVentaDao dao = new UnidadVentaDao();
 
-	public int agregarUnidadVenta(String nombre, Empleado responsable, double superficie, String codigo, Festival festival,
-			String patente, boolean conexion) throws Exception {
+	public int agregarUnidadVenta(String nombre, Empleado responsable, double superficie, String codigo,
+			Festival festival, String patente, boolean conexion) throws Exception {
 		if (dao.traer(codigo) != null) {
 			throw new Exception("Ya existe una unidad de venta con ese codigo : " + codigo);
 		}
-		UnidadVenta foodTruck = new FoodTruck(nombre, responsable, superficie, codigo,festival, patente, conexion);
-
+		UnidadVenta foodTruck = new FoodTruck(nombre, responsable, superficie, codigo, festival, patente, conexion);
 		return dao.agregarUnidadVenta(foodTruck);
 	}
 
-	public int agregarUnidadVenta(String nombre, Empleado responsable, double superficie, String codigo, Festival festival,
-			int cantidadCarpas, int tiempo) throws Exception {
+	public int agregarUnidadVenta(String nombre, Empleado responsable, double superficie, String codigo,
+			Festival festival, int cantidadCarpas, int tiempo) throws Exception {
 		if (dao.traer(codigo) != null) {
 			throw new Exception("Ya existe una unidad de venta con ese codigo : " + codigo);
 		}
-		UnidadVenta puestoDesarmable = new PuestoDesarmable(nombre, responsable, superficie, codigo,festival, cantidadCarpas,
-				tiempo);
+		UnidadVenta puestoDesarmable = new PuestoDesarmable(nombre, responsable, superficie, codigo, festival,
+				cantidadCarpas, tiempo);
 		return dao.agregarUnidadVenta(puestoDesarmable);
 	}
 
@@ -61,32 +61,77 @@ public class UnidadVentaABM {
 		}
 		dao.eliminar(uv);
 	}
-	public int agregarUnidadVentaFoodTruckConPlatos(String nombre, Empleado responsable, double superficie, String codigo, Festival festival,
-			String patente, boolean conexion,Set<Plato> platos)throws Exception {
-		UnidadVenta foodTruck = new FoodTruck(nombre, responsable, superficie, codigo,festival, patente, conexion);
+
+	public int agregarUnidadVentaFoodTruckConPlatos(String nombre, Empleado responsable, double superficie,
+			String codigo, Festival festival, String patente, boolean conexion, Set<Plato> platos) throws Exception {
+		UnidadVenta foodTruck = new FoodTruck(nombre, responsable, superficie, codigo, festival, patente, conexion);
 		if (dao.traer(codigo) != null) {
 			throw new Exception("Ya existe una unidad de venta con ese codigo : " + codigo);
 		}
 		foodTruck.setPlatos(platos);
 		return dao.agregarUnidadVentaYPlatos(foodTruck);
 	}
-	public int agregarUnidadVenta(String nombre, Empleado responsable, double superficie, String codigo, Festival festival,
-			int cantidadCarpas, int tiempo,Set<Plato> platos) throws Exception {
+
+	public int agregarUnidadVenta(String nombre, Empleado responsable, double superficie, String codigo,
+			Festival festival, int cantidadCarpas, int tiempo, Set<Plato> platos) throws Exception {
 		if (dao.traer(codigo) != null) {
 			throw new Exception("Ya existe una unidad de venta con ese codigo : " + codigo);
 		}
-		UnidadVenta puestoDesarmable = new PuestoDesarmable(nombre, responsable, superficie, codigo,festival, cantidadCarpas,
-				tiempo);
+		UnidadVenta puestoDesarmable = new PuestoDesarmable(nombre, responsable, superficie, codigo, festival,
+				cantidadCarpas, tiempo);
 		puestoDesarmable.setPlatos(platos);
 		return dao.agregarUnidadVenta(puestoDesarmable);
 	}
+
 	public double calcularTotalUnidadVenta(String codigoUnidadVenta) {
-		double total=0;
-		UnidadVenta u =dao.traerUnidadVentaYPedidosEitem(codigoUnidadVenta);
+		double total = 0;
+		UnidadVenta u = dao.traerUnidadVentaYPedidosEitem(codigoUnidadVenta);
 		for (Pedido p : u.getPedidos()) {
-			total=total+p.calcularTotal();
+			total = total + p.calcularTotal();
 		}
 		return total;
+	}
+
+	public List<Plato> traerPlatosDesdeHasta(String codigoUnidad, double precioDesde, double precioHasta) {
+
+		return dao.traerPlatosPorUnidadYRangoPrecio(codigoUnidad, precioDesde, precioHasta);
+	}
+
+	public UnidadVenta traerUnidadVentaYPlatos(String codigo) {
+
+		return dao.traerUnidadYPlatos(codigo);
+	}
+
+	public double totalSueldoEmpleados(String codigoUnidadVenta) {
+		UnidadVenta unidad = dao.traerUnidadVentaYEmpleadosYFestival(codigoUnidadVenta);
+
+		if (unidad == null) {
+			return 0;
+		}
+
+		return unidad.todoTotalSueldoEmpleados();
+	}
+
+	public double calcularGananciaPlatosPorUnidadVenta(String codigoUnidadVenta) {
+		UnidadVenta unidad = dao.traerUnidadVentaYPedidosEitem(codigoUnidadVenta);
+		double totalGanancia = 0;
+		if (unidad == null || unidad.getPedidos() == null) {
+			return totalGanancia;
+		}
+
+		for (Pedido pedido : unidad.getPedidos()) {
+			if (pedido.getItemsPedidos() != null) {
+				for (ItemPedido item : pedido.getItemsPedidos()) {
+					if (item.getPlato() != null) {
+						double gananciaUnitaria = item.getPlato().getPrecioDeVenta()
+								- item.getPlato().getCostoDePlato();
+						totalGanancia += item.getCantidad() * gananciaUnitaria;
+					}
+				}
+			}
+		}
+
+		return totalGanancia;
 	}
 
 }
