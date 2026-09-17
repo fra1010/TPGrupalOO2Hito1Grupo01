@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import datos.Pedido;
 import datos.Plato;
 import datos.UnidadVenta;
+import negocio.FestivalABM;
 import negocio.ItemPedidoABM;
 import negocio.PedidoABM;
 import negocio.PlatoABM;
@@ -14,7 +15,22 @@ import negocio.UnidadVentaABM;
 public class TestCargarDatos {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+	
+        FestivalABM abmFestival = new FestivalABM();
+        // CARGA DE FESTIVALES CON SU COSTO
+        try {
+
+            abmFestival.agregarConCosto("Festival Lanus", "Primavera", LocalDate.of(2025, 9, 21), LocalDate.of(2025, 9, 25), 50, 30, 200, 500);
+            abmFestival.agregarConCosto("Festival Lomas", "Invierno", LocalDate.of(2025, 7, 13), LocalDate.of(2025, 7, 18), 60, 15, 300, 450);
+            abmFestival.agregarConCosto("Festival Ezeiza", "Verano", LocalDate.of(2025, 1, 22), LocalDate.of(2025, 1, 28), 70, 20, 250, 550);
+            abmFestival.agregarConCosto("Festival Avellaneda", "Otoño", LocalDate.of(2025, 5, 14), LocalDate.of(2025, 5, 19), 55, 10, 150, 600);
+            abmFestival.agregarConCosto("Festival Quilmes", "Invierno", LocalDate.of(2025, 8, 19), LocalDate.of(2025, 1, 23), 50, 50, 350, 350);
+        } catch (Exception e) {
+            System.out.println("ERROR al agregar festival: " + e.getMessage());
+            e.printStackTrace();
+        }
+		
+		/*
 
 		PlatoABM platoABM =  new PlatoABM();
 		PedidoABM pedidoABM = new PedidoABM();
@@ -66,6 +82,6 @@ public class TestCargarDatos {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
     }
 }
