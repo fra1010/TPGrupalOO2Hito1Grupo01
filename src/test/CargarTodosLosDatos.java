@@ -141,18 +141,21 @@ public class CargarTodosLosDatos {
   	   			Pedido ped1_U1 = pedidoABM.traer(idPed1_U1);
   	   			itemABM.agregar(u1_p1, ped1_U1, 2); // 2 Pizzas
   	   			itemABM.agregar(u1_p3, ped1_U1, 1); // 1 Milanesa con papas
+  	   			pedidoABM.cerrarPedido(ped1_U1);
 
   	   			// Pedido 2
   	   			int idPed2_U1 = pedidoABM.agregar(LocalDate.of(2025, 9, 22), unidadVenta);
   	   			Pedido ped2_U1 = pedidoABM.traer(idPed2_U1);
   	   			itemABM.agregar(u1_p2, ped2_U1, 3); // 3 Panchos
   	   			itemABM.agregar(u1_p4, ped2_U1, 2); // 2 Ravioles con tuco
+  	   			pedidoABM.cerrarPedido(ped2_U1);
 
   	   			// Pedido 3
   	   			int idPed3_U1 = pedidoABM.agregar(LocalDate.of(2025, 9, 23), unidadVenta);
   	   			Pedido ped3_U1 = pedidoABM.traer(idPed3_U1);
   	   			itemABM.agregar(u1_p5, ped3_U1, 1); // 1 Lomo a la plancha
   	   			itemABM.agregar(u1_p6, ped3_U1, 2); // 2 Pollo al horno con puré
+  	   			pedidoABM.cerrarPedido(ped3_U1);
 
   	   			// Pedido 4
   	   			int idPed4_U1 = pedidoABM.agregar(LocalDate.of(2025, 9, 24), unidadVenta);
@@ -160,6 +163,7 @@ public class CargarTodosLosDatos {
   	   			itemABM.agregar(u1_p1, ped4_U1, 1); // 1 Pizza
   	   			itemABM.agregar(u1_p2, ped4_U1, 2); // 2 Panchos
   	   			itemABM.agregar(u1_p3, ped4_U1, 1); // 1 Milanesa con papas
+  	   			pedidoABM.cerrarPedido(ped4_U1);
 
   	   			// -----------------------------------------------------------------------------
   	   			// UNIDAD DE VENTA 2: 4 PEDIDOS
@@ -169,24 +173,28 @@ public class CargarTodosLosDatos {
   	   			Pedido ped1_U2 = pedidoABM.traer(idPed1_U2);
   	   			itemABM.agregar(u2_p1, ped1_U2, 2); // 2 Hamburguesas Completas
   	   			itemABM.agregar(u2_p3, ped1_U2, 1); // 1 Papas Bastón
+  	   			pedidoABM.cerrarPedido(ped1_U2);
 
   	   			// Pedido 2
   	   			int idPed2_U2 = pedidoABM.agregar(LocalDate.of(2025, 9, 22), unidadVenta2);
   	   			Pedido ped2_U2 = pedidoABM.traer(idPed2_U2);
   	   			itemABM.agregar(u2_p2, ped2_U2, 12); // 12 Empanadas de Carne
   	   			itemABM.agregar(u2_p5, ped2_U2, 1);  // 1 Tarta de Jamón y Queso
+  	   			pedidoABM.cerrarPedido(ped2_U2);
 
   	   			// Pedido 3
   	   			int idPed3_U2 = pedidoABM.agregar(LocalDate.of(2025, 9, 23), unidadVenta2);
   	   			Pedido ped3_U2 = pedidoABM.traer(idPed3_U2);
   	   			itemABM.agregar(u2_p4, ped3_U2, 6); // 6 Sánguches de Miga
   	   			itemABM.agregar(u2_p3, ped3_U2, 2); // 2 Papas Bastón
+  	   			pedidoABM.cerrarPedido(ped3_U2);
 
   	   			// Pedido 4
   	   			int idPed4_U2 = pedidoABM.agregar(LocalDate.of(2025, 9, 24), unidadVenta2);
   	   			Pedido ped4_U2 = pedidoABM.traer(idPed4_U2);
   	   			itemABM.agregar(u2_p1, ped4_U2, 3); // 3 Hamburguesas Completas
   	   			itemABM.agregar(u2_p2, ped4_U2, 4); // 4 Empanadas de Carne
+  	   			pedidoABM.cerrarPedido(ped4_U2);
 
   	   			// -----------------------------------------------------------------------------
   	   			// UNIDAD DE VENTA 3: 4 PEDIDOS
@@ -196,18 +204,21 @@ public class CargarTodosLosDatos {
   	   			Pedido ped1_U3 = pedidoABM.traer(idPed1_U3);
   	   			itemABM.agregar(u3_p3, ped1_U3, 2); // 2 Tiras de Asado
   	   			itemABM.agregar(u3_p1, ped1_U3, 1); // 1 Provolone a la Quinta
+  	   			pedidoABM.cerrarPedido(ped1_U3);
 
   	   			// Pedido 2
   	   			int idPed2_U3 = pedidoABM.agregar(LocalDate.of(2025, 9, 22), unidadVenta3);
   	   			Pedido ped2_U3 = pedidoABM.traer(idPed2_U3);
   	   			itemABM.agregar(u3_p2, ped2_U3, 4); // 4 Choripanes de Campo
   	   			itemABM.agregar(u3_p5, ped2_U3, 1); // 1 Mollejas al Limón
+  	   			pedidoABM.cerrarPedido(ped2_U3);
 
   	   			// Pedido 3
   	   			int idPed3_U3 = pedidoABM.agregar(LocalDate.of(2025, 9, 23), unidadVenta3);
   	   			Pedido ped3_U3 = pedidoABM.traer(idPed3_U3);
   	   			itemABM.agregar(u3_p4, ped3_U3, 2); // 2 Vacíos al Horno
   	   			itemABM.agregar(u3_p1, ped3_U3, 2); // 2 Provolones a la Quinta
+  	   			pedidoABM.cerrarPedido(ped3_U3);
 
   	   			// Pedido 4
   	   			int idPed4_U3 = pedidoABM.agregar(LocalDate.of(2025, 9, 24), unidadVenta3);
@@ -215,6 +226,7 @@ public class CargarTodosLosDatos {
   	   			itemABM.agregar(u3_p3, ped4_U3, 1); // 1 Tira de Asado
   	   			itemABM.agregar(u3_p4, ped4_U3, 1); // 1 Vacío al Horno
   	   			itemABM.agregar(u3_p2, ped4_U3, 2); // 2 Choripanes de Campo
+  	   			pedidoABM.cerrarPedido(ped4_U3);
 
   	   			System.out.println("Carga de datos realizada con éxito.");
         } catch (Exception e) {
