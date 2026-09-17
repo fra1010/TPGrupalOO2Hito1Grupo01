@@ -81,6 +81,11 @@ public class EmpleadoAbm
 		return lista;
 	}
 
+	public void actualizar(Empleado empleado) 
+	{
+		EmpleadoDao.getInstance().actualizar(empleado);
+	}
+	
 	// ----------- traer una lista de empleados por fecha de nacimiento -------------
 
 	public List<Empleado> traerEmpleadosPorFechaNacimiento(LocalDate fechaNacimiento) throws Exception
