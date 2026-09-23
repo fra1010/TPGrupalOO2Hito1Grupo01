@@ -7,10 +7,13 @@ import java.util.List;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 import datos.Cajero;
 import datos.Cocinero;
 import datos.Empleado;
+import datos.UnidadVenta;
+
 
 public class EmpleadoDao 
 {
@@ -64,9 +67,13 @@ public class EmpleadoDao
 		}
 	}
 	
-	// ------- METODOS DE CONSULTA DE BASE DE DATOS EMPLEADO -----------
+	// -------------------------------------------------------------------
+	// ------- METODOS DE CONSULTA DE BASE DE DATOS EMPLEADO -------------
+	// -------------------------------------------------------------------
+	
 	
 	// ---- metodo agregar empleado a la base de datos -----
+	
 	
 	public int agregar(Empleado objeto) 
 	{
@@ -157,201 +164,81 @@ public class EmpleadoDao
 		return lista;
 	}
 
-	// ------- traer una lista de empleados segun la fecha de nacimiento -------
+	//---------------------------------------------------------------------
+	// ---- caso de uso 1: traer empleados por unidad de venta ------------
+	//---------------------------------------------------------------------
 
-	public List<Empleado> traerEmpleadosPorFechaNacimiento(LocalDate fechaNacimiento)
+	public List<Empleado> traerEmpleadosPorUnidadVenta()
 	{
-		List<Empleado> lista = new ArrayList<Empleado>();
+	    List<Empleado> lista = new ArrayList<Empleado>();
 
-		try
-		{
-			iniciaOperacion();
-
-			lista = session.createQuery(
-					"from Empleado e where e.fechaNacimiento = :fechaNacimiento",
-					Empleado.class)
-					.setParameter("fechaNacimiento", fechaNacimiento)
-					.list();
-		}
-		finally
-		{
-			session.close();
-		}
-
-		return lista;
-	}
-	
-	// ------- traer una lista de cocineros -------
-
-	public List<Cocinero> traerCocineros()
-	{
-		List<Cocinero> lista = new ArrayList<Cocinero>();
-
-		try
-		{
-			iniciaOperacion();
-
-			lista = session.createQuery(
-					"from Cocinero",
-					Cocinero.class)
-					.list();
-		}
-		finally
-		{
-			session.close();
-		}
-
-		return lista;
-	}
-	
-	// ----------- traer una lista de cocineros por especialidad ------------
-
-	public List<Cocinero> traerCocinerosPorEspecialidad(String especialidad)
-	{
-		List<Cocinero> lista = new ArrayList<Cocinero>();
-
-		try
-		{
-			iniciaOperacion();
-
-			lista = session.createQuery(
-				   "from Cocinero c where c.especialidad = :especialidad",
-					Cocinero.class)
-					.setParameter("especialidad", especialidad)
-					.list();
-		}
-		finally
-		{
-			session.close();
-		}
-
-		return lista;
-	}
-
-	// ---------- traer una lista de cajeros segun el turno ----------
-
-	public List<Cajero> traerCajerosPorTurno(String turno)
-	{
-		List<Cajero> lista = new ArrayList<Cajero>();
-
-		try
-		{
-			iniciaOperacion();
-
-			lista = session.createQuery(
-					"from Cajero c where c.turno = :turno",
-					Cajero.class)
-					.setParameter("turno", turno)
-					.list();
-		}
-		finally
-		{
-			session.close();
-		}
-
-		return lista;
-	}
-
-	// ---------- caso de uso 1: traer solo el empleado mas antiguo entre fechas -------------
-
-	public Empleado traerEmpleadoConMasAntiguedadEntreFechas(LocalDate inicio, LocalDate fin)
-	{
-		Empleado empleado = null;
-
-		try
-		{
-			iniciaOperacion();
-
-			empleado = session.createQuery(
-					"from Empleado e where e.ingreso between :inicio and :fin order by e.ingreso asc",
-					Empleado.class)
-					.setParameter("inicio", inicio)
-					.setParameter("fin", fin)
-					.setMaxResults(1)
-					.uniqueResult();
-		}
-		finally
-		{
-			session.close();
-		}
-
-		return empleado;
-	}
-	
-	// ------------------ caso de uso 2: traer una lista de empleados entre 2 fechas --------------------
-
-	public List<Empleado> traerEmpleadosEntreFechasDeNacimiento(LocalDate fechaDesde, LocalDate fechaHasta)
-	{
-		List<Empleado> lista = new ArrayList<Empleado>();
-
-		try
-		{
-			iniciaOperacion();
-
-			lista = session.createQuery(
-					"from Empleado e where e.fechaNacimiento between :fechaDesde and :fechaHasta",
-					Empleado.class)
-					.setParameter("fechaDesde", fechaDesde)
-					.setParameter("fechaHasta", fechaHasta)
-					.list();
-		}
-		finally
-		{
-			session.close();
-		}
-
-		return lista;
-	}
-
-	// -------- caso de uso 3: traer la lista de cocinero con menos anios de antiguedad --------
-
-	public List<Cocinero> traerCocinerosConMenosDeAniosDeAntiguedad(int anios)
-	{
-		List<Cocinero> lista = new ArrayList<Cocinero>();
-
-		try
-		{
-			iniciaOperacion();
-
-			LocalDate fechaLimite = LocalDate.now().minusYears(anios);
-
-			lista = session.createQuery(
-					"from Cocinero c where c.ingreso > :fechaLimite",
-					Cocinero.class)
-					.setParameter("fechaLimite", fechaLimite)
-					.list();
-		}
-		finally
-		{
-			session.close();
-		}
-
-		return lista;
-	}
-
-	// --- caso de uso 4: traer una lista de cajeros que ingresaron entre un intervalo de fechas ---
-
-	public List<Cajero> traerCajerosEntreFechasDeIngreso(LocalDate fechaDesde, LocalDate fechaHasta) 
-	{
-	    List<Cajero> lista = new ArrayList<Cajero>();
-
-	    try 
+	    try
 	    {
 	        iniciaOperacion();
 
-	        lista = session.createQuery(
-	                "from Cajero c where c.ingreso >= :fechaDesde and c.ingreso <= :fechaHasta",
-	                Cajero.class)
-	        		.setParameter("fechaDesde", fechaDesde)
-	        		.setParameter("fechaHasta", fechaHasta)
-	        		.list();
-	    } 
-	    
-	    finally 
+	        String hql = "select e from Empleado e "
+	                   + "join fetch e.unidadVenta "
+	                   + "where e.unidadVenta is not null "
+	                   + "order by e.unidadVenta.nombre, e.apellido";
+
+	        Query<Empleado> query =
+	                session.createQuery(hql, Empleado.class);
+
+	        lista = query.getResultList();
+	    }
+	    finally
 	    {
 	        session.close();
 	    }
 
 	    return lista;
 	}
-}
+
+	// -------------------------------------------------------------------
+	// ---- caso de uso 2: cantidad de empleados por unidad de venta -----
+	// -------------------------------------------------------------------
+
+	public List<String> traerCantidadPorUnidadVenta()
+	{
+	    List<String> lista = new ArrayList<String>();
+
+	    try
+	    {
+	        iniciaOperacion();
+
+	        String hql =
+	                "select uv.nombre, " +
+	                "sum(case when type(e) = Cocinero then 1 else 0 end), " +
+	                "sum(case when type(e) = Cajero then 1 else 0 end), " +
+	                "case when uv.responsable is not null then 1 else 0 end " +
+	                "from UnidadVenta uv " +
+	                "left join uv.empleados e " +
+	                "group by uv.idUnidadVenta, uv.nombre " +
+	                "order by uv.nombre";
+
+	        Query<Object[]> query =
+	                session.createQuery(hql, Object[].class);
+
+	        List<Object[]> resultados = query.getResultList();
+
+	        for (Object[] resultado : resultados)
+	        {
+	            String texto =
+	                    "Unidad: " + resultado[0] +
+	                    " | Cocineros: " + resultado[1] +
+	                    " | Cajeros: " + resultado[2] +
+	                    " | Encargados: " + resultado[3];
+
+	            lista.add(texto);
+	        }
+	    }
+	    finally
+	    {
+	        session.close();
+	    }
+
+	    return lista;
+	}
+	
+
+}	
