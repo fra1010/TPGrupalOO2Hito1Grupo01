@@ -15,7 +15,6 @@ public class FestivalABM {
 	FestivalDao dao = new FestivalDao();
 	UnidadVentaDao unidadDao = new UnidadVentaDao();
 	CostoABM abmCosto = new CostoABM();
-	UnidadVentaABM abmUnidadVenta = new UnidadVentaABM();
 
 	public int agregar(Festival f) throws Exception {
 
@@ -201,7 +200,7 @@ public class FestivalABM {
 
 	public double calcularCostoReal(int idFestival) throws Exception {
 
-		Festival festival = dao.traerFestivalYUnidadesVenta(idFestival);
+		Festival festival = dao.traer(idFestival);
 
 		if (festival == null) {
 			throw new Exception("No existe festival con id " + idFestival);
@@ -211,30 +210,42 @@ public class FestivalABM {
 			throw new Exception("El festival no tiene un costo asociado");
 		}
 
-		double costosFijos = festival.getCosto().getCostoSuperficie() + festival.getCosto().getCostoMontaje()
-				+ festival.getCosto().getCostoElectricidad();
-
-		double sueldos = 0;
-
-		if (festival.getUnidadesVenta() != null) {
-			for (UnidadVenta unidad : festival.getUnidadesVenta()) {
-
-				UnidadVenta unidadCompleta = unidadDao.traerUnidadVentaYEmpleadosYFestival(unidad.getCodigo());
-
-				if (unidadCompleta != null) {
-					sueldos += unidadCompleta.todoTotalSueldoEmpleados();
-				}
-			}
-		}
+		double costosFijos = dao.calcularCostosFijos(idFestival);
+		double sueldos = dao.calcularSueldos(idFestival);
 
 		return costosFijos + sueldos;
 	}
 
+	public double calcularGananciaEstimada(int idFestival) throws Exception {
+
+		Festival festival = dao.traer(idFestival);
+
+		if (festival == null) {
+			throw new Exception("No existe festival con id " + idFestival);
+		}
+
+		double gananciaPlatos = dao.calcularGananciaPlatos(idFestival);
+		double costoReal = calcularCostoReal(idFestival);
+
+		return gananciaPlatos - costoReal;
+	}
+
 	public List<Festival> traerPorRangoDeCostoReal(int minimo, int maximo) throws Exception {
+
+		List<Object[]> costosFijos = dao.calcularCostosFijosTodos();
+		List<Object[]> sueldosCocineros = dao.calcularSueldosCocinerosTodos();
+		List<Object[]> sueldosCajeros = dao.calcularSueldosCajerosTodos();
+
 		List<Festival> resultado = new ArrayList<Festival>();
 
-		for (Festival festival : dao.traer()) {
-			double costoReal = calcularCostoReal(festival.getIdFestival());
+		for (Object[] filaCosto : costosFijos) {
+			Festival festival = (Festival) filaCosto[0];
+			double costosFijosValor = ((Number) filaCosto[1]).doubleValue();
+
+			double sueldosCocinerosValor = buscarSueldo(sueldosCocineros, festival.getIdFestival());
+			double sueldosCajerosValor = buscarSueldo(sueldosCajeros, festival.getIdFestival());
+
+			double costoReal = costosFijosValor + sueldosCocinerosValor + sueldosCajerosValor;
 
 			if (costoReal >= minimo && costoReal <= maximo) {
 				resultado.add(festival);
@@ -246,6 +257,22 @@ public class FestivalABM {
 		}
 
 		return resultado;
+	}
+
+	private double buscarSueldo(List<Object[]> filas, int idFestival) {
+		for (Object[] fila : filas) {
+			int id = ((Number) fila[0]).intValue();
+
+			if (id == idFestival) {
+				if (fila[1] != null) {
+					return ((Number) fila[1]).doubleValue();
+				} else {
+					return 0;
+				}
+			}
+		}
+
+		return 0;
 	}
 
 	public List<Festival> traerPorTipoUnidad(String tipoUnidad) throws Exception {
@@ -264,26 +291,6 @@ public class FestivalABM {
 		}
 
 		return lista;
-	}
-
-	public double calcularGananciaEstimada(int idFestival) throws Exception {
-		Festival festival = dao.traerFestivalYUnidadesVenta(idFestival);
-
-		if (festival == null) {
-			throw new Exception("No existe festival con id " + idFestival);
-		}
-
-		double gananciaPlatos = 0;
-
-		if (festival.getUnidadesVenta() != null) {
-			for (UnidadVenta unidad : festival.getUnidadesVenta()) {
-				gananciaPlatos += abmUnidadVenta.calcularGananciaPlatosPorUnidadVenta(unidad.getCodigo());
-			}
-		}
-
-		double costoReal = calcularCostoReal(idFestival);
-
-		return gananciaPlatos - costoReal;
 	}
 
 }
