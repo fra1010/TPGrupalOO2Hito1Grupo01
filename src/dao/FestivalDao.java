@@ -3,7 +3,6 @@ package dao;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -217,23 +216,157 @@ public class FestivalDao {
 		try {
 			iniciaOperacion();
 
-			String hql = "select distinct f " + "from Festival f " + "left join fetch f.unidadesVenta";
+			String tipoClase = tipoUnidad.equalsIgnoreCase("FoodTruck") ? "FoodTruck" : "PuestoDesarmable";
 
-			List<Festival> festivales = session.createQuery(hql, Festival.class).getResultList();
+			String hql = "SELECT DISTINCT f " + "FROM Festival f " + "LEFT JOIN FETCH f.unidadesVenta "
+					+ "WHERE EXISTS (" + "  SELECT u2 FROM UnidadVenta u2 " + "  WHERE u2.festival = f "
+					+ "  AND TYPE(u2) = " + tipoClase + ")";
 
-			for (Festival festival : festivales) {
-				Set<UnidadVenta> unidades = festival.getUnidadesPorTipo(tipoUnidad);
-
-				if (!unidades.isEmpty()) {
-					festival.setUnidadesVenta(unidades);
-					lista.add(festival);
-				}
-			}
+			lista = session.createQuery(hql, Festival.class).getResultList();
 
 		} finally {
 			session.close();
 		}
 
+		return lista;
+	}
+
+	public double calcularGananciaPlatos(int idFestival) {
+		Number resultado = null;
+		try {
+			iniciaOperacion();
+
+			String hql = "SELECT SUM((i.precioUnitario - i.costoUnitario) * i.cantidad) " + "FROM ItemPedido i "
+					+ "JOIN i.pedido p " + "JOIN p.unidad u " + "JOIN u.festival f "
+					+ "WHERE f.idFestival = :idFestival";
+
+			resultado = (Number) session.createQuery(hql).setParameter("idFestival", idFestival).uniqueResult();
+
+		} finally {
+			session.close();
+		}
+
+		if (resultado != null) {
+			return resultado.doubleValue();
+		} else {
+			return 0;
+		}
+	}
+
+	public double calcularCostosFijos(int idFestival) {
+		Number resultado = null;
+		try {
+			iniciaOperacion();
+
+			String hql = "SELECT (f.costo.costoSuperficie + f.costo.costoMontaje + f.costo.costoElectricidad) "
+					+ "FROM Festival f " + "WHERE f.idFestival = :idFestival";
+
+			resultado = (Number) session.createQuery(hql).setParameter("idFestival", idFestival).uniqueResult();
+
+		} finally {
+			session.close();
+		}
+
+		if (resultado != null) {
+			return resultado.doubleValue();
+		} else {
+			return 0;
+		}
+	}
+
+	public double calcularSueldos(int idFestival) {
+		Number cocineros = null;
+		Number cajeros = null;
+
+		try {
+			iniciaOperacion();
+
+			String hqlCocineros = "SELECT SUM(f.costo.sueldoBase + (f.costo.sueldoBase * co.porcentaje / 100.0)) "
+					+ "FROM Cocinero co " + "JOIN co.unidadVenta u " + "JOIN u.festival f "
+					+ "WHERE f.idFestival = :idFestival";
+
+			cocineros = (Number) session.createQuery(hqlCocineros).setParameter("idFestival", idFestival)
+					.uniqueResult();
+
+		} finally {
+			session.close();
+		}
+
+		try {
+			iniciaOperacion();
+
+			String hqlCajeros = "SELECT SUM(f.costo.sueldoBase + ca.plusAntiguedad) " + "FROM Cajero ca "
+					+ "JOIN ca.unidadVenta u " + "JOIN u.festival f " + "WHERE f.idFestival = :idFestival";
+
+			cajeros = (Number) session.createQuery(hqlCajeros).setParameter("idFestival", idFestival).uniqueResult();
+
+		} finally {
+			session.close();
+		}
+
+		double totalCocineros;
+		if (cocineros != null) {
+			totalCocineros = cocineros.doubleValue();
+		} else {
+			totalCocineros = 0;
+		}
+
+		double totalCajeros;
+		if (cajeros != null) {
+			totalCajeros = cajeros.doubleValue();
+		} else {
+			totalCajeros = 0;
+		}
+
+		return totalCocineros + totalCajeros;
+	}
+
+	public List<Object[]> calcularCostosFijosTodos() {
+		List<Object[]> lista = new ArrayList<Object[]>();
+		try {
+			iniciaOperacion();
+
+			String hql = "SELECT f, (c.costoSuperficie + c.costoMontaje + c.costoElectricidad) " + "FROM Festival f "
+					+ "JOIN f.costo c";
+
+			lista = session.createQuery(hql, Object[].class).getResultList();
+
+		} finally {
+			session.close();
+		}
+		return lista;
+	}
+
+	public List<Object[]> calcularSueldosCocinerosTodos() {
+		List<Object[]> lista = new ArrayList<Object[]>();
+		try {
+			iniciaOperacion();
+
+			String hql = "SELECT f.idFestival, SUM(c.sueldoBase + (c.sueldoBase * co.porcentaje / 100.0)) "
+					+ "FROM Cocinero co " + "JOIN co.unidadVenta u " + "JOIN u.festival f " + "JOIN f.costo c "
+					+ "GROUP BY f.idFestival";
+
+			lista = session.createQuery(hql, Object[].class).getResultList();
+
+		} finally {
+			session.close();
+		}
+		return lista;
+	}
+
+	public List<Object[]> calcularSueldosCajerosTodos() {
+		List<Object[]> lista = new ArrayList<Object[]>();
+		try {
+			iniciaOperacion();
+
+			String hql = "SELECT f.idFestival, SUM(c.sueldoBase + ca.plusAntiguedad) " + "FROM Cajero ca "
+					+ "JOIN ca.unidadVenta u " + "JOIN u.festival f " + "JOIN f.costo c " + "GROUP BY f.idFestival";
+
+			lista = session.createQuery(hql, Object[].class).getResultList();
+
+		} finally {
+			session.close();
+		}
 		return lista;
 	}
 
