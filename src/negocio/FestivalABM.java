@@ -230,6 +230,27 @@ public class FestivalABM {
 		return gananciaPlatos - costoReal;
 	}
 
+	public List<Object[]> traerUnidadesMasRentablesPorFestival(int idFestival, int top) throws Exception {
+
+		Festival festival = dao.traer(idFestival);
+
+		if (festival == null) {
+			throw new Exception("No existe festival con id " + idFestival);
+		}
+
+		if (top <= 0) {
+			throw new Exception("El top debe ser mayor a cero");
+		}
+
+		List<Object[]> lista = dao.traerUnidadesMasRentablesPorFestival(idFestival, top);
+
+		if (lista.isEmpty()) {
+			throw new Exception("No hay unidades de venta con ganancias registradas para este festival");
+		}
+
+		return lista;
+	}
+
 	public List<Festival> traerPorRangoDeCostoReal(int minimo, int maximo) throws Exception {
 
 		List<Object[]> costosFijos = dao.calcularCostosFijosTodos();
@@ -291,6 +312,70 @@ public class FestivalABM {
 		}
 
 		return lista;
+	}
+
+	public Object[] traerDiaDeMayorRecaudacion(int idFestival) throws Exception {
+
+		Festival festival = dao.traer(idFestival);
+
+		if (festival == null) {
+			throw new Exception("No existe festival con id " + idFestival);
+		}
+
+		Object[] resultado = dao.traerDiaDeMayorRecaudacion(idFestival);
+
+		if (resultado == null) {
+			throw new Exception("No hay pedidos cerrados registrados para este festival");
+		}
+
+		return resultado;
+	}
+
+	public double calcularTicketPromedio(int idFestival) throws Exception {
+
+		Festival festival = dao.traer(idFestival);
+
+		if (festival == null) {
+			throw new Exception("No existe festival con id " + idFestival);
+		}
+
+		Object[] datos = dao.calcularTicketPromedio(idFestival);
+
+		if (datos == null || datos[0] == null) {
+			throw new Exception("No hay pedidos cerrados registrados para este festival");
+		}
+
+		long cantidadPedidos = ((Number) datos[0]).longValue();
+
+		if (cantidadPedidos == 0) {
+			throw new Exception("No hay pedidos cerrados registrados para este festival");
+		}
+
+		double recaudacionTotal;
+		if (datos[1] != null) {
+			recaudacionTotal = ((Number) datos[1]).doubleValue();
+		} else {
+			recaudacionTotal = 0;
+		}
+
+		return recaudacionTotal / cantidadPedidos;
+	}
+	
+	public List<Object[]> compararGananciaPorTipoUnidad(int idFestival) throws Exception {
+
+	    Festival festival = dao.traer(idFestival);
+
+	    if (festival == null) {
+	        throw new Exception("No existe festival con id " + idFestival);
+	    }
+
+	    List<Object[]> lista = dao.compararGananciaPorTipoUnidad(idFestival);
+
+	    if (lista.isEmpty()) {
+	        throw new Exception("No hay ventas registradas para este festival");
+	    }
+
+	    return lista;
 	}
 
 }
