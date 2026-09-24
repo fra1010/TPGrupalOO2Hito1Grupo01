@@ -133,5 +133,16 @@ public class UnidadVentaABM {
 
 		return totalGanancia;
 	}
-
+	
+	
+	public UnidadVenta traerUnidadVentaEstrellaConEmpleados(int idFestival) {
+		
+		
+		return dao.traerUnidadVentaEstrellaConEmpleados(idFestival);
+	}
+	public double calcularRentabilidadNeta(String codigoUnidad, int idFestival) {
+		
+		
+		return dao.calcularRentabilidadNeta(codigoUnidad, idFestival);
+	}
 }
