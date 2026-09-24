@@ -14,7 +14,6 @@ import datos.Cocinero;
 import datos.Empleado;
 import datos.UnidadVenta;
 
-
 public class EmpleadoDao 
 {
 	private static Session session;
