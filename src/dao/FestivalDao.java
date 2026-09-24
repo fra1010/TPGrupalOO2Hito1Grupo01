@@ -252,6 +252,117 @@ public class FestivalDao {
 			return 0;
 		}
 	}
+	
+	public List<Object[]> traerUnidadesMasRentablesPorFestival(int idFestival, int top) { // se usa lista de object porque en cada fila de la consulta hibernate empaqueta la unidad y su ganancia
+	    List<Object[]> lista = new ArrayList<Object[]>();
+
+	    try {
+	        iniciaOperacion();
+
+	        String hql = "SELECT u, SUM((i.precioUnitario - i.costoUnitario) * i.cantidad) "
+	                + "FROM ItemPedido i "
+	                + "JOIN i.pedido p "
+	                + "JOIN p.unidad u "
+	                + "JOIN u.festival f "
+	                + "WHERE f.idFestival = :idFestival "
+	                + "AND p.abierto = false "
+	                + "GROUP BY u "
+	                + "ORDER BY SUM((i.precioUnitario - i.costoUnitario) * i.cantidad) DESC";
+
+	        lista = session.createQuery(hql, Object[].class)
+	                .setParameter("idFestival", idFestival)
+	                .setMaxResults(top)
+	                .getResultList();
+
+	    } finally {
+	        session.close();
+	    }
+
+	    return lista;
+	}
+	
+	public Object[] traerDiaDeMayorRecaudacion(int idFestival) {
+	    Object[] resultado = null;
+
+	    try {
+	        iniciaOperacion();
+
+	        String hql = "SELECT p.fechaTransaccion, SUM(i.precioUnitario * i.cantidad) "
+	                + "FROM ItemPedido i "
+	                + "JOIN i.pedido p "
+	                + "JOIN p.unidad u "
+	                + "JOIN u.festival f "
+	                + "WHERE f.idFestival = :idFestival "
+	                + "AND p.abierto = false "
+	                + "GROUP BY p.fechaTransaccion " //agrupa por fecha 
+	                + "ORDER BY SUM(i.precioUnitario * i.cantidad) DESC";
+
+	        List<Object[]> lista = session.createQuery(hql, Object[].class)
+	                .setParameter("idFestival", idFestival)
+	                .setMaxResults(1)// deja solamente el dia de mayor recaudacion
+	                .getResultList();
+
+	        if (!lista.isEmpty()) {
+	            resultado = lista.get(0);
+	        }
+
+	    } finally {
+	        session.close();
+	    }
+
+	    return resultado;
+	}
+	
+	public Object[] calcularTicketPromedio(int idFestival) {//la consulta obtiene la cantidad de pedidos cerrados y su recaudacion total
+	    Object[] resultado = null;
+
+	    try {
+	        iniciaOperacion();
+
+	        String hql = "SELECT COUNT(DISTINCT p.idPedido), SUM(i.precioUnitario * i.cantidad) "
+	                + "FROM ItemPedido i "
+	                + "JOIN i.pedido p "
+	                + "JOIN p.unidad u "
+	                + "JOIN u.festival f "
+	                + "WHERE f.idFestival = :idFestival "
+	                + "AND p.abierto = false";
+
+	        resultado = (Object[]) session.createQuery(hql, Object[].class)
+	                .setParameter("idFestival", idFestival)
+	                .uniqueResult();
+
+	    } finally {
+	        session.close();
+	    }
+
+	    return resultado;
+	}
+	
+	public List<Object[]> compararGananciaPorTipoUnidad(int idFestival) {
+	    List<Object[]> lista = new ArrayList<Object[]>();
+
+	    try {
+	        iniciaOperacion();
+
+	        String hql = "SELECT TYPE(u), SUM((i.precioUnitario - i.costoUnitario) * i.cantidad) "
+	                + "FROM ItemPedido i "
+	                + "JOIN i.pedido p "
+	                + "JOIN p.unidad u "
+	                + "JOIN u.festival f "
+	                + "WHERE f.idFestival = :idFestival "
+	                + "AND p.abierto = false "
+	                + "GROUP BY TYPE(u)";
+
+	        lista = session.createQuery(hql, Object[].class)
+	                .setParameter("idFestival", idFestival)
+	                .getResultList();
+
+	    } finally {
+	        session.close();
+	    }
+
+	    return lista;
+	}
 
 	public double calcularCostosFijos(int idFestival) {
 		Number resultado = null;
@@ -369,5 +480,5 @@ public class FestivalDao {
 		}
 		return lista;
 	}
-
+	
 }
