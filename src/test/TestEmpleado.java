@@ -1,6 +1,6 @@
-
 package test;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import datos.Cajero;
@@ -10,55 +10,54 @@ import negocio.EmpleadoAbm;
 
 public class TestEmpleado {
 
-    public static void main(String[] args) 
+    public static void main(String[] args)
     {
         EmpleadoAbm empleadoAbm = new EmpleadoAbm();
 
         // ---------------------------------------------------------------
-        // caso de uso 1: traer empleados por unidad de venta
+        // caso de uso 1: empleados por unidad de venta
         // ---------------------------------------------------------------
 
         List<Empleado> empleados = null;
 
-        try 
+        try
         {
             empleados = empleadoAbm.traerEmpleadosPorUnidad();
-        } 
-        catch (Exception e) 
+        }
+        catch (Exception e)
         {
             System.out.println(e.getMessage());
         }
 
-        System.out.println("\n-------------TEST 1 EMPLEADOS POR UNIDAD DE VENTA -------------\n");
+        System.out.println("\n\t------------- TEST 1 EMPLEADOS POR UNIDAD DE VENTA -------------\n");
 
         if (empleados != null)
         {
-            for (Empleado empleado : empleados) 
+            for (Empleado empleado : empleados)
             {
-            	System.out.println("---------------------------------------------------");
-            	
-                System.out.println("Nombre: " + empleado.getNombre());
-                System.out.println("Apellido: " + empleado.getApellido());
+                System.out.println("\t---------------------------------------------------");
+                System.out.println("\tNombre: " + empleado.getNombre());
+                System.out.println("\tApellido: " + empleado.getApellido());
 
-                if (empleado instanceof Cocinero) 
+                if (empleado instanceof Cocinero)
                 {
-                    System.out.println("Tipo: Cocinero");
-                } 
-                else if (empleado instanceof Cajero) 
+                    System.out.println("\tTipo: Cocinero");
+                }
+                else if (empleado instanceof Cajero)
                 {
-                    System.out.println("Tipo: Cajero");
+                    System.out.println("\tTipo: Cajero");
                 }
 
-                if (empleado.getUnidadVenta() != null) 
+                if (empleado.getUnidadVenta() != null)
                 {
-                    System.out.println("Unidad de Venta: " + empleado.getUnidadVenta().getNombre());
+                    System.out.println("\tUnidad de Venta: " + empleado.getUnidadVenta().getNombre());
                 }
 
                 if (empleado.getUnidadVenta() != null &&
                     empleado.getUnidadVenta().getResponsable() != null &&
-                    empleado.getUnidadVenta().getResponsable().getDni() == empleado.getDni()) 
+                    empleado.getUnidadVenta().getResponsable().getDni() == empleado.getDni())
                 {
-                    System.out.println("Es ENCARGADO / RESPONSABLE");
+                    System.out.println("\tEs ENCARGADO / RESPONSABLE");
                 }
             }
         }
@@ -69,33 +68,32 @@ public class TestEmpleado {
 
         List<String> lista = null;
 
-        try 
+        try
         {
             lista = empleadoAbm.traerCantidadEmpleados();
-        } 
-        catch (Exception e) 
+        }
+        catch (Exception e)
         {
             System.out.println(e.getMessage());
         }
 
-        System.out.println();
-        System.out.println("\n--------------TEST 2 CANTIDAD DE EMPLEADOS POR UNIDAD DE VENTA ----------\n");
+        System.out.println("\n\t-------------- TEST 2 CANTIDAD DE EMPLEADOS POR UNIDAD --------------\n");
 
         if (lista != null)
         {
             for (String resultado : lista)
             {
-            	System.out.println("-----------------------------------------------");
-            	System.out.println(resultado);
+                System.out.println("\t-----------------------------------------------");
+                System.out.println("\t" + resultado);
             }
         }
 
         // ---------------------------------------------------------------
-        // caso de uso 3: empleados más antiguos
+        // caso de uso 3: empleados mas antiguos
         // ---------------------------------------------------------------
 
         System.out.println();
-        System.out.println("\n---------------TEST 3 EMPLEADOS MÁS ANTIGUOS ------------\n");
+        System.out.println("\n\t--------------- TEST 3 EMPLEADOS MÁS ANTIGUOS ---------------\n");
 
         List<Empleado> empleadosAntiguos = null;
 
@@ -112,18 +110,18 @@ public class TestEmpleado {
         {
             for (Empleado empleado : empleadosAntiguos)
             {
-                System.out.println("--------------------------------------------");
-                System.out.println("Nombre: " + empleado.getNombre());
-                System.out.println("Apellido: " + empleado.getApellido());
-                System.out.println("Ingreso: " + empleado.getIngreso());
+                System.out.println("\t--------------------------------------------");
+                System.out.println("\tNombre: " + empleado.getNombre());
+                System.out.println("\tApellido: " + empleado.getApellido());
+                System.out.println("\tIngreso: " + empleado.getIngreso());
 
                 if (empleado.getUnidadVenta() != null)
                 {
-                    System.out.println("Unidad de Venta: " + empleado.getUnidadVenta().getNombre());
+                    System.out.println("\tUnidad de Venta: " + empleado.getUnidadVenta().getNombre());
                 }
             }
         }
-        
+
         // ---------------------------------------------------------------
         // caso de uso 4: aguinaldo por empleado y unidad de venta
         // ---------------------------------------------------------------
@@ -132,34 +130,32 @@ public class TestEmpleado {
 
         try
         {
-        	aguinaldos = empleadoAbm.traerAguinaldoPorEmpleado();
+            aguinaldos = empleadoAbm.traerAguinaldoPorEmpleado();
         }
         catch (Exception e)
         {
-        	System.out.println(e.getMessage());
+            System.out.println(e.getMessage());
         }
 
-        System.out.println();
-        System.out.println("\n---------------TEST 4 AGUINALDO POR EMPLEADO ------------\n");
-     
+        System.out.println("\n\t--------------- TEST 4 AGUINALDO POR EMPLEADO ---------------\n");
+
         if (aguinaldos != null)
         {
-        	for (Object[] resultado : aguinaldos)
-        	{
-        		Empleado empleado = (Empleado) resultado[0];
-        		String unidad = (String) resultado[1];
-        		int sueldoBase = (Integer) resultado[2];
-        		double adicional = (Double) resultado[3];
-        		double aguinaldo = (Double) resultado[4];
+            for (Object[] resultado : aguinaldos)
+            {
+                Empleado empleado = (Empleado) resultado[0];
+                String unidad = (String) resultado[1];
+                int sueldoBase = (Integer) resultado[2];
+                double adicional = (Double) resultado[3];
+                double aguinaldo = (Double) resultado[4];
 
-        		System.out.println("--------------------------------------------");
-        		System.out.println("Empleado: "+ empleado.getNombre() + " "+ empleado.getApellido());
-
-        		System.out.println("Unidad de Venta: " + unidad);
-        		System.out.println("Sueldo Base: $" + sueldoBase);
-        		System.out.println("Adicional: $" + adicional);
-        		System.out.println("Aguinaldo: $" + aguinaldo);
-        	}
+                System.out.println("\t--------------------------------------------");
+                System.out.println("\t Empleado: " + empleado.getNombre() + " " + empleado.getApellido());
+                System.out.println("\t Unidad de Venta: " + unidad);
+                System.out.println("\t Sueldo Base: $" + sueldoBase);
+                System.out.println("\t Adicional: $" + adicional);
+                System.out.println("\t Aguinaldo: $" + aguinaldo);
+            }
         }
 
         // ---------------------------------------------------------------
@@ -170,37 +166,107 @@ public class TestEmpleado {
 
         try
         {
-        	jubilaciones = empleadoAbm.traerJubilacionPorEmpleado();
+            jubilaciones = empleadoAbm.traerJubilacionPorEmpleado();
         }
         catch (Exception e)
         {
-        	System.out.println(e.getMessage());
+            System.out.println(e.getMessage());
         }
 
-        System.out.println();
-        System.out.println("\n---------------TEST 5 APORTE JUBILATORIO POR EMPLEADO ------------\n");
-     
+        System.out.println("\n\t--------------- TEST 5 APORTE JUBILATORIO POR EMPLEADO ---------------\n");
+
         if (jubilaciones != null)
         {
-        	for (Object[] resultado : jubilaciones)
-        	{
-        		Empleado empleado = (Empleado) resultado[0];
-        		String unidad = (String) resultado[1];
-        		int sueldoBase = (Integer) resultado[2];
-        		double adicional = (Double) resultado[3];
-        		double sueldo = (Double) resultado[4];
-        		double jubilacion = (Double) resultado[5];
+            for (Object[] resultado : jubilaciones)
+            {
+                Empleado empleado = (Empleado) resultado[0];
+                String unidad = (String) resultado[1];
+                int sueldoBase = (Integer) resultado[2];
+                double adicional = (Double) resultado[3];
+                double sueldo = (Double) resultado[4];
+                double jubilacion = (Double) resultado[5];
 
-        		System.out.println("--------------------------------------------");
+                System.out.println("\t--------------------------------------------");
+                System.out.println("\t Empleado: " + empleado.getNombre() + " " + empleado.getApellido());
+                System.out.println("\t Unidad de Venta: " + unidad);
+                System.out.println("\t Sueldo Base: $" + sueldoBase);
+                System.out.println("\t Adicional: $" + adicional);
+                System.out.println("\t Sueldo: $" + sueldo);
+                System.out.println("\t Aporte Jubilatorio (11%): $" + jubilacion);
+            }
+        }
 
-        		System.out.println("Empleado: "+ empleado.getNombre() + " "+ empleado.getApellido());
+        // ---------------------------------------------------------------
+        // caso de uso 6: empleados ingresados entre dos fechas
+        // ---------------------------------------------------------------
 
-        		System.out.println("Unidad de Venta: " + unidad);
-        		System.out.println("Sueldo Base: $" + sueldoBase);
-        		System.out.println("Adicional: $" + adicional);
-        		System.out.println("Sueldo: $" + sueldo);
-        		System.out.println("Aporte Jubilatorio (11%): $" + jubilacion);
-        	}
+        LocalDate fechaDesde = LocalDate.of(2020, 1, 1);
+        LocalDate fechaHasta = LocalDate.of(2024, 12, 31);
+
+        List<Empleado> empleadosEntreFechas = null;
+
+        try
+        {
+            empleadosEntreFechas = empleadoAbm.traerEmpleadosEntreFechas(fechaDesde, fechaHasta);
+        }
+        catch (Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
+
+        System.out.println("\n\t--------------- TEST 6 EMPLEADOS ENTRE DOS FECHAS ---------------\n");
+        System.out.println("\t Desde: " + fechaDesde + "\t Hasta: " + fechaHasta);
+
+        if (empleadosEntreFechas != null)
+        {
+            for (Empleado empleado : empleadosEntreFechas)
+            {
+                System.out.println("\t--------------------------------------------");
+                System.out.println("\t Nombre: " + empleado.getNombre());
+                System.out.println("\t Apellido: " + empleado.getApellido());
+                System.out.println("\t Ingreso: " + empleado.getIngreso());
+
+                if (empleado instanceof Cocinero)
+                {
+                    System.out.println("\tTipo: Cocinero");
+                }
+                else if (empleado instanceof Cajero)
+                {
+                    System.out.println("\t Tipo: Cajero");
+                }
+
+                if (empleado.getUnidadVenta() != null)
+                {
+                    System.out.println("\t Unidad de Venta: " + empleado.getUnidadVenta().getNombre());
+                }
+            }
+        }
+
+        // ---------------------------------------------------------------
+        // caso de uso 7: total de sueldo por unidad de venta
+        // ---------------------------------------------------------------
+
+        List<Object[]> totales = null;
+
+        try
+        {
+            totales = empleadoAbm.traerTotalSueldoPorUnidad();
+        }
+        catch (Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
+
+        System.out.println("\n--------------- TEST 7 TOTAL DE SUELDO POR UNIDAD ---------------\n");
+
+        if (totales != null)
+        {
+            for (Object[] resultado : totales)
+            {
+                System.out.println("--------------------------------------------");
+                System.out.println("\n Unidad: " + resultado[0]);
+                System.out.println("\n Total de sueldos: $" + resultado[1]);
+            }
         }
     }
 }
