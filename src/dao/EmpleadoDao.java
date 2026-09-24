@@ -68,13 +68,7 @@ public class EmpleadoDao
 		}
 	}
 	
-	// -------------------------------------------------------------------
-	// ------- METODOS DE CONSULTA DE BASE DE DATOS EMPLEADO -------------
-	// -------------------------------------------------------------------
-	
-	
 	// ---- metodo agregar empleado a la base de datos -----
-	
 	
 	public int agregar(Empleado objeto) 
 	{
@@ -183,7 +177,6 @@ public class EmpleadoDao
 	                   + "order by e.unidadVenta.nombre, e.apellido";
 
 	        Query<Empleado> query = session.createQuery(hql, Empleado.class);
-
 	        lista = query.getResultList();
 	    }
 	    finally
@@ -217,7 +210,6 @@ public class EmpleadoDao
 	                "order by uv.nombre";
 
 	        Query<Object[]> query = session.createQuery(hql, Object[].class);
-
 	        List<Object[]> resultados = query.getResultList();
 
 	        for (Object[] resultado : resultados)
@@ -269,12 +261,41 @@ public class EmpleadoDao
 	    return lista;
 	}
 	
-	
 	// -------------------------------------------------------------------
 		// ---- caso de uso 4: traer aguinaldos -----
 		// -------------------------------------------------------------------
 	
-	public List<Object[]> traerDatosAguinaldo()
+	public List<Object[]> traerDatosSueldo()
+	{
+	    List<Object[]> lista = new ArrayList<Object[]>();
+
+	    try
+	    {
+	        iniciaOperacion();
+
+	        String hql =
+	                "SELECT e, uv.nombre, c.sueldoBase " +
+	                "FROM Empleado e " +
+	                "JOIN e.unidadVenta uv " +
+	                "JOIN uv.festival f " +
+	                "JOIN Costo c ON c.festival = f " +
+	                "ORDER BY uv.nombre, e.apellido";
+
+	        lista = session.createQuery(hql, Object[].class).getResultList();
+	    }
+	    finally
+	    {
+	        session.close();
+	    }
+
+	    return lista;
+	}
+	
+	// -------------------------------------------------------------------
+	// ---- caso de uso 5: traer empleados ingresados entre dos fechas ----
+	// -------------------------------------------------------------------
+	
+	public List<Object[]> traerDatosJubilacion()
 	{
 	    List<Object[]> lista = new ArrayList<Object[]>();
 
@@ -300,4 +321,70 @@ public class EmpleadoDao
 	    return lista;
 	}
 
-}	
+	// -------------------------------------------------------------------
+	// ---- caso de uso 6: traer empleados ingresados entre dos fechas ----
+	// -------------------------------------------------------------------
+
+	public List<Empleado> traerEmpleadosEntreFechas(LocalDate fechaDesde, LocalDate fechaHasta)
+	{
+	    List<Empleado> lista = new ArrayList<Empleado>();
+
+	    try
+	    {
+	        iniciaOperacion();
+
+	        String hql =
+	                "SELECT e " +
+	                "FROM Empleado e " +
+	                "JOIN FETCH e.unidadVenta uv " +
+	                "WHERE e.ingreso BETWEEN :fechaDesde AND :fechaHasta " +
+	                "ORDER BY uv.nombre, e.ingreso, e.apellido";
+
+	        Query<Empleado> query = session.createQuery(hql, Empleado.class);
+
+	        query.setParameter("fechaDesde", fechaDesde);
+	        query.setParameter("fechaHasta", fechaHasta);
+
+	        lista = query.getResultList();
+	    }
+	    finally
+	    {
+	        session.close();
+	    }
+
+	    return lista;
+	}
+
+	// -------------------------------------------------------------------
+	// ---- caso de uso 7: total de sueldo por unidad de venta ------------
+	// -------------------------------------------------------------------
+
+	public List<Object[]> traerTotalSueldoPorUnidad()
+	{
+	    List<Object[]> lista = new ArrayList<Object[]>();
+
+	    try
+	    {
+	        iniciaOperacion();
+
+	        String hql =
+	                "SELECT uv.nombre, SUM(c.sueldoBase) " +
+	                "FROM UnidadVenta uv " +
+	                "JOIN uv.empleados e " +
+	                "JOIN uv.festival f " +
+	                "JOIN Costo c ON c.festival = f " +
+	                "GROUP BY uv.idUnidadVenta, uv.nombre " +
+	                "ORDER BY uv.nombre";
+
+	        Query<Object[]> query = session.createQuery(hql, Object[].class);
+
+	        lista = query.getResultList();
+	    }
+	    finally
+	    {
+	        session.close();
+	    }
+
+	    return lista;
+	}
+}
