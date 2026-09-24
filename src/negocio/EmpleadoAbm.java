@@ -1,4 +1,3 @@
-
 package negocio;
 
 import java.time.LocalDate;
@@ -68,7 +67,6 @@ public class EmpleadoAbm
 		{
 			throw new Exception("ERROR: no existe empleado con dicho ID");
 		}
-
 		return e;
 	}
 
@@ -80,7 +78,6 @@ public class EmpleadoAbm
 		{
 			throw new Exception("ERROR: no hay empleados registrados");
 		}
-
 		return lista;
 	}
 
@@ -89,7 +86,6 @@ public class EmpleadoAbm
 		EmpleadoDao.getInstance().actualizar(empleado);
 	}
 	
-
     // ---- caso de uso 1: traer empleados por unidad de venta --------------------
 	
 	public List<Empleado> traerEmpleadosPorUnidad()
@@ -117,7 +113,7 @@ public class EmpleadoAbm
 	{
 	    List<Object[]> resultados = new ArrayList<Object[]>();
 
-	    List<Object[]> datos = EmpleadoDao.getInstance().traerDatosAguinaldo();
+	    List<Object[]> datos = EmpleadoDao.getInstance().traerDatosSueldo();
 
 	    int anioActual = LocalDate.now().getYear();
 
@@ -132,20 +128,16 @@ public class EmpleadoAbm
 	        if (empleado instanceof Cajero)
 	        {
 	            Cajero cajero = (Cajero) empleado;
-
 	            int antiguedad = anioActual - empleado.getIngreso().getYear();
-
 	            adicional = cajero.getPlusAntiguedad() * antiguedad;
 	        }
 	        else if (empleado instanceof Cocinero)
 	        {
 	            Cocinero cocinero = (Cocinero) empleado;
-
 	            adicional = sueldoBase * cocinero.getPorcentaje() / 100.0;
 	        }
 
 	        double sueldo = sueldoBase + adicional;
-
 	        double aguinaldo = sueldo / 2;
 
 	        resultados.add(new Object[] {empleado,unidad,sueldoBase,adicional,aguinaldo});
@@ -160,7 +152,7 @@ public class EmpleadoAbm
 	{
 	    List<Object[]> resultados = new ArrayList<Object[]>();
 
-	    List<Object[]> datos = EmpleadoDao.getInstance().traerDatosAguinaldo();
+	    List<Object[]> datos = EmpleadoDao.getInstance().traerDatosSueldo();
 
 	    int anioActual = LocalDate.now().getYear();
 
@@ -172,27 +164,28 @@ public class EmpleadoAbm
 
 	        double adicional = 0;
 
-	        // Cajero: plus fijo por cada año de antigüedad
+	        // Cajero: plus fijo por cada anio de antiguedad
+	        
 	        if (empleado instanceof Cajero)
 	        {
 	            Cajero cajero = (Cajero) empleado;
 
 	            int antiguedad = anioActual - empleado.getIngreso().getYear();
-
 	            adicional = cajero.getPlusAntiguedad() * antiguedad;
 	        }
 
 	        // Cocinero: porcentaje sobre el sueldo base
+	        
 	        else if (empleado instanceof Cocinero)
 	        {
 	            Cocinero cocinero = (Cocinero) empleado;
-
 	            adicional = sueldoBase * cocinero.getPorcentaje() / 100.0;
 	        }
 
 	        double sueldo = sueldoBase + adicional;
 
 	        // Aporte jubilatorio: 11%
+	        
 	        double jubilacion = sueldo * 0.11;
 
 	        resultados.add(new Object[] {empleado,unidad,sueldoBase,adicional,sueldo,jubilacion});
@@ -200,5 +193,19 @@ public class EmpleadoAbm
 
 	    return resultados;
 	}
+	
+	// ---- caso de uso 6: traer empleados ingresados entre dos fechas ----
+	
+	public List<Empleado> traerEmpleadosEntreFechas(LocalDate fechaDesde, LocalDate fechaHasta)
+	{
+	    return EmpleadoDao.getInstance().traerEmpleadosEntreFechas(fechaDesde, fechaHasta);
+	}
 
+	// ---- caso de uso 7: total de sueldo por unidad --------------------
+
+	public List<Object[]> traerTotalSueldoPorUnidad()
+	{
+	    return EmpleadoDao.getInstance().traerTotalSueldoPorUnidad();
+	}
+   
 }
