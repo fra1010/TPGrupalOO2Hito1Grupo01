@@ -9,380 +9,352 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
-import datos.Cajero;
-import datos.Cocinero;
 import datos.Empleado;
-import datos.UnidadVenta;
 
-public class EmpleadoDao 
+public class EmpleadoDao
 {
-	private static Session session;
-	private Transaction tx;
-	
-	private static EmpleadoDao instancia = null;
+    private static Session session;
+    private Transaction tx;
 
-	protected EmpleadoDao() 
-	{
-		
-	}
+    private static EmpleadoDao instancia = null;
 
-	public static EmpleadoDao getInstance() 
-	{
-		if (instancia == null)
-		{	
-			instancia = new EmpleadoDao();
-		}	
-		
-		return instancia;
-	}
+    protected EmpleadoDao()
+    {
+    }
 
-	protected void iniciaOperacion() throws HibernateException 
-	{
-		session = HibernateUtil.getSessionFactory().openSession();
-		tx = session.beginTransaction();
-	}
+    public static EmpleadoDao getInstance()
+    {
+        if (instancia == null)
+        {
+            instancia = new EmpleadoDao();
+        }
 
-	protected void manejaExcepcion(HibernateException he) throws HibernateException 
-	{
-		tx.rollback();
-		
-		throw new HibernateException("ERROR en la capa de acceso a datos", he);
-	}
-	
-	public void actualizar(Empleado objeto) 
-	{
-		try 
-		{
-			iniciaOperacion();
-			session.update(objeto);
-			tx.commit();
-		} 
-		catch (HibernateException he) 
-		{
-			manejaExcepcion(he);
-		} finally 
-		{
-			session.close();
-		}
-	}
-	
-	// ---- metodo agregar empleado a la base de datos -----
-	
-	public int agregar(Empleado objeto) 
-	{
-		int id = 0;
+        return instancia;
+    }
 
-		try 
-		{
-			iniciaOperacion();
-			id = Integer.parseInt(session.save(objeto).toString());
-			tx.commit();
-		} 
-		catch (HibernateException he) 
-		{
-			manejaExcepcion(he);
-		} 
-		finally 
-		{
-			session.close();
-		}
-		return id;
-	}
-	
-	// ----- metodo traer empleado por su id -----
-	
-	public Empleado traer(int idEmpleado) 
-	{
-		Empleado objeto = null;
-		
-		try 
-		{
-			iniciaOperacion();
+    protected void iniciaOperacion() throws HibernateException
+    {
+        session = HibernateUtil.getSessionFactory().openSession();
+        tx = session.beginTransaction();
+    }
 
-			objeto = (Empleado)session.createQuery(
-					"from Empleado e where e.idEmpleado = :idEmpleado")
-					.setParameter("idEmpleado", idEmpleado)
-					.uniqueResult();
-		} 
-		finally 
-		{
-			session.close();
-		}
-		
-		return objeto;
-	}
+    protected void manejaExcepcion(HibernateException he) throws HibernateException
+    {
+        tx.rollback();
+        throw new HibernateException("ERROR en la capa de acceso a datos", he);
+    }
 
-	// -------- metodo traer empleado por su documento -------
-	
-	public Empleado traerPorDni(long dni)
-	{
-		Empleado objeto = null;
+    // -------------------------------------------------------------------
+    // CRUD
+    // -------------------------------------------------------------------
 
-		try
-		{
-			iniciaOperacion();
+    public void actualizar(Empleado empleado)
+    {
+        try
+        {
+            iniciaOperacion();
 
-			objeto = (Empleado) session.createQuery(
-					"from Empleado e where e.dni = :dni")
-					.setParameter("dni", dni)
-					.uniqueResult();
-		}
-		finally
-		{
-			session.close();
-		}
+            session.update(empleado);
 
-		return objeto;
-	}
-	
-	// ------- metodo traer lista de todos los empleados -------- 
-	
-	public List<Empleado> traer() throws HibernateException 
-	{
-		List<Empleado> lista = new ArrayList<Empleado>();
-		
-		try 
-		{
-			iniciaOperacion();
+            tx.commit();
+        }
+        catch (HibernateException he)
+        {
+            manejaExcepcion(he);
+        }
+        finally
+        {
+            session.close();
+        }
+    }
 
-			lista = session.createQuery(
-					"from Empleado", Empleado.class)
-					.list();
-		} 
-		finally 
-		{
-			session.close();
-		}
-		
-		return lista;
-	}
+    public int agregar(Empleado empleado)
+    {
+        int id = 0;
 
-	//---------------------------------------------------------------------
-	// ---- caso de uso 1: traer empleados por unidad de venta ------------
-	//---------------------------------------------------------------------
+        try
+        {
+            iniciaOperacion();
 
-	public List<Empleado> traerEmpleadosPorUnidadVenta()
-	{
-	    List<Empleado> lista = new ArrayList<Empleado>();
+            id = Integer.parseInt(session.save(empleado).toString());
 
-	    try
-	    {
-	        iniciaOperacion();
+            tx.commit();
+        }
+        catch (HibernateException he)
+        {
+            manejaExcepcion(he);
+        }
+        finally
+        {
+            session.close();
+        }
 
-	        String hql = "select e from Empleado e "
-	                   + "join fetch e.unidadVenta "
-	                   + "where e.unidadVenta is not null "
-	                   + "order by e.unidadVenta.nombre, e.apellido";
+        return id;
+    }
 
-	        Query<Empleado> query = session.createQuery(hql, Empleado.class);
-	        lista = query.getResultList();
-	    }
-	    finally
-	    {
-	        session.close();
-	    }
+    public Empleado traerPorId(int idEmpleado)
+    {
+        Empleado empleado = null;
 
-	    return lista;
-	}
+        try
+        {
+            iniciaOperacion();
 
-	// -------------------------------------------------------------------
-	// ---- caso de uso 2: cantidad de empleados por unidad de venta -----
-	// -------------------------------------------------------------------
+            empleado = session.createQuery(
+                    "from Empleado e where e.idEmpleado = :idEmpleado",
+                    Empleado.class)
+                    .setParameter("idEmpleado", idEmpleado)
+                    .uniqueResult();
+        }
+        finally
+        {
+            session.close();
+        }
 
-	public List<String> traerNumeroEmpleadosPorUnidadVenta()
-	{
-	    List<String> lista = new ArrayList<String>();
+        return empleado;
+    }
 
-	    try
-	    {
-	        iniciaOperacion();
+    public Empleado traerPorDni(long dni)
+    {
+        Empleado empleado = null;
 
-	        String hql =
-	                "select uv.nombre, " +
-	                "sum(case when type(e) = Cocinero then 1 else 0 end), " +
-	                "sum(case when type(e) = Cajero then 1 else 0 end), " +
-	                "case when uv.responsable is not null then 1 else 0 end " +
-	                "from UnidadVenta uv " +
-	                "left join uv.empleados e " +
-	                "group by uv.idUnidadVenta, uv.nombre " +
-	                "order by uv.nombre";
+        try
+        {
+            iniciaOperacion();
 
-	        Query<Object[]> query = session.createQuery(hql, Object[].class);
-	        List<Object[]> resultados = query.getResultList();
+            empleado = session.createQuery(
+                    "from Empleado e where e.dni = :dni",
+                    Empleado.class)
+                    .setParameter("dni", dni)
+                    .uniqueResult();
+        }
+        finally
+        {
+            session.close();
+        }
 
-	        for (Object[] resultado : resultados)
-	        {
-	            String texto =
-	                    "Unidad: " + resultado[0] +
-	                    " | Cocineros: " + resultado[1] +
-	                    " | Cajeros: " + resultado[2] +
-	                    " | Encargados: " + resultado[3];
+        return empleado;
+    }
 
-	            lista.add(texto);
-	        }
-	    }
-	    finally
-	    {
-	        session.close();
-	    }
+    public List<Empleado> traerTodos()
+    {
+        List<Empleado> empleados = new ArrayList<Empleado>();
 
-	    return lista;
-	}
-	
-	// -------------------------------------------------------------------
-	// ---- caso de uso 3: traer empleados mas antiguos -----
-	// -------------------------------------------------------------------
-	
-	public List<Empleado> traerEmpleadosMasAntiguos(int top)
-	{
-	    List<Empleado> lista = new ArrayList<Empleado>();
+        try
+        {
+            iniciaOperacion();
 
-	    try
-	    {
-	        iniciaOperacion();
+            empleados = session.createQuery(
+                    "from Empleado",
+                    Empleado.class)
+                    .getResultList();
+        }
+        finally
+        {
+            session.close();
+        }
 
-	        String hql =
-	                "SELECT e " +
-	                "FROM Empleado e " +
-	                "JOIN FETCH e.unidadVenta uv " +
-	                "ORDER BY e.ingreso ASC";
+        return empleados;
+    }
 
-	        lista = session.createQuery(hql, Empleado.class)
-	                .setMaxResults(top)
-	                .getResultList();
-	    }
-	    finally
-	    {
-	        session.close();
-	    }
+    // -------------------------------------------------------------------
+    // Caso de uso 1: empleados por unidad de venta
+    // -------------------------------------------------------------------
 
-	    return lista;
-	}
-	
-	// -------------------------------------------------------------------
-		// ---- caso de uso 4: traer aguinaldos -----
-		// -------------------------------------------------------------------
-	
-	public List<Object[]> traerDatosSueldo()
-	{
-	    List<Object[]> lista = new ArrayList<Object[]>();
+    public List<Empleado> traerEmpleadosPorUnidad()
+    {
+        List<Empleado> empleados = new ArrayList<Empleado>();
 
-	    try
-	    {
-	        iniciaOperacion();
+        try
+        {
+            iniciaOperacion();
 
-	        String hql =
-	                "SELECT e, uv.nombre, c.sueldoBase " +
-	                "FROM Empleado e " +
-	                "JOIN e.unidadVenta uv " +
-	                "JOIN uv.festival f " +
-	                "JOIN Costo c ON c.festival = f " +
-	                "ORDER BY uv.nombre, e.apellido";
+            String hql =
+                    "select e " +
+                    "from Empleado e " +
+                    "join fetch e.unidadVenta " +
+                    "where e.unidadVenta is not null " +
+                    "order by e.unidadVenta.nombre, e.apellido";
 
-	        lista = session.createQuery(hql, Object[].class).getResultList();
-	    }
-	    finally
-	    {
-	        session.close();
-	    }
+            Query<Empleado> query = session.createQuery(hql, Empleado.class);
 
-	    return lista;
-	}
-	
-	// -------------------------------------------------------------------
-	// ---- caso de uso 5: traer empleados ingresados entre dos fechas ----
-	// -------------------------------------------------------------------
-	
-	public List<Object[]> traerDatosJubilacion()
-	{
-	    List<Object[]> lista = new ArrayList<Object[]>();
+            empleados = query.getResultList();
+        }
+        finally
+        {
+            session.close();
+        }
 
-	    try
-	    {
-	        iniciaOperacion();
+        return empleados;
+    }
 
-	        String hql =
-	                "SELECT e, uv.nombre, c.sueldoBase " +
-	                "FROM Empleado e " +
-	                "JOIN e.unidadVenta uv " +
-	                "JOIN uv.festival f " +
-	                "JOIN Costo c ON c.festival = f " +
-	                "ORDER BY uv.nombre, e.apellido";
+    // -------------------------------------------------------------------
+    // Caso de uso 2: cantidad de empleados por unidad de venta
+    // -------------------------------------------------------------------
 
-	        lista = session.createQuery(hql, Object[].class).getResultList();
-	    }
-	    finally
-	    {
-	        session.close();
-	    }
+    public List<String> traerCantidadEmpleadosPorUnidad()
+    {
+        List<String> resultados = new ArrayList<String>();
 
-	    return lista;
-	}
+        try
+        {
+            iniciaOperacion();
 
-	// -------------------------------------------------------------------
-	// ---- caso de uso 6: traer empleados ingresados entre dos fechas ----
-	// -------------------------------------------------------------------
+            String hql =
+                    "select uv.nombre, " +
+                    "sum(case when type(e) = Cocinero then 1 else 0 end), " +
+                    "sum(case when type(e) = Cajero then 1 else 0 end), " +
+                    "case when uv.responsable is not null then 1 else 0 end " +
+                    "from UnidadVenta uv " +
+                    "left join uv.empleados e " +
+                    "group by uv.idUnidadVenta, uv.nombre " +
+                    "order by uv.nombre";
 
-	public List<Empleado> traerEmpleadosEntreFechas(LocalDate fechaDesde, LocalDate fechaHasta)
-	{
-	    List<Empleado> lista = new ArrayList<Empleado>();
+            Query<Object[]> query = session.createQuery(hql, Object[].class);
 
-	    try
-	    {
-	        iniciaOperacion();
+            List<Object[]> datos = query.getResultList();
 
-	        String hql =
-	                "SELECT e " +
-	                "FROM Empleado e " +
-	                "JOIN FETCH e.unidadVenta uv " +
-	                "WHERE e.ingreso BETWEEN :fechaDesde AND :fechaHasta " +
-	                "ORDER BY uv.nombre, e.ingreso, e.apellido";
+            for (Object[] dato : datos)
+            {
+                String resultado =
+                        "Unidad: " + dato[0] +
+                        " | Cocineros: " + dato[1] +
+                        " | Cajeros: " + dato[2] +
+                        " | Encargados: " + dato[3];
 
-	        Query<Empleado> query = session.createQuery(hql, Empleado.class);
+                resultados.add(resultado);
+            }
+        }
+        finally
+        {
+            session.close();
+        }
 
-	        query.setParameter("fechaDesde", fechaDesde);
-	        query.setParameter("fechaHasta", fechaHasta);
+        return resultados;
+    }
 
-	        lista = query.getResultList();
-	    }
-	    finally
-	    {
-	        session.close();
-	    }
+    // -------------------------------------------------------------------
+    // Caso de uso 3: empleados más antiguos
+    // -------------------------------------------------------------------
 
-	    return lista;
-	}
+    public List<Empleado> traerEmpleadosMasAntiguos(int cantidad)
+    {
+        List<Empleado> empleados = new ArrayList<Empleado>();
 
-	// -------------------------------------------------------------------
-	// ---- caso de uso 7: total de sueldo por unidad de venta ------------
-	// -------------------------------------------------------------------
+        try
+        {
+            iniciaOperacion();
 
-	public List<Object[]> traerTotalSueldoPorUnidad()
-	{
-	    List<Object[]> lista = new ArrayList<Object[]>();
+            String hql =
+                    "select e " +
+                    "from Empleado e " +
+                    "join fetch e.unidadVenta uv " +
+                    "order by e.ingreso asc";
 
-	    try
-	    {
-	        iniciaOperacion();
+            empleados = session.createQuery(hql, Empleado.class)
+                    .setMaxResults(cantidad)
+                    .getResultList();
+        }
+        finally
+        {
+            session.close();
+        }
 
-	        String hql =
-	                "SELECT uv.nombre, SUM(c.sueldoBase) " +
-	                "FROM UnidadVenta uv " +
-	                "JOIN uv.empleados e " +
-	                "JOIN uv.festival f " +
-	                "JOIN Costo c ON c.festival = f " +
-	                "GROUP BY uv.idUnidadVenta, uv.nombre " +
-	                "ORDER BY uv.nombre";
+        return empleados;
+    }
 
-	        Query<Object[]> query = session.createQuery(hql, Object[].class);
+    // -------------------------------------------------------------------
+    // Casos de uso 4 y 5: datos de sueldo
+    // -------------------------------------------------------------------
 
-	        lista = query.getResultList();
-	    }
-	    finally
-	    {
-	        session.close();
-	    }
+    public List<Object[]> traerEmpleadosConSueldo()
+    {
+        List<Object[]> datos = new ArrayList<Object[]>();
 
-	    return lista;
-	}
+        try
+        {
+            iniciaOperacion();
+
+            String hql =
+                    "select e, uv.nombre, c.sueldoBase " +
+                    "from Empleado e " +
+                    "join e.unidadVenta uv " +
+                    "join uv.festival f " +
+                    "join Costo c on c.festival = f " +
+                    "order by uv.nombre, e.apellido";
+
+            datos = session.createQuery(hql, Object[].class).getResultList();
+        }
+        finally
+        {
+            session.close();
+        }
+
+        return datos;
+    }
+
+    // -------------------------------------------------------------------
+    // Caso de uso 6: empleados ingresados entre dos fechas
+    // -------------------------------------------------------------------
+
+    public List<Empleado> traerEmpleadosEntreFechas(LocalDate fechaDesde,LocalDate fechaHasta)
+    {
+        List<Empleado> empleados = new ArrayList<Empleado>();
+
+        try
+        {
+            iniciaOperacion();
+
+            String hql =
+                    "select e " +
+                    "from Empleado e " +
+                    "join fetch e.unidadVenta uv " +
+                    "where e.ingreso between :fechaDesde and :fechaHasta " +
+                    "order by uv.nombre, e.ingreso, e.apellido";
+
+            Query<Empleado> query = session.createQuery(hql, Empleado.class);
+
+            query.setParameter("fechaDesde", fechaDesde);
+            query.setParameter("fechaHasta", fechaHasta);
+
+            empleados = query.getResultList();
+        }
+        finally
+        {
+            session.close();
+        }
+
+        return empleados;
+    }
+
+    // -------------------------------------------------------------------
+    // Caso de uso 7: total de sueldo por unidad de venta
+    // -------------------------------------------------------------------
+
+    public List<Object[]> traerTotalSueldosPorUnidad()
+    {
+        List<Object[]> resultados = new ArrayList<Object[]>();
+
+        try
+        {
+            iniciaOperacion();
+
+            String hql =
+                    "select uv.nombre, sum(c.sueldoBase) " +
+                    "from UnidadVenta uv " +
+                    "join uv.empleados e " +
+                    "join uv.festival f " +
+                    "join Costo c on c.festival = f " +
+                    "group by uv.idUnidadVenta, uv.nombre " +
+                    "order by uv.nombre";
+
+            resultados = session.createQuery(hql, Object[].class).getResultList();
+        }
+        finally
+        {
+            session.close();
+        }
+
+        return resultados;
+    }
 }
