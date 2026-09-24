@@ -1,3 +1,4 @@
+
 package dao;
 
 import java.time.LocalDate;
@@ -181,8 +182,7 @@ public class EmpleadoDao
 	                   + "where e.unidadVenta is not null "
 	                   + "order by e.unidadVenta.nombre, e.apellido";
 
-	        Query<Empleado> query =
-	                session.createQuery(hql, Empleado.class);
+	        Query<Empleado> query = session.createQuery(hql, Empleado.class);
 
 	        lista = query.getResultList();
 	    }
@@ -198,7 +198,7 @@ public class EmpleadoDao
 	// ---- caso de uso 2: cantidad de empleados por unidad de venta -----
 	// -------------------------------------------------------------------
 
-	public List<String> traerCantidadPorUnidadVenta()
+	public List<String> traerNumeroEmpleadosPorUnidadVenta()
 	{
 	    List<String> lista = new ArrayList<String>();
 
@@ -216,8 +216,7 @@ public class EmpleadoDao
 	                "group by uv.idUnidadVenta, uv.nombre " +
 	                "order by uv.nombre";
 
-	        Query<Object[]> query =
-	                session.createQuery(hql, Object[].class);
+	        Query<Object[]> query = session.createQuery(hql, Object[].class);
 
 	        List<Object[]> resultados = query.getResultList();
 
@@ -240,5 +239,65 @@ public class EmpleadoDao
 	    return lista;
 	}
 	
+	// -------------------------------------------------------------------
+	// ---- caso de uso 3: traer empleados mas antiguos -----
+	// -------------------------------------------------------------------
+	
+	public List<Empleado> traerEmpleadosMasAntiguos(int top)
+	{
+	    List<Empleado> lista = new ArrayList<Empleado>();
+
+	    try
+	    {
+	        iniciaOperacion();
+
+	        String hql =
+	                "SELECT e " +
+	                "FROM Empleado e " +
+	                "JOIN FETCH e.unidadVenta uv " +
+	                "ORDER BY e.ingreso ASC";
+
+	        lista = session.createQuery(hql, Empleado.class)
+	                .setMaxResults(top)
+	                .getResultList();
+	    }
+	    finally
+	    {
+	        session.close();
+	    }
+
+	    return lista;
+	}
+	
+	
+	// -------------------------------------------------------------------
+		// ---- caso de uso 4: traer aguinaldos -----
+		// -------------------------------------------------------------------
+	
+	public List<Object[]> traerDatosAguinaldo()
+	{
+	    List<Object[]> lista = new ArrayList<Object[]>();
+
+	    try
+	    {
+	        iniciaOperacion();
+
+	        String hql =
+	                "SELECT e, uv.nombre, c.sueldoBase " +
+	                "FROM Empleado e " +
+	                "JOIN e.unidadVenta uv " +
+	                "JOIN uv.festival f " +
+	                "JOIN Costo c ON c.festival = f " +
+	                "ORDER BY uv.nombre, e.apellido";
+
+	        lista = session.createQuery(hql, Object[].class).getResultList();
+	    }
+	    finally
+	    {
+	        session.close();
+	    }
+
+	    return lista;
+	}
 
 }	
