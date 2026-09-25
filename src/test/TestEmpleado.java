@@ -6,269 +6,149 @@ import java.util.List;
 import datos.Cajero;
 import datos.Cocinero;
 import datos.Empleado;
-import negocio.EmpleadoAbm;
+import datos.Festival;
+import negocio.FestivalABM;
 
 public class TestEmpleado
 {
     public static void main(String[] args)
     {
-        EmpleadoAbm empleadoAbm = new EmpleadoAbm();
+        FestivalABM festivalABM = new FestivalABM();
 
-        // ---------------------------------------------------------------
-        // Caso de uso 1: empleados por unidad de venta
-        // ---------------------------------------------------------------
-
-        List<Empleado> empleados = null;
+        // -------------------------------------------------------------------
+        // Caso de uso 1: traer empleados por festival - IVAN TOLABA
+        // -------------------------------------------------------------------
 
         try
         {
-            empleados = empleadoAbm.traerEmpleadosPorUnidad();
-        }
-        catch (Exception e)
-        {
-            System.out.println(e.getMessage());
-        }
+            Festival festival = festivalABM.traer(1);
+            List<Empleado> empleados = festivalABM.traerEmpleadosPorFestival(festival);
 
-        System.out.println("\n\t------------- TEST 1 EMPLEADOS POR UNIDAD DE VENTA -------------\n");
+            System.out.println("\n------------- EMPLEADOS DEL FESTIVAL -------------\n");
+            System.out.println("Festival: " + festival.getNombre());
 
-        if (empleados != null)
-        {
             for (Empleado empleado : empleados)
             {
-                System.out.println("\t---------------------------------------------------");
-                System.out.println("\tNombre: " + empleado.getNombre());
-                System.out.println("\tApellido: " + empleado.getApellido());
+                System.out.println("---------------------------------------------");
+                System.out.println("Nombre: " + empleado.getNombre());
+                System.out.println("Apellido: " + empleado.getApellido());
 
                 if (empleado instanceof Cocinero)
                 {
-                    System.out.println("\tTipo: Cocinero");
+                    System.out.println("Tipo: Cocinero");
                 }
                 else if (empleado instanceof Cajero)
                 {
-                    System.out.println("\t Tipo: Cajero");
+                    System.out.println("Tipo: Cajero");
                 }
 
                 if (empleado.getUnidadVenta() != null)
                 {
-                    System.out.println("\tUnidad de Venta: " + empleado.getUnidadVenta().getNombre());
+                    System.out.println("Unidad de Venta: " + empleado.getUnidadVenta().getNombre());
 
                     if (empleado.getUnidadVenta().getResponsable() != null &&
-                        empleado.getUnidadVenta().getResponsable().getDni()== empleado.getDni())
+                        empleado.getUnidadVenta().getResponsable().getDni() == empleado.getDni())
                     {
-                        System.out.println("\t Es ENCARGADO / RESPONSABLE");
+                        System.out.println("Es ENCARGADO / RESPONSABLE");
                     }
                 }
             }
         }
+        catch (Exception e)
+        {
+            System.out.println("ERROR: " + e.getMessage());
+        }
 
-        // ---------------------------------------------------------------
-        // Caso de uso 2: cantidad de empleados por unidad
-        // ---------------------------------------------------------------
-
-        List<String> cantidades = null;
+        // -------------------------------------------------------------------
+        // Caso de uso 2: cantidad de empleados por unidad - IVAN TOLABA
+        // -------------------------------------------------------------------
 
         try
         {
-            cantidades = empleadoAbm.traerCantidadEmpleadosPorUnidad();
-        }
-        catch (Exception e)
-        {
-            System.out.println(e.getMessage());
-        }
+            Festival festival = festivalABM.traer(2);
+            List<Object[]> resultados = festivalABM.traerCantidadEmpleadosPorUnidad(festival);
 
-        System.out.println("\n\t-------------- TEST 2 CANTIDAD DE EMPLEADOS POR UNIDAD --------------\n");
+            System.out.println("\n------------- CANTIDAD DE EMPLEADOS POR UNIDAD -------------\n");
+            System.out.println("Festival: " + festival.getNombre());
 
-        if (cantidades != null)
-        {
-            for (String resultado : cantidades)
+            for (Object[] resultado : resultados)
             {
-                System.out.println("\t-----------------------------------------------");
-                System.out.println("\t" + resultado);
+                System.out.println("---------------------------------------------");
+                System.out.println("Unidad: " + resultado[0]);
+                System.out.println("Cocineros: " + resultado[1]);
+                System.out.println("Cajeros: " + resultado[2]);
+                System.out.println("Encargados: " + resultado[3]);
             }
         }
+        catch (Exception e)
+        {
+            System.out.println("ERROR: " + e.getMessage());
+        }
 
-        // ---------------------------------------------------------------
-        // Caso de uso 3: empleados mas antiguos
-        // ---------------------------------------------------------------
-
-        System.out.println("\n\t--------------- TEST 3 EMPLEADOS MÁS ANTIGUOS ---------------\n");
-
-        List<Empleado> empleadosAntiguos = null;
+        // -------------------------------------------------------------------
+        // Caso de uso 3: empleados más antiguos por festival - IVAN TOLABA
+        // -------------------------------------------------------------------
 
         try
         {
-            empleadosAntiguos = empleadoAbm.traerEmpleadosMasAntiguos(5);
-        }
-        catch (Exception e)
-        {
-            System.out.println(e.getMessage());
-        }
+            Festival festival = festivalABM.traer(3);
+            List<Empleado> empleados = festivalABM.traerEmpleadosMasAntiguos(festival, 3);
 
-        if (empleadosAntiguos != null)
-        {
-            for (Empleado empleado : empleadosAntiguos)
+            System.out.println("\n------------- EMPLEADOS MAS ANTIGUOS DEL FESTIVAL -------------\n");
+            System.out.println("Festival: " + festival.getNombre());
+
+            for (Empleado empleado : empleados)
             {
-                System.out.println("\t--------------------------------------------");
-                System.out.println("\tNombre: " + empleado.getNombre());
-                System.out.println("\tApellido: " + empleado.getApellido());
-                System.out.println("\tIngreso: " + empleado.getIngreso());
+                System.out.println("---------------------------------------------");
+                System.out.println("Nombre: " + empleado.getNombre());
+                System.out.println("Apellido: " + empleado.getApellido());
+                System.out.println("Fecha de ingreso: " + empleado.getIngreso());
 
                 if (empleado.getUnidadVenta() != null)
                 {
-                    System.out.println("\tUnidad de Venta: "+ empleado.getUnidadVenta().getNombre());
+                    System.out.println("Unidad de Venta: " + empleado.getUnidadVenta().getNombre());
                 }
             }
         }
+        catch (Exception e)
+        {
+            System.out.println("ERROR: " + e.getMessage());
+        }
 
-        // ---------------------------------------------------------------
-        // Caso de uso 4: aguinaldo por empleado
-        // ---------------------------------------------------------------
-
-        List<Object[]> aguinaldos = null;
+        // -------------------------------------------------------------------
+        // Caso de uso 4: empleados entre fechas por festival - IVAN TOLABA
+        // -------------------------------------------------------------------
 
         try
         {
-            aguinaldos = empleadoAbm.traerAguinaldoPorEmpleado();
-        }
-        catch (Exception e)
-        {
-            System.out.println(e.getMessage());
-        }
+            Festival festival = festivalABM.traer(1);
 
-        System.out.println("\n\t--------------- TEST 4 AGUINALDO POR EMPLEADO ---------------\n");
+            List<Empleado> empleados = festivalABM.traerEmpleadosEntreFechas(festival,LocalDate.of(2010, 1, 1),LocalDate.of(2025, 12, 31));
 
-        if (aguinaldos != null)
-        {
-            for (Object[] resultado : aguinaldos)
+            System.out.println("\n------------- EMPLEADOS INGRESADOS ENTRE FECHAS -------------\n");
+            System.out.println("Festival: " + festival.getNombre());
+            System.out.println("Desde: 01/01/2010");
+            System.out.println("Hasta: 31/12/2025");
+
+            for (Empleado empleado : empleados)
             {
-                Empleado empleado = (Empleado) resultado[0];
-                String unidad = (String) resultado[1];
-                int sueldoBase = (Integer) resultado[2];
-                double adicional = (Double) resultado[3];
-                double aguinaldo = (Double) resultado[4];
-
-                System.out.println("\t--------------------------------------------");
-                System.out.println("\tEmpleado: "+ empleado.getNombre()+ " "+ empleado.getApellido());
-                System.out.println("\tUnidad de Venta: " + unidad);
-                System.out.println("\t Sueldo Base: $" + sueldoBase);
-                System.out.println("\tAdicional: $" + adicional);
-                System.out.println("\t Aguinaldo: $" + aguinaldo);
-            }
-        }
-
-        // ---------------------------------------------------------------
-        // Caso de uso 5: aporte jubilatorio por empleado
-        // ---------------------------------------------------------------
-
-        List<Object[]> jubilaciones = null;
-
-        try
-        {
-            jubilaciones = empleadoAbm.traerJubilacionPorEmpleado();
-        }
-        catch (Exception e)
-        {
-            System.out.println(e.getMessage());
-        }
-
-        System.out.println("\n\t--------------- TEST 5 APORTE JUBILATORIO POR EMPLEADO ---------------\n");
-
-        if (jubilaciones != null)
-        {
-            for (Object[] resultado : jubilaciones)
-            {
-                Empleado empleado = (Empleado) resultado[0];
-                String unidad = (String) resultado[1];
-                int sueldoBase = (Integer) resultado[2];
-                double adicional = (Double) resultado[3];
-                double sueldo = (Double) resultado[4];
-                double jubilacion = (Double) resultado[5];
-
-                System.out.println("\t--------------------------------------------");
-                System.out.println("\t Empleado: "+ empleado.getNombre()+ " "+ empleado.getApellido());
-                System.out.println("\tUnidad de Venta: " + unidad);
-                System.out.println("\t Sueldo Base: $" + sueldoBase);
-                System.out.println("\tAdicional: $" + adicional);
-                System.out.println("\t Sueldo: $" + sueldo);
-                System.out.println("\tAporte Jubilatorio (11%): $" + jubilacion);
-            }
-        }
-
-        // ---------------------------------------------------------------
-        // Caso de uso 6: empleados ingresados entre dos fechas
-        // ---------------------------------------------------------------
-
-        LocalDate fechaDesde = LocalDate.of(2020, 1, 1);
-        LocalDate fechaHasta = LocalDate.of(2024, 12, 31);
-
-        List<Empleado> empleadosEntreFechas = null;
-
-        try
-        {
-            empleadosEntreFechas = empleadoAbm.traerEmpleadosEntreFechas(fechaDesde,fechaHasta);
-        }
-        catch (Exception e)
-        {
-            System.out.println(e.getMessage());
-        }
-
-        System.out.println("\n\t--------------- TEST 6 EMPLEADOS ENTRE DOS FECHAS ---------------\n");
-
-        System.out.println("\tDesde: " + fechaDesde +"\tHasta: " + fechaHasta);
-
-        if (empleadosEntreFechas != null)
-        {
-            for (Empleado empleado : empleadosEntreFechas)
-            {
-                System.out.println("\t--------------------------------------------");
-                System.out.println("\t Nombre: " + empleado.getNombre());
-                System.out.println("\t Apellido: " + empleado.getApellido());
-                System.out.println("\t Ingreso: " + empleado.getIngreso());
-
-                if (empleado instanceof Cocinero)
-                {
-                    System.out.println("\t Tipo: Cocinero");
-                }
-                else if (empleado instanceof Cajero)
-                {
-                    System.out.println("\t Tipo: Cajero");
-                }
+                System.out.println("---------------------------------------------");
+                System.out.println("Nombre: " + empleado.getNombre());
+                System.out.println("Apellido: " + empleado.getApellido());
+                System.out.println("DNI: " + empleado.getDni());
+                System.out.println("Fecha de ingreso: " + empleado.getIngreso());
 
                 if (empleado.getUnidadVenta() != null)
                 {
-                    System.out.println("\t Unidad de Venta: "+ empleado.getUnidadVenta().getNombre());
+                    System.out.println("Unidad de Venta: " + empleado.getUnidadVenta().getNombre());
                 }
             }
         }
-
-        // ---------------------------------------------------------------
-        // Caso de uso 7: total de sueldos por unidad
-        // ---------------------------------------------------------------
-
-        List<Object[]> totales = null;
-
-        try
-        {
-            totales = empleadoAbm.traerTotalSueldosPorUnidad();
-        }
         catch (Exception e)
         {
-            System.out.println(e.getMessage());
-        }
-
-        System.out.println("\n\t--------------- TEST 7 TOTAL DE SUELDOS POR UNIDAD ---------------\n");
-
-        if (totales != null)
-        {
-            for (Object[] resultado : totales)
-            {
-                System.out.println("\t--------------------------------------------");
-
-                System.out.println("\tUnidad: " + resultado[0]);
-
-                System.out.println("\tTotal de sueldos: $" + resultado[1]);
-            }
+            System.out.println("ERROR: " + e.getMessage());
         }
     }
 }
+
 

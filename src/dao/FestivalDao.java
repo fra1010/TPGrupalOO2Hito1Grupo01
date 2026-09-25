@@ -10,6 +10,7 @@ import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import datos.UnidadVenta;
+import datos.Empleado;
 import datos.Festival;
 
 public class FestivalDao {
@@ -481,4 +482,146 @@ public class FestivalDao {
 		return lista;
 	}
 	
+	// -------------------------------------------------------------------
+    // Caso de uso 1: traer lista de empleados por festival IVAN TOLABA
+    // -------------------------------------------------------------------
+
+	public List<Empleado> traerEmpleadosPorFestival(Festival festival)
+	{
+	    List<Empleado> lista = new ArrayList<Empleado>();
+
+	    try
+	    {
+	        iniciaOperacion();
+
+	        lista = session.createQuery(
+	            "SELECT e " +
+	            "FROM Festival f " +
+	            "JOIN f.unidadesVenta uv " +
+	            "JOIN uv.empleados e " +
+	            "JOIN FETCH e.unidadVenta " +
+	            "WHERE f = :festival " +
+	            "ORDER BY uv.nombre, e.apellido",
+	            Empleado.class
+	        ).setParameter("festival", festival).getResultList();
+
+	    }
+	    finally
+	    {
+	        session.close();
+	    }
+
+	    return lista;
+	}
+
+	// -------------------------------------------------------------------
+	// Caso de uso 2: traer cantidad de empleados por festival IVAN TOLABA
+	// -------------------------------------------------------------------
+	
+	public List<Object[]> traerCantidadEmpleadosPorUnidad(Festival festival)
+	{
+	    List<Object[]> lista = new ArrayList<Object[]>();
+
+	    try
+	    {
+	        iniciaOperacion();
+
+	        lista = session.createQuery(
+	            "SELECT uv.nombre, " +
+	            "SUM(CASE WHEN TYPE(e) = Cocinero THEN 1 ELSE 0 END), " +
+	            "SUM(CASE WHEN TYPE(e) = Cajero THEN 1 ELSE 0 END), " +
+	            "CASE WHEN uv.responsable IS NOT NULL THEN 1 ELSE 0 END " +
+	            "FROM Festival f " +
+	            "JOIN f.unidadesVenta uv " +
+	            "LEFT JOIN uv.empleados e " +
+	            "WHERE f = :festival " +
+	            "GROUP BY uv.idUnidadVenta, uv.nombre, uv.responsable " +
+	            "ORDER BY uv.nombre",
+	            Object[].class
+	        )
+	        .setParameter("festival", festival)
+	        .getResultList();
+	    }
+	    finally
+	    {
+	        session.close();
+	    }
+
+	    return lista;
+	}
+
+	
+	
+	// -----------------------------------------------------------------------------
+    // Caso de uso 3: traer lista de empleados mas antiguos por festival IVAN TOLABA
+    // ------------------------------------------------------------------------------
+
+	public List<Empleado> traerEmpleadosMasAntiguos(Festival festival, int cantidad)
+	{
+	    List<Empleado> lista = new ArrayList<Empleado>();
+
+	    try
+	    {
+	        iniciaOperacion();
+
+	        lista = session.createQuery(
+	            "SELECT e " +
+	            "FROM Festival f " +
+	            "JOIN f.unidadesVenta uv " +
+	            "JOIN uv.empleados e " +
+	            "JOIN FETCH e.unidadVenta " +
+	            "WHERE f = :festival " +
+	            "ORDER BY e.ingreso ASC",
+	            Empleado.class
+	        )
+	        .setParameter("festival", festival)
+	        .setMaxResults(cantidad)
+	        .getResultList();
+
+	    }
+	    finally
+	    {
+	        session.close();
+	    }
+
+	    return lista;
+	}
+
+	// -----------------------------------------------------------------------
+    // Caso de uso 4: traer empleados entre fechas por festival IVAN TOLABA
+    // -----------------------------------------------------------------------
+	
+	public List<Empleado> traerEmpleadosEntreFechas(Festival festival,LocalDate fechaDesde,LocalDate fechaHasta)
+	{
+	    List<Empleado> lista = new ArrayList<Empleado>();
+
+	    try
+	    {
+	        iniciaOperacion();
+
+	        lista = session.createQuery(
+	            "SELECT e " +
+	            "FROM Festival f " +
+	            "JOIN f.unidadesVenta uv " +
+	            "JOIN uv.empleados e " +
+	            "JOIN FETCH e.unidadVenta " +
+	            "WHERE f = :festival " +
+	            "AND e.ingreso BETWEEN :fechaDesde AND :fechaHasta " +
+	            "ORDER BY uv.nombre, e.ingreso, e.apellido",
+	            Empleado.class
+	        )
+	        .setParameter("festival", festival)
+	        .setParameter("fechaDesde", fechaDesde)
+	        .setParameter("fechaHasta", fechaHasta)
+	        .getResultList();
+
+	    }
+	    finally
+	    {
+	        session.close();
+	    }
+
+	    return lista;
+	}
+
 }

@@ -7,6 +7,7 @@ import java.util.List;
 import dao.FestivalDao;
 import dao.UnidadVentaDao;
 import datos.Costo;
+import datos.Empleado;
 import datos.Festival;
 import datos.UnidadVenta;
 
@@ -376,6 +377,105 @@ public class FestivalABM {
 	    }
 
 	    return lista;
+	}
+
+	// -------------------------------------------------------------------
+	// Caso de uso 1: traer empleados por festival IVAN TOLABA
+	// -------------------------------------------------------------------
+
+	public List<Empleado> traerEmpleadosPorFestival(Festival festival) throws Exception
+	{
+	    if (festival == null)
+	    {
+	        throw new Exception("ERROR: el festival no puede ser null");
+	    }
+
+	    List<Empleado> empleados = dao.traerEmpleadosPorFestival(festival);
+
+	    if (empleados.isEmpty())
+	    {
+	        throw new Exception("ERROR: no hay empleados asociados al festival");
+	    }
+
+	    return empleados;
+	}
+
+	// -------------------------------------------------------------------
+	// Caso de uso 2: traer cantidad de empleados por festival IVAN TOLABA
+	// -------------------------------------------------------------------
+
+	public List<Object[]> traerCantidadEmpleadosPorUnidad(Festival festival) throws Exception
+	{
+	    if (festival == null)
+	    {
+	        throw new Exception("ERROR: el festival no puede ser null");
+	    }
+
+	    List<Object[]> resultados = dao.traerCantidadEmpleadosPorUnidad(festival);
+
+	    if (resultados.isEmpty())
+	    {
+	        throw new Exception("ERROR: no hay unidades de venta asociadas al festival");
+	    }
+
+	    return resultados;
+	}
+
+	// -------------------------------------------------------------------
+	// Caso de uso 3: traer empleados mas antiguos por festival IVAN TOLABA
+	// -------------------------------------------------------------------
+
+	public List<Empleado> traerEmpleadosMasAntiguos(Festival festival, int cantidad) throws Exception
+	{
+	    if (festival == null)
+	    {
+	        throw new Exception("ERROR: el festival no puede ser null");
+	    }
+
+	    if (cantidad <= 0)
+	    {
+	        throw new Exception("ERROR: la cantidad debe ser mayor a cero");
+	    }
+
+	    List<Empleado> empleados = dao.traerEmpleadosMasAntiguos(festival, cantidad);
+
+	    if (empleados.isEmpty())
+	    {
+	        throw new Exception("ERROR: no hay empleados asociados al festival");
+	    }
+
+	    return empleados;
+	}
+	
+	// -----------------------------------------------------------------------
+    // Caso de uso 4: traer empleados entre fechas por festival IVAN TOLABA
+    // -----------------------------------------------------------------------
+
+	public List<Empleado> traerEmpleadosEntreFechas(Festival festival, LocalDate fechaDesde, LocalDate fechaHasta) throws Exception
+	{
+	    if (festival == null)
+	    {
+	        throw new Exception("ERROR: el festival no puede ser null");
+	    }
+
+	    if (fechaDesde == null || fechaHasta == null)
+	    {
+	        throw new Exception("ERROR: las fechas no pueden ser null");
+	    }
+
+	    if (fechaDesde.isAfter(fechaHasta))
+	    {
+	        throw new Exception("ERROR: la fecha desde no puede ser posterior a la fecha hasta");
+	    }
+
+	    List<Empleado> empleados = dao.traerEmpleadosEntreFechas(festival, fechaDesde, fechaHasta);
+
+	    if (empleados.isEmpty())
+	    {
+	        throw new Exception("ERROR: no hay empleados ingresados en ese rango de fechas para el festival");
+	    }
+
+	    return empleados;
 	}
 
 }
