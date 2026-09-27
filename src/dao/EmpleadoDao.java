@@ -1,13 +1,12 @@
 package dao;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.query.Query;
+
 
 import datos.Empleado;
 
@@ -45,7 +44,7 @@ public class EmpleadoDao
     }
 
     // -------------------------------------------------------------------
-    // CRUD
+    // ABM
     // -------------------------------------------------------------------
 
     public void actualizar(Empleado empleado)

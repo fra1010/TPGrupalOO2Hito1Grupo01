@@ -1,4 +1,3 @@
-
 package negocio;
 
 import java.time.LocalDate;

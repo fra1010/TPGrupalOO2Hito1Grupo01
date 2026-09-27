@@ -60,7 +60,7 @@ public class TestEmpleado
         }
 
         // -------------------------------------------------------------------
-        // Caso de uso 2: cantidad de empleados por unidad - IVAN TOLABA
+        // Caso de uso 2: cantidad de empleados por festival - IVAN TOLABA
         // -------------------------------------------------------------------
 
         try
@@ -86,7 +86,7 @@ public class TestEmpleado
         }
 
         // -------------------------------------------------------------------
-        // Caso de uso 3: empleados más antiguos por festival - IVAN TOLABA
+        // Caso de uso 3: empleados mas antiguos por festival - IVAN TOLABA
         // -------------------------------------------------------------------
 
         try
