@@ -10,6 +10,7 @@ import org.hibernate.Transaction;
 import datos.ItemPedido;
 import datos.Pedido;
 import datos.Plato;
+import datos.Festival;
 
 public class ItemPedidoDao {
 	
@@ -143,4 +144,63 @@ public class ItemPedidoDao {
 
 	    return lista;
 	}
+	
+	public Object[] traerDatosTicketPromedio(Festival festival) {
+	    Object[] resultado = null;
+
+	    try {
+	        iniciaOperacion();
+
+	        String hql = "SELECT COUNT(DISTINCT p.idPedido), "
+	                + "SUM(i.precioUnitario * i.cantidad) "
+	                + "FROM ItemPedido i "
+	                + "JOIN i.pedido p "
+	                + "JOIN p.unidad u "
+	                + "WHERE u.festival = :festival "
+	                + "AND p.abierto = false";
+
+	        resultado = session.createQuery(
+	                hql,
+	                Object[].class)
+	                .setParameter("festival", festival)
+	                .uniqueResult();
+
+	    } finally {
+	        session.close();
+	    }
+
+	    return resultado;
+	}
+	
+	public List<Object[]> traerGananciaPorTipoUnidad(Festival festival) {
+
+		List<Object[]> lista = new ArrayList<Object[]>();
+
+	    try {
+	        iniciaOperacion();
+
+	        String hql = "SELECT TYPE(u), "
+	                + "SUM((i.precioUnitario - i.costoUnitario) "
+	                + "* i.cantidad) "
+	                + "FROM ItemPedido i "
+	                + "JOIN i.pedido p "
+	                + "JOIN p.unidad u "
+	                + "WHERE u.festival = :festival "
+	                + "AND p.abierto = false "
+	                + "GROUP BY TYPE(u)";
+
+	        lista = session.createQuery(
+	                hql,
+	                Object[].class)
+	                .setParameter("festival", festival)
+	                .getResultList();
+
+	    } finally {
+	        session.close();
+	    }
+
+	    return lista;
+	}
+	
+	
 }
