@@ -32,10 +32,10 @@
 -  Traer TOP N de ganancias entre rango de fechas
 -  Traer cierre diario por unidad en una fecha
 
-### Diego Olmedo
--  Traer agregar empleado
--  Traer cocinero por especialidad
--  Traer cajero por turno
--  Traer empleados por fecha de nacimiento entre dos fechas
--  Traer empleado mas antiguo
+### Ivan Pablo Tolaba
+-  traer empleados por festival
+-  cantidad de empleados por festival 
+-  empleados mas antiguos por festival
+-  empleados entre fechas por festival
+  todos testeado en TestEmpleado.java 
 
