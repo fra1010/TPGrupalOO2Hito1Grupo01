@@ -216,4 +216,100 @@ public class UnidadVentaDao {
 
 		return unidadVenta;
 	}
+	
+	public double calcularRentabilidadNeta(String codigoUnidad, int idFestival) {
+		
+		double resultado = 0;
+		try {
+			
+			iniciaOperacion(); 
+
+	        
+
+			String hql =
+				    "SELECT SUM(ip.cantidad * (ip.plato.precioDeVenta - ip.plato.costoDePlato)) " +
+				    "- MAX( CASE " +
+				    "    WHEN TYPE(u) = FoodTruck THEN " +
+				    "        ((u.superficie * u.festival.costo.costoSuperficie) + "
+				    +       "(CASE WHEN u.conexion = true THEN u.festival.costo.costoElectricidad ELSE 0 END)) " +
+				    
+				    "    WHEN TYPE(u) = PuestoDesarmable THEN " +
+				    "        ((u.superficie * u.festival.costo.costoSuperficie) + "
+				    +        "((u.cantidadCarpas * u.festival.costo.costoMontaje )) ) " +
+				    "    ELSE 0 " +
+				    "  END ) " +
+				    "FROM ItemPedido ip " +
+				    "JOIN ip.pedido p " +
+				    "JOIN p.unidad u " +
+				    "WHERE u.festival.idFestival = :idFestival " +
+				    "AND u.codigo = :codigoUnidad";
+
+			Double suma = (Double) session.createQuery(hql)
+				        .setParameter("idFestival", idFestival)
+				        .setParameter("codigoUnidad", codigoUnidad)
+				        .uniqueResult();
+			String hqlE =
+				    "SELECT SUM( " +
+				    "  CASE " +
+				    "    WHEN TYPE(e) = Cocinero THEN " +
+				    "        (c.sueldoBase * (1 + COALESCE(e.porcentaje, 0) / 100.0)) " +
+				    "    WHEN TYPE(e) = Cajero THEN " +
+				    "        (c.sueldoBase + COALESCE(e.plusAntiguedad, 0)) " +
+				    
+				    "  END " +
+				    ") " +
+				    "FROM Empleado e " +
+				    "JOIN e.unidadVenta uv " +
+				    "JOIN uv.festival f " +
+				    "JOIN f.costo c " +
+				    "WHERE f.idFestival = :idFestival " +
+				    "AND uv.codigo = :codigoUnidad";  
+
+			Double sueldo = (Double) session.createQuery(hqlE)
+			        .setParameter("idFestival", idFestival)
+			        .setParameter("codigoUnidad", codigoUnidad)
+			        .uniqueResult();
+		        if (suma != null && sueldo != null) {
+		            resultado = suma - sueldo;
+		        }
+		} 
+		finally {
+			session.close();
+		}
+		return resultado;
+		
+	}
+	public UnidadVenta traerUnidadVentaEstrellaConEmpleados(int idFestival) {
+		UnidadVenta unidadMayorRecaudacion = null;
+		try {
+			
+			iniciaOperacion(); 
+
+	        // Paso 1: Obtener la UnidadVenta con mayor recaudación
+	        String hql = "SELECT p.unidad " +
+	                        "FROM ItemPedido ip " +
+	                        "JOIN ip.pedido p " +
+	                        "WHERE p.unidad.festival.idFestival = :idFestival " +
+	                        "GROUP BY p.unidad " +
+	                        "ORDER BY SUM(ip.cantidad * ip.plato.precioDeVenta) DESC";
+
+	        unidadMayorRecaudacion  = session.createQuery(hql, UnidadVenta.class)
+	            .setParameter("idFestival", idFestival)
+	            .setMaxResults(1)
+	            .uniqueResult();
+
+	        // Paso 2: inicializo los empleados de la unidad 
+	        if (unidadMayorRecaudacion != null) {
+	        	Hibernate.initialize(unidadMayorRecaudacion.getEmpleados());
+	        	
+	        }
+		} 
+		finally {
+			session.close();
+		}
+
+		return unidadMayorRecaudacion;
+	}
+	
+
 }

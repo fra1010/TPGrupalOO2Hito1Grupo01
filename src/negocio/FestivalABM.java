@@ -10,12 +10,14 @@ import datos.Costo;
 import datos.Empleado;
 import datos.Festival;
 import datos.UnidadVenta;
+import dao.ItemPedidoDao;
 
 public class FestivalABM {
 
 	FestivalDao dao = new FestivalDao();
 	UnidadVentaDao unidadDao = new UnidadVentaDao();
 	CostoABM abmCosto = new CostoABM();
+	ItemPedidoDao itemPedidoDao = new ItemPedidoDao();
 
 	public int agregar(Festival f) throws Exception {
 
@@ -254,17 +256,24 @@ public class FestivalABM {
 
 	public List<Festival> traerPorRangoDeCostoReal(int minimo, int maximo) throws Exception {
 
-		List<Object[]> costosFijos = dao.calcularCostosFijosTodos();
-		List<Object[]> sueldosCocineros = dao.calcularSueldosCocinerosTodos();
-		List<Object[]> sueldosCajeros = dao.calcularSueldosCajerosTodos();
+		List<Object[]> costosFijos = dao.calcularCostosFijosTodos(); // devuelve festival y costos fijos
+		List<Object[]> sueldosCocineros = dao.calcularSueldosCocinerosTodos(); // devuelve id festival y sueldo de los
+																				// cocineros
+		List<Object[]> sueldosCajeros = dao.calcularSueldosCajerosTodos(); // devuelve id festival y sueldo de los
+																			// cajeros
 
 		List<Festival> resultado = new ArrayList<Festival>();
 
-		for (Object[] filaCosto : costosFijos) {
+		for (Object[] filaCosto : costosFijos) {// recorre costos fijos porque tiene todos los festivales
 			Festival festival = (Festival) filaCosto[0];
 			double costosFijosValor = ((Number) filaCosto[1]).doubleValue();
 
-			double sueldosCocinerosValor = buscarSueldo(sueldosCocineros, festival.getIdFestival());
+			double sueldosCocinerosValor = buscarSueldo(sueldosCocineros, festival.getIdFestival()); // buscar sueldo
+																										// busca en cada
+																										// lista que
+																										// conincida con
+																										// el festival
+																										// actual
 			double sueldosCajerosValor = buscarSueldo(sueldosCajeros, festival.getIdFestival());
 
 			double costoReal = costosFijosValor + sueldosCocinerosValor + sueldosCajerosValor;
@@ -281,7 +290,8 @@ public class FestivalABM {
 		return resultado;
 	}
 
-	private double buscarSueldo(List<Object[]> filas, int idFestival) {
+	private double buscarSueldo(List<Object[]> filas, int idFestival) { // devuelve el sueldo de la fila convertido a
+																		// double
 		for (Object[] fila : filas) {
 			int id = ((Number) fila[0]).intValue();
 
@@ -332,27 +342,26 @@ public class FestivalABM {
 		return resultado;
 	}
 
-	public double calcularTicketPromedio(int idFestival) throws Exception {
-
-		Festival festival = dao.traer(idFestival);
+	public double calcularTicketPromedio(Festival festival) throws Exception {
 
 		if (festival == null) {
-			throw new Exception("No existe festival con id " + idFestival);
+			throw new Exception("El festival no puede ser nulo");
 		}
 
-		Object[] datos = dao.calcularTicketPromedio(idFestival);
+		Object[] datos = itemPedidoDao.traerDatosTicketPromedio(festival);
 
 		if (datos == null || datos[0] == null) {
-			throw new Exception("No hay pedidos cerrados registrados para este festival");
+			throw new Exception("No hay pedidos cerrados registrados " + "para este festival");
 		}
 
 		long cantidadPedidos = ((Number) datos[0]).longValue();
 
 		if (cantidadPedidos == 0) {
-			throw new Exception("No hay pedidos cerrados registrados para este festival");
+			throw new Exception("No hay pedidos cerrados registrados " + "para este festival");
 		}
 
 		double recaudacionTotal;
+
 		if (datos[1] != null) {
 			recaudacionTotal = ((Number) datos[1]).doubleValue();
 		} else {
@@ -361,22 +370,20 @@ public class FestivalABM {
 
 		return recaudacionTotal / cantidadPedidos;
 	}
-	
-	public List<Object[]> compararGananciaPorTipoUnidad(int idFestival) throws Exception {
 
-	    Festival festival = dao.traer(idFestival);
+	public List<Object[]> compararGananciaPorTipoUnidad(Festival festival) throws Exception {
 
-	    if (festival == null) {
-	        throw new Exception("No existe festival con id " + idFestival);
-	    }
+		if (festival == null) {
+			throw new Exception("El festival no puede ser nulo");
+		}
 
-	    List<Object[]> lista = dao.compararGananciaPorTipoUnidad(idFestival);
+		List<Object[]> lista = itemPedidoDao.traerGananciaPorTipoUnidad(festival);
 
-	    if (lista.isEmpty()) {
-	        throw new Exception("No hay ventas registradas para este festival");
-	    }
+		if (lista.isEmpty()) {
+			throw new Exception("No hay ventas registradas " + "para este festival");
+		}
 
-	    return lista;
+		return lista;
 	}
 
 	// -------------------------------------------------------------------

@@ -25,6 +25,8 @@
 -  Traer costo total de festival
 -  Traer festivales con tipo de unidadVenta
 -  Traer ganancia total de festivales
+-  Calcular ticket promedio
+-  Comparar ganancia por tipo de unidad 
 
 ### Leandro Vera
 -  Traer TOP N de ganancias entre rango de fechas
