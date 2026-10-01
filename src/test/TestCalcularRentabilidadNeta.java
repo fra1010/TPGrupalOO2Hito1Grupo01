@@ -1,6 +1,8 @@
 package test;
 
 
+import datos.Festival;
+import negocio.FestivalABM;
 import negocio.UnidadVentaABM;
 
 public class TestCalcularRentabilidadNeta {
@@ -8,10 +10,10 @@ public class TestCalcularRentabilidadNeta {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		UnidadVentaABM UnidadVentaABM = new UnidadVentaABM();
-		System.out.println("unidad codigo AGISHAEYFQ ganancia: " + UnidadVentaABM.calcularRentabilidadNeta("AGISHAEYFQ", 1));
-		System.out.println("unidad codigo HJKLBXYZQ  ganancia: " + UnidadVentaABM.calcularRentabilidadNeta("HJKLBXYZQ", 1));
-		System.out.println("unidad codigo ABCDEFGYIJ ganancia: " + UnidadVentaABM.calcularRentabilidadNeta("ABCDEFGYIJ", 1));
-
+		FestivalABM festivalABM = new FestivalABM();
+		Festival festival = festivalABM.traer(1);
+		System.out.println(UnidadVentaABM.calcularRentabilidadNeta("AGISHAEYFQ", festival));
+		
 	}
 
 }
