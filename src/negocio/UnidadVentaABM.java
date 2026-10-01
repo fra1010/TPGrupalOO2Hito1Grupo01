@@ -7,8 +7,7 @@ import dao.UnidadVentaDao;
 import datos.Empleado;
 import datos.Festival;
 import datos.FoodTruck;
-import datos.ItemPedido;
-import datos.Pedido;
+
 import datos.Plato;
 import datos.PuestoDesarmable;
 import datos.UnidadVenta;
@@ -83,14 +82,6 @@ public class UnidadVentaABM {
 		return dao.agregarUnidadVenta(puestoDesarmable);
 	}
 
-	public double calcularTotalUnidadVenta(String codigoUnidadVenta) {
-		double total = 0;
-		UnidadVenta u = dao.traerUnidadVentaYPedidosEitem(codigoUnidadVenta);
-		for (Pedido p : u.getPedidos()) {
-			total = total + p.calcularTotal();
-		}
-		return total;
-	}
 
 	public List<Plato> traerPlatosDesdeHasta(String codigoUnidad, double precioDesde, double precioHasta) {
 
@@ -112,37 +103,18 @@ public class UnidadVentaABM {
 		return unidad.todoTotalSueldoEmpleados();
 	}
 
-	public double calcularGananciaPlatosPorUnidadVenta(String codigoUnidadVenta) {
-		UnidadVenta unidad = dao.traerUnidadVentaYPedidosEitem(codigoUnidadVenta);
-		double totalGanancia = 0;
-		if (unidad == null || unidad.getPedidos() == null) {
-			return totalGanancia;
-		}
-
-		for (Pedido pedido : unidad.getPedidos()) {
-			if (pedido.getItemsPedidos() != null) {
-				for (ItemPedido item : pedido.getItemsPedidos()) {
-					if (item.getPlato() != null) {
-						double gananciaUnitaria = item.getPlato().getPrecioDeVenta()
-								- item.getPlato().getCostoDePlato();
-						totalGanancia += item.getCantidad() * gananciaUnitaria;
-					}
-				}
-			}
-		}
-
-		return totalGanancia;
+		
+	public UnidadVenta traerUnidadVentaEstrellaConEmpleados(Festival festival) {
+		
+		
+		return dao.traerUnidadVentaEstrellaConEmpleados(festival);
 	}
-	
-	
-	public UnidadVenta traerUnidadVentaEstrellaConEmpleados(int idFestival) {
-		
-		
-		return dao.traerUnidadVentaEstrellaConEmpleados(idFestival);
-	}
-	public double calcularRentabilidadNeta(String codigoUnidad, int idFestival) {
-		
-		
-		return dao.calcularRentabilidadNeta(codigoUnidad, idFestival);
+	public double calcularRentabilidadNeta(String codigoUnidad, Festival festival) {
+		double rentabilidadNetaTotal=0;
+		double totalVentaPlatos=dao.unidadVentaTotalVentaMenosCostoPlato(codigoUnidad, festival);
+		double totalCanonUnidad=dao.calcularCanonUnidadVenta(codigoUnidad, festival);
+		double totalSueldoEmpleados=dao.calcularSueldoEmpleadosDeUnidadVenta(codigoUnidad, festival);
+		rentabilidadNetaTotal=totalVentaPlatos-totalCanonUnidad-totalSueldoEmpleados;
+		return rentabilidadNetaTotal;
 	}
 }
