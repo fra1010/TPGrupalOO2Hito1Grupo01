@@ -10,6 +10,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
+import datos.Festival;
 import datos.ItemPedido;
 import datos.Pedido;
 import datos.Plato;
@@ -54,7 +55,7 @@ public class UnidadVentaDao {
 			if (unidadVenta != null) {
 				Hibernate.initialize(unidadVenta.getResponsable());
 				Hibernate.initialize(unidadVenta.getFestival());
-				
+
 			}
 
 		} finally {
@@ -70,7 +71,7 @@ public class UnidadVentaDao {
 			iniciaOperacion();
 			unidadVenta = (UnidadVenta) session.createQuery(" from UnidadVenta u where u.codigo = :codigo")
 					.setParameter("codigo", codigo).uniqueResult();
-			if (unidadVenta != null) {		
+			if (unidadVenta != null) {
 				Hibernate.initialize(unidadVenta.getEmpleados());
 			}
 		} finally {
@@ -117,7 +118,7 @@ public class UnidadVentaDao {
 			session.close();
 		}
 	}
-	
+
 	public int agregarUnidadVentaYPlatos(UnidadVenta objeto) {
 		int id = 0;
 		try {
@@ -138,6 +139,7 @@ public class UnidadVentaDao {
 
 		return id;
 	}
+
 	public UnidadVenta traerUnidadVentaYPedidosEitem(String codigo) {
 
 		UnidadVenta unidadVenta = null;
@@ -162,51 +164,45 @@ public class UnidadVentaDao {
 
 		return unidadVenta;
 	}
-	
+
 	public List<Plato> traerPlatosPorUnidadYRangoPrecio(String codigoUnidad, double precioDesde, double precioHasta) {
-	    List<Plato> lista = null;
-	    try {
-	        iniciaOperacion();
-	        String hQL = "select p from UnidadVenta u " +
-	                     "inner join u.platos p " +
-	                     "where u.codigo = :codigoUnidad " +
-	                     "and p.precioDeVenta between :precioDesde and :precioHasta " +
-	                     "order by p.precioDeVenta asc";
+		List<Plato> lista = null;
+		try {
+			iniciaOperacion();
+			String hQL = "select p from UnidadVenta u " + "inner join u.platos p " + "where u.codigo = :codigoUnidad "
+					+ "and p.precioDeVenta between :precioDesde and :precioHasta " + "order by p.precioDeVenta asc";
 
-	        lista = session.createQuery(hQL, Plato.class)
-	                .setParameter("codigoUnidad", codigoUnidad)
-	                .setParameter("precioDesde", precioDesde)
-	                .setParameter("precioHasta", precioHasta)
-	                .getResultList();
-	    } finally {
-	        session.close();
-	    }
-	    return lista;
+			lista = session.createQuery(hQL, Plato.class).setParameter("codigoUnidad", codigoUnidad)
+					.setParameter("precioDesde", precioDesde).setParameter("precioHasta", precioHasta).getResultList();
+		} finally {
+			session.close();
+		}
+		return lista;
 	}
-	
+
 	public UnidadVenta traerUnidadYPlatos(String codigo) {
-	    UnidadVenta unidadVenta = null;
-	    try {
-	        iniciaOperacion();
-	        unidadVenta = (UnidadVenta) session.createQuery("from UnidadVenta u where u.codigo = :codigo")
-	                .setParameter("codigo", codigo)
-	                .uniqueResult();
-	        if (unidadVenta != null) {
-	            Hibernate.initialize(unidadVenta.getPlatos());
-	        }
-	    } finally {
-	        session.close();
-	    }
+		UnidadVenta unidadVenta = null;
+		try {
+			iniciaOperacion();
+			unidadVenta = (UnidadVenta) session.createQuery("from UnidadVenta u where u.codigo = :codigo")
+					.setParameter("codigo", codigo).uniqueResult();
+			if (unidadVenta != null) {
+				Hibernate.initialize(unidadVenta.getPlatos());
+			}
+		} finally {
+			session.close();
+		}
 
-	    return unidadVenta;
+		return unidadVenta;
 	}
+
 	public UnidadVenta traerUnidadVentaYEmpleadosYFestival(String codigo) {
 		UnidadVenta unidadVenta = null;
 		try {
 			iniciaOperacion();
 			unidadVenta = (UnidadVenta) session.createQuery(" from UnidadVenta u where u.codigo = :codigo")
 					.setParameter("codigo", codigo).uniqueResult();
-			if (unidadVenta != null) {		
+			if (unidadVenta != null) {
 				Hibernate.initialize(unidadVenta.getEmpleados());
 				Hibernate.initialize(unidadVenta.getFestival());
 			}
@@ -216,100 +212,99 @@ public class UnidadVentaDao {
 
 		return unidadVenta;
 	}
-	
-	public double calcularRentabilidadNeta(String codigoUnidad, int idFestival) {
-		
-		double resultado = 0;
-		try {
-			
-			iniciaOperacion(); 
 
-	        
-
-			String hql =
-				    "SELECT SUM(ip.cantidad * (ip.plato.precioDeVenta - ip.plato.costoDePlato)) " +
-				    "- MAX( CASE " +
-				    "    WHEN TYPE(u) = FoodTruck THEN " +
-				    "        ((u.superficie * u.festival.costo.costoSuperficie) + "
-				    +       "(CASE WHEN u.conexion = true THEN u.festival.costo.costoElectricidad ELSE 0 END)) " +
-				    
-				    "    WHEN TYPE(u) = PuestoDesarmable THEN " +
-				    "        ((u.superficie * u.festival.costo.costoSuperficie) + "
-				    +        "((u.cantidadCarpas * u.festival.costo.costoMontaje )) ) " +
-				    "    ELSE 0 " +
-				    "  END ) " +
-				    "FROM ItemPedido ip " +
-				    "JOIN ip.pedido p " +
-				    "JOIN p.unidad u " +
-				    "WHERE u.festival.idFestival = :idFestival " +
-				    "AND u.codigo = :codigoUnidad";
-
-			Double suma = (Double) session.createQuery(hql)
-				        .setParameter("idFestival", idFestival)
-				        .setParameter("codigoUnidad", codigoUnidad)
-				        .uniqueResult();
-			String hqlE =
-				    "SELECT SUM( " +
-				    "  CASE " +
-				    "    WHEN TYPE(e) = Cocinero THEN " +
-				    "        (c.sueldoBase * (1 + COALESCE(e.porcentaje, 0) / 100.0)) " +
-				    "    WHEN TYPE(e) = Cajero THEN " +
-				    "        (c.sueldoBase + COALESCE(e.plusAntiguedad, 0)) " +
-				    
-				    "  END " +
-				    ") " +
-				    "FROM Empleado e " +
-				    "JOIN e.unidadVenta uv " +
-				    "JOIN uv.festival f " +
-				    "JOIN f.costo c " +
-				    "WHERE f.idFestival = :idFestival " +
-				    "AND uv.codigo = :codigoUnidad";  
-
-			Double sueldo = (Double) session.createQuery(hqlE)
-			        .setParameter("idFestival", idFestival)
-			        .setParameter("codigoUnidad", codigoUnidad)
-			        .uniqueResult();
-		        if (suma != null && sueldo != null) {
-		            resultado = suma - sueldo;
-		        }
-		} 
-		finally {
-			session.close();
-		}
-		return resultado;
-		
-	}
-	public UnidadVenta traerUnidadVentaEstrellaConEmpleados(int idFestival) {
+	public UnidadVenta traerUnidadVentaEstrellaConEmpleados(Festival festival) {
 		UnidadVenta unidadMayorRecaudacion = null;
 		try {
-			
-			iniciaOperacion(); 
 
-	        // Paso 1: Obtener la UnidadVenta con mayor recaudación
-	        String hql = "SELECT p.unidad " +
-	                        "FROM ItemPedido ip " +
-	                        "JOIN ip.pedido p " +
-	                        "WHERE p.unidad.festival.idFestival = :idFestival " +
-	                        "GROUP BY p.unidad " +
-	                        "ORDER BY SUM(ip.cantidad * ip.plato.precioDeVenta) DESC";
+			iniciaOperacion();
 
-	        unidadMayorRecaudacion  = session.createQuery(hql, UnidadVenta.class)
-	            .setParameter("idFestival", idFestival)
-	            .setMaxResults(1)
-	            .uniqueResult();
+			// Paso 1: Obtener la UnidadVenta con mayor recaudación
 
-	        // Paso 2: inicializo los empleados de la unidad 
-	        if (unidadMayorRecaudacion != null) {
-	        	Hibernate.initialize(unidadMayorRecaudacion.getEmpleados());
-	        	
-	        }
-		} 
-		finally {
+			String hql =" select u FROM UnidadVenta u " 
+			           +" JOIN u.pedidos p "
+					   +" JOIN p.itemsPedidos ip "
+					   +" WHERE u.festival = :festival " + "GROUP BY u "
+					   +" ORDER BY SUM(ip.precioUnitario * ip.cantidad) DESC";
+			unidadMayorRecaudacion = session.createQuery(hql, UnidadVenta.class).setParameter("festival", festival)
+					.setMaxResults(1).uniqueResult();
+
+			// Paso 2: inicializo los empleados de la unidad
+			if (unidadMayorRecaudacion != null) {
+				Hibernate.initialize(unidadMayorRecaudacion.getEmpleados());
+
+			}
+		} finally {
 			session.close();
 		}
 
 		return unidadMayorRecaudacion;
 	}
-	
 
+	public double unidadVentaTotalVentaMenosCostoPlato(String codigoUnidad, Festival festival) {
+		double totalGanancia = 0;
+		try {
+
+			iniciaOperacion();
+
+			String hql = "SELECT SUM((ip.precioUnitario - ip.costoUnitario) * ip.cantidad)" + " FROM UnidadVenta uv"
+					+ " JOIN uv.pedidos p" + " JOIN p.itemsPedidos ip" + " WHERE uv.codigo = :codigoUnidad "
+					+ " AND uv.festival = :festival";
+
+			totalGanancia = session.createQuery(hql, Double.class).setParameter("codigoUnidad", codigoUnidad)
+					.setParameter("festival", festival).uniqueResult();
+
+		} finally {
+			session.close();
+		}
+
+		return totalGanancia;
+	}
+
+	public double calcularCanonUnidadVenta(String codigoUnidad, Festival festival) {
+
+		double totalCanon = 0;
+		try {
+
+			iniciaOperacion();
+
+			String hql = "SELECT CASE " + "    WHEN TYPE(u) = FoodTruck THEN "
+					+ "        ((u.superficie * u.festival.costo.costoSuperficie) + "
+					+ "         (CASE WHEN u.conexion = true THEN u.festival.costo.costoElectricidad ELSE 0 END)) "
+					+ "    WHEN TYPE(u) = PuestoDesarmable THEN "
+					+ "        ((u.superficie * u.festival.costo.costoSuperficie) + "
+					+ "         (u.cantidadCarpas * u.festival.costo.costoMontaje)) " + "    ELSE 0 " + "END "
+					+ "FROM UnidadVenta u " + "WHERE u.festival= :festival " + "AND u.codigo = :codigoUnidad";
+
+			totalCanon = session.createQuery(hql, Double.class).setParameter("codigoUnidad", codigoUnidad)
+					.setParameter("festival", festival).uniqueResult();
+
+		} finally {
+			session.close();
+		}
+
+		return totalCanon;
+
+	}
+
+	public double calcularSueldoEmpleadosDeUnidadVenta(String codigoUnidad, Festival festival) {
+		double totalSueldoUnidad = 0;
+		try {
+
+			iniciaOperacion();
+			String hqlE = "SELECT COALESCE(SUM( " + "  CASE " + "    WHEN TYPE(e) = Cocinero THEN "
+					+ "        (c.sueldoBase * (1 + COALESCE(e.porcentaje, 0) / 100.0)) "
+					+ "    WHEN TYPE(e) = Cajero THEN " + "        (c.sueldoBase + COALESCE(e.plusAntiguedad, 0)) "
+					+ "    ELSE 0 " + "  END " + "), 0.0) " + "FROM UnidadVenta uv " + "JOIN uv.empleados e "
+					+ "JOIN uv.festival f " + "JOIN f.costo c " + "WHERE uv.festival = :festival "
+					+ "AND uv.codigo = :codigoUnidad";
+			totalSueldoUnidad = session.createQuery(hqlE, Double.class).setParameter("festival", festival)
+					.setParameter("codigoUnidad", codigoUnidad).uniqueResult();
+
+		} finally {
+			session.close();
+		}
+
+		return totalSueldoUnidad;
+	}
 }
