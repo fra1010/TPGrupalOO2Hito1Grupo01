@@ -19,6 +19,8 @@
 -  Traer lista de Unidades
 -  Calcular Total de Unidad de Venta
 -  Calcular sueldo empleado mas impresión de pdf
+-  Calcular sueldos empleados de unidad venta
+-  Calcular canon unidad venta
 
 ### Denis Flores
 -  Traer festivales por rango de fechas
