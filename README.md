@@ -18,6 +18,7 @@
 -  Actualizar Unidad
 -  Traer lista de Unidades
 -  Calcular Total de Unidad de Venta
+-  Calcular sueldo empleado mas impresión de pdf
 
 ### Denis Flores
 -  Traer festivales por rango de fechas
