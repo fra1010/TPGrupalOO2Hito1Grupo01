@@ -12,7 +12,7 @@
 # Casos de uso:  
 ### Diego Olmedo
 -  Traer Unidad por código
--  Agregar Unidad
+-  Agregar Unidad con responsable
 -  Agregar Unidad con lista de platos
 -  Traer Unidad de Venta y Empleados
 -  Actualizar Unidad
